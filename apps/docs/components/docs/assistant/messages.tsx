@@ -18,7 +18,13 @@ import {
   type LucideIcon,
   TerminalIcon,
 } from "lucide-react";
-import { type ReactNode, useState, useEffect, useRef } from "react";
+import {
+  type ComponentType,
+  type ReactNode,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
 import { cn } from "@/lib/utils";
 import { Reasoning } from "@/components/assistant-ui/reasoning";
 
@@ -32,7 +38,11 @@ export function UserMessage(): ReactNode {
   );
 }
 
-export function AssistantMessage(): ReactNode {
+export function AssistantMessage({
+  ToolCallComponent = ToolCall,
+}: {
+  ToolCallComponent?: ComponentType<ToolCallMessagePartProps>;
+} = {}): ReactNode {
   return (
     <MessagePrimitive.Root className="py-2" data-role="assistant">
       <div className="text-sm">
@@ -41,7 +51,7 @@ export function AssistantMessage(): ReactNode {
             if (part.type === "text") return <MarkdownText />;
             if (part.type === "reasoning") return <Reasoning {...part} />;
             if (part.type === "tool-call")
-              return part.toolUI ?? <ToolCall {...part} />;
+              return part.toolUI ?? <ToolCallComponent {...part} />;
             return null;
           }}
         </MessagePrimitive.Parts>
