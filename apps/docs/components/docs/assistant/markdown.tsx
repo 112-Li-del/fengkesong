@@ -4,19 +4,14 @@ import "@assistant-ui/react-markdown/styles/dot.css";
 import "react-shiki/css";
 
 import {
-  StreamdownTextPrimitive,
-  useIsStreamdownCodeBlock,
-  type StreamdownTextComponents,
+  type CodeHeaderProps,
+  MarkdownTextPrimitive,
   type SyntaxHighlighterProps,
-} from "@assistant-ui/react-streamdown";
-import { type CodeHeaderProps } from "@assistant-ui/react-markdown";
-import { OpenInSyntaxHighlighter } from "@/components/xulux/chat/OpenInCard";
-import {
-  type ComponentPropsWithoutRef,
-  type CSSProperties,
-  type FC,
-  memo,
-} from "react";
+  unstable_memoizeMarkdownComponents as memoizeMarkdownComponents,
+  useIsMarkdownCodeBlock,
+} from "@assistant-ui/react-markdown";
+import remarkGfm from "remark-gfm";
+import { type CSSProperties, type FC, memo } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ShikiHighlighter from "react-shiki";
@@ -25,15 +20,10 @@ import { useCopyToClipboard } from "@assistant-ui/ui/hooks/use-copy-to-clipboard
 
 const MarkdownTextImpl = () => {
   return (
-    <StreamdownTextPrimitive
-      containerClassName="aui-md-assistant"
-      components={markdownComponents as StreamdownTextComponents}
-      componentsByLanguage={{
-        "open-in": {
-          SyntaxHighlighter: OpenInSyntaxHighlighter,
-          CodeHeader: () => null,
-        },
-      }}
+    <MarkdownTextPrimitive
+      remarkPlugins={[remarkGfm]}
+      className="aui-md-assistant"
+      components={markdownComponents}
     />
   );
 };
@@ -91,9 +81,9 @@ const SyntaxHighlighter: FC<SyntaxHighlighterProps> = ({ code, language }) => {
   );
 };
 
-const markdownComponents = {
+const markdownComponents = memoizeMarkdownComponents({
   SyntaxHighlighter: SyntaxHighlighter,
-  h1: ({ className, ...props }: ComponentPropsWithoutRef<"h1">) => (
+  h1: ({ className, ...props }) => (
     <h1
       className={cn(
         "mb-2 text-base font-semibold first:mt-0 last:mb-0",
@@ -102,7 +92,7 @@ const markdownComponents = {
       {...props}
     />
   ),
-  h2: ({ className, ...props }: ComponentPropsWithoutRef<"h2">) => (
+  h2: ({ className, ...props }) => (
     <h2
       className={cn(
         "mt-3 mb-1.5 text-sm font-semibold first:mt-0 last:mb-0",
@@ -111,7 +101,7 @@ const markdownComponents = {
       {...props}
     />
   ),
-  h3: ({ className, ...props }: ComponentPropsWithoutRef<"h3">) => (
+  h3: ({ className, ...props }) => (
     <h3
       className={cn(
         "mt-2.5 mb-1 text-sm font-semibold first:mt-0 last:mb-0",
@@ -120,7 +110,7 @@ const markdownComponents = {
       {...props}
     />
   ),
-  h4: ({ className, ...props }: ComponentPropsWithoutRef<"h4">) => (
+  h4: ({ className, ...props }) => (
     <h4
       className={cn(
         "mt-2 mb-1 text-sm font-medium first:mt-0 last:mb-0",
@@ -129,7 +119,7 @@ const markdownComponents = {
       {...props}
     />
   ),
-  h5: ({ className, ...props }: ComponentPropsWithoutRef<"h5">) => (
+  h5: ({ className, ...props }) => (
     <h5
       className={cn(
         "mt-2 mb-1 text-sm font-medium first:mt-0 last:mb-0",
@@ -138,7 +128,7 @@ const markdownComponents = {
       {...props}
     />
   ),
-  h6: ({ className, ...props }: ComponentPropsWithoutRef<"h6">) => (
+  h6: ({ className, ...props }) => (
     <h6
       className={cn(
         "mt-2 mb-1 text-sm font-medium first:mt-0 last:mb-0",
@@ -147,20 +137,13 @@ const markdownComponents = {
       {...props}
     />
   ),
-  p: ({ className, ...props }: ComponentPropsWithoutRef<"p">) => (
+  p: ({ className, ...props }) => (
     <p
       className={cn("my-2.5 leading-normal first:mt-0 last:mb-0", className)}
       {...props}
     />
   ),
-  a: ({
-    className,
-    href,
-    children,
-    title,
-    target,
-    rel,
-  }: ComponentPropsWithoutRef<"a">) => {
+  a: ({ className, href, children, title, target, rel }) => {
     const linkClass = cn(
       "text-primary hover:text-primary/80 underline underline-offset-2",
       className,
@@ -185,10 +168,7 @@ const markdownComponents = {
       </a>
     );
   },
-  blockquote: ({
-    className,
-    ...props
-  }: ComponentPropsWithoutRef<"blockquote">) => (
+  blockquote: ({ className, ...props }) => (
     <blockquote
       className={cn(
         "border-muted-foreground/30 text-muted-foreground my-2.5 border-l-2 pl-3 italic",
@@ -197,7 +177,7 @@ const markdownComponents = {
       {...props}
     />
   ),
-  ul: ({ className, ...props }: ComponentPropsWithoutRef<"ul">) => (
+  ul: ({ className, ...props }) => (
     <ul
       className={cn(
         "marker:text-muted-foreground my-2 ml-4 list-disc [&>li]:mt-1",
@@ -206,7 +186,7 @@ const markdownComponents = {
       {...props}
     />
   ),
-  ol: ({ className, ...props }: ComponentPropsWithoutRef<"ol">) => (
+  ol: ({ className, ...props }) => (
     <ol
       className={cn(
         "marker:text-muted-foreground my-2 ml-4 list-decimal [&>li]:mt-1",
@@ -215,16 +195,16 @@ const markdownComponents = {
       {...props}
     />
   ),
-  li: ({ className, ...props }: ComponentPropsWithoutRef<"li">) => (
+  li: ({ className, ...props }) => (
     <li className={cn("leading-normal", className)} {...props} />
   ),
-  hr: ({ className, ...props }: ComponentPropsWithoutRef<"hr">) => (
+  hr: ({ className, ...props }) => (
     <hr
       className={cn("border-muted-foreground/20 my-2", className)}
       {...props}
     />
   ),
-  table: ({ className, ...props }: ComponentPropsWithoutRef<"table">) => (
+  table: ({ className, ...props }) => (
     <div className="my-2 overflow-x-auto">
       <table
         className={cn("w-full border-collapse text-xs", className)}
@@ -232,7 +212,7 @@ const markdownComponents = {
       />
     </div>
   ),
-  th: ({ className, ...props }: ComponentPropsWithoutRef<"th">) => (
+  th: ({ className, ...props }) => (
     <th
       className={cn(
         "border-muted-foreground/20 bg-muted border px-2 py-1 text-left font-medium",
@@ -241,7 +221,7 @@ const markdownComponents = {
       {...props}
     />
   ),
-  td: ({ className, ...props }: ComponentPropsWithoutRef<"td">) => (
+  td: ({ className, ...props }) => (
     <td
       className={cn(
         "border-muted-foreground/20 border px-2 py-1 text-left",
@@ -250,8 +230,8 @@ const markdownComponents = {
       {...props}
     />
   ),
-  tr: (props: ComponentPropsWithoutRef<"tr">) => <tr {...props} />,
-  pre: ({ className, ...props }: ComponentPropsWithoutRef<"pre">) => (
+  tr: (props) => <tr {...props} />,
+  pre: ({ className, ...props }) => (
     <pre
       className={cn(
         "border-border/50 bg-muted/30 overflow-x-auto rounded-t-none rounded-b-lg border border-t-0 p-3 text-xs leading-relaxed",
@@ -260,11 +240,8 @@ const markdownComponents = {
       {...props}
     />
   ),
-  code: function Code({
-    className,
-    ...props
-  }: ComponentPropsWithoutRef<"code">) {
-    const isCodeBlock = useIsStreamdownCodeBlock();
+  code: function Code({ className, ...props }) {
+    const isCodeBlock = useIsMarkdownCodeBlock();
     return (
       <code
         className={cn(
@@ -277,4 +254,4 @@ const markdownComponents = {
     );
   },
   CodeHeader,
-};
+});
