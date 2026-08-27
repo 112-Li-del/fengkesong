@@ -1,76 +1,53 @@
-"use client";
-
-import type * as React from "react";
-
+import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+/**
+ * A print-register data table: an opening hairline, a hairline under every
+ * row, and no vertical rules or fills. The wrapper scrolls horizontally so
+ * wide tables never scroll the page.
+ */
+export function Table({ className, ...props }: ComponentProps<"table">) {
   return (
-    <div
-      data-slot="table-container"
-      className="relative w-full overflow-x-auto"
-    >
+    <div className="not-prose relative w-full overflow-x-auto">
       <table
-        data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
+        className={cn(
+          "border-foreground/10 w-full caption-bottom border-t text-sm",
+          className,
+        )}
         {...props}
       />
     </div>
   );
 }
 
-function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
-  return (
-    <thead
-      data-slot="table-header"
-      className={cn("[&_tr]:border-b", className)}
-      {...props}
-    />
-  );
+export function TableHeader({ className, ...props }: ComponentProps<"thead">) {
+  return <thead className={cn(className)} {...props} />;
 }
 
-function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
-  return (
-    <tbody
-      data-slot="table-body"
-      className={cn("[&_tr:last-child]:border-0", className)}
-      {...props}
-    />
-  );
+export function TableBody({ className, ...props }: ComponentProps<"tbody">) {
+  return <tbody className={cn(className)} {...props} />;
 }
 
-function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
+export function TableFooter({ className, ...props }: ComponentProps<"tfoot">) {
   return (
     <tfoot
-      data-slot="table-footer"
-      className={cn(
-        "bg-muted/50 border-t font-medium [&>tr]:last:border-b-0",
-        className,
-      )}
+      className={cn("text-foreground font-medium", className)}
       {...props}
     />
   );
 }
 
-function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
+export function TableRow({ className, ...props }: ComponentProps<"tr">) {
   return (
-    <tr
-      data-slot="table-row"
-      className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
-        className,
-      )}
-      {...props}
-    />
+    <tr className={cn("border-foreground/10 border-b", className)} {...props} />
   );
 }
 
-function TableHead({ className, ...props }: React.ComponentProps<"th">) {
+export function TableHead({ className, ...props }: ComponentProps<"th">) {
   return (
     <th
-      data-slot="table-head"
       className={cn(
-        "text-foreground h-10 px-2 text-start align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-muted-foreground h-9 px-3 text-start align-middle font-mono text-[11px] font-medium tracking-wide whitespace-nowrap first:ps-0 last:pe-0",
         className,
       )}
       {...props}
@@ -78,12 +55,11 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   );
 }
 
-function TableCell({ className, ...props }: React.ComponentProps<"td">) {
+export function TableCell({ className, ...props }: ComponentProps<"td">) {
   return (
     <td
-      data-slot="table-cell"
       className={cn(
-        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "px-3 py-2.5 align-top leading-relaxed first:ps-0 last:pe-0",
         className,
       )}
       {...props}
@@ -91,26 +67,17 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   );
 }
 
-function TableCaption({
+export function TableCaption({
   className,
   ...props
-}: React.ComponentProps<"caption">) {
+}: ComponentProps<"caption">) {
   return (
     <caption
-      data-slot="table-caption"
-      className={cn("text-muted-foreground mt-4 text-sm", className)}
+      className={cn(
+        "text-muted-foreground mt-3 text-start font-mono text-[11px] tracking-wide",
+        className,
+      )}
       {...props}
     />
   );
 }
-
-export {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption,
-};
