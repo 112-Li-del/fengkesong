@@ -1,6 +1,6 @@
 "use client";
 
-import { Thread } from "@/components/assistant-ui/elements/thread.aui";
+import { Thread } from "@/components/zh-ui/thread.aui";
 import {
   AssistantRuntimeProvider,
   useAui,
@@ -15,14 +15,14 @@ function ThreadWithSuggestions() {
   const config = AuiConfig({
     suggestions: Suggestions([
       {
-        title: "What's the weather",
-        label: "in Tokyo right now?",
-        prompt: "What's the weather in Tokyo?",
+        title: "现在东京",
+        label: "天气怎么样？",
+        prompt: "东京现在的天气怎么样？",
       },
       {
-        title: "Tell me a fun fact",
-        label: "about any topic",
-        prompt: "Tell me a fun fact about space.",
+        title: "讲一个有趣的小知识",
+        label: "什么主题都可以",
+        prompt: "给我讲一个关于太空的有趣小知识。",
       },
     ]),
   });
