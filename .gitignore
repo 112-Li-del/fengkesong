@@ -108,3 +108,10 @@ packages/cli/templates/cloud-harness/
 
 # Variants agent mailbox (packages/variants)
 .variants/
+
+# === 本地附加规则（枫客松部署） ===
+.env.*
+!.env.example
+*.log
+*.pyc
+Thumbs.db
