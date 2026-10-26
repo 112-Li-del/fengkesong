@@ -13,11 +13,15 @@ cd my-app
 
 ### Environment Variables
 
-Create `.env.local`:
+Copy `.env.example` to `.env.local` in this directory and configure an OpenAI-compatible Chat Completions service:
 
 ```sh
-OPENAI_API_KEY=your-api-key-here
+OPENAI_API_KEY=
+OPENAI_BASE_URL=
+OPENAI_MODEL=
 ```
+
+All three values are required and must belong to the same service. Choose a model that supports streaming and tool calling. The service is not restricted to DeepSeek. Keep real credentials in the ignored .env.local file, never use a NEXT_PUBLIC_ prefix for keys, and restart the development server after changes. Legacy DEEPSEEK_* variables remain supported when OPENAI_API_KEY is absent.
 
 ### Run
 
