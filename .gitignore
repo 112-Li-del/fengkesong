@@ -110,8 +110,35 @@ packages/cli/templates/cloud-harness/
 .variants/
 
 # === 本地附加规则（枫客松部署） ===
+
+# 工具产物与工作日志
+.workbuddy/
+
+# 环境变量：忽略任意环境的 env 文件，但保留模板示例
+.env
 .env.*
+.env.bak
 !.env.example
+!.env.sample
+!.env.template
+
+# 密钥、证书与凭据
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*credentials*.json
+service-account*.json
+secrets.json
+secrets.yaml
+.direnv/
+
+# 本地配置（可能含私有 registry token / 鉴权信息）
+.npmrc
+.yarnrc.yml
+
+# 杂项
 *.log
 *.pyc
 Thumbs.db
