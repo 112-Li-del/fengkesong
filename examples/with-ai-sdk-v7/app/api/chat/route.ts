@@ -17,26 +17,41 @@ import { z } from "zod";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const apiKey = process.env.DEEPSEEK_API_KEY?.trim();
-  if (!apiKey) {
-    return new Response("请先在 .env.local 中填写 DEEPSEEK_API_KEY。", {
-      status: 503,
-    });
+  const useLegacyConfig =
+    !process.env.OPENAI_API_KEY?.trim() &&
+    !!process.env.DEEPSEEK_API_KEY?.trim();
+  const apiKey = useLegacyConfig
+    ? process.env.DEEPSEEK_API_KEY?.trim()
+    : process.env.OPENAI_API_KEY?.trim();
+  const baseURL = useLegacyConfig
+    ? process.env.DEEPSEEK_BASE_URL?.trim() || "https://api.deepseek.com"
+    : process.env.OPENAI_BASE_URL?.trim();
+  const model = useLegacyConfig
+    ? process.env.DEEPSEEK_MODEL?.trim() || "deepseek-flash"
+    : process.env.OPENAI_MODEL?.trim();
+  if (!apiKey || !baseURL || !model) {
+    return new Response(
+      "请在 .env.local 中填写 OPENAI_API_KEY、OPENAI_BASE_URL 和 OPENAI_MODEL。",
+      { status: 503 },
+    );
   }
-  const deepseek = createOpenAI({
+  const provider = createOpenAI({
     apiKey,
-    baseURL:
-      process.env.DEEPSEEK_BASE_URL?.trim() || "https://api.deepseek.com",
-    name: "deepseek",
-    // Non-thinking mode avoids reasoning_content requirements in tool continuations.
-    fetch: (url, init) =>
-      fetch(url, {
-        ...init,
-        body: JSON.stringify({
-          ...JSON.parse(init?.body as string),
-          thinking: { type: "disabled" },
-        }),
-      }),
+    baseURL,
+    name: "openai-compatible",
+    // DeepSeek tool continuations require non-thinking mode without reasoning_content.
+    ...(/^https:\/\/api\.deepseek\.com(?:\/|$)/.test(baseURL)
+      ? {
+          fetch: (url, init) =>
+            fetch(url, {
+              ...init,
+              body: JSON.stringify({
+                ...JSON.parse(init?.body as string),
+                thinking: { type: "disabled" },
+              }),
+            }),
+        }
+      : {}),
   });
   const {
     messages,
@@ -64,9 +79,7 @@ export async function POST(req: Request) {
   };
   const result = streamText({
     abortSignal: req.signal,
-    model: deepseek.chat(
-      process.env.DEEPSEEK_MODEL?.trim() || "deepseek-flash",
-    ),
+    model: provider.chat(model),
     messages: await convertToModelMessages(messages, { tools: aiSDKTools }),
     ...(system ? { system } : {}),
     stopWhen: stepCountIs(10),
