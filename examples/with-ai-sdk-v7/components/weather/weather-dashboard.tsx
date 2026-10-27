@@ -5,13 +5,13 @@ import {
   Cloud,
   CloudRain,
   ChevronDown,
+  Thermometer,
   Droplets,
   MapPin,
   Navigation,
   RefreshCw,
   Sun,
   Moon,
-  Thermometer,
   Wind,
   Clock3,
   ArrowUpRight,
@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import type { WeatherSnapshot } from "@/lib/weather";
 import { MagicBento } from "./magic-bento";
+import { weatherDetailItems } from "./weather-details";
 import "./weather.css";
 
 function number(value: number | null | undefined, digits = 0) {
@@ -76,11 +77,7 @@ export function WeatherDashboard() {
       );
       if (!response.ok) throw new Error("Weather unavailable");
       const data: WeatherSnapshot = await response.json();
-      if (
-        data.status !== "success" ||
-        data.location.name !== "栖霞山" ||
-        !Array.isArray(data.hourly)
-      )
+      if (data.status !== "success" || !Array.isArray(data.hourly))
         throw new Error("Unexpected location");
       setSnapshot(data);
       setFailed(false);
@@ -95,7 +92,7 @@ export function WeatherDashboard() {
     const initial = window.setTimeout(() => void refresh(), 0);
     const timer = window.setInterval(() => {
       if (!document.hidden) void refresh();
-    }, 300000);
+    }, 60000);
     const tick = window.setInterval(() => setClock(Date.now()), 60000);
     const resume = () => {
       if (!document.hidden) void refresh();
@@ -202,9 +199,11 @@ export function WeatherDashboard() {
           <div className="weather-tile-heading">
             <span>
               <MapPin size={14} />
-              栖霞山附近
+              栖霞山 · 山顶代表点
             </span>
-            <span className="weather-estimate-badge">模型估算</span>
+            <span className="weather-estimate-badge">
+              {snapshot?.provider === "qweather" ? "融合实况" : "模型预报"}
+            </span>
           </div>
           <div className="weather-current-reading">
             <div>
@@ -229,7 +228,12 @@ export function WeatherDashboard() {
           </div>
           <div className="weather-time">
             <Clock3 size={12} />
-            <span>数据对应时间 · {dateTime}</span>
+            <span>
+              {snapshot?.timeBasis === "retrieved"
+                ? "获取时间（接口未提供实况时间）"
+                : "数据对应时间"}{" "}
+              · {dateTime}
+            </span>
           </div>
           <div className="weather-current-foot">
             <span>南京 · 栖霞山</span>
@@ -289,7 +293,11 @@ export function WeatherDashboard() {
       content: (
         <>
           <div className="weather-tile-heading">
-            <span>当前时段降水估算</span>
+            <span>
+              {snapshot?.provider === "qweather"
+                ? "过去一小时降水"
+                : "当前时段降水估算"}
+            </span>
             <CloudRain size={18} />
           </div>
           <div className="weather-rain-reading">
@@ -298,11 +306,32 @@ export function WeatherDashboard() {
               <small>mm</small>
             </div>
             <span>
-              {current?.intervalSeconds
-                ? timeRange(current.time, current.intervalSeconds)
-                : "统计时段待返回"}
+              {snapshot?.provider === "qweather" &&
+              snapshot.timeBasis === "retrieved"
+                ? "近一小时累计，结束时刻未提供"
+                : current?.intervalSeconds
+                  ? timeRange(current.time, current.intervalSeconds)
+                  : "统计时段待返回"}
               <br />
-              模型累计量，非现场雨量计
+              {snapshot?.provider === "qweather"
+                ? "融合累计量，非现场雨量计"
+                : "模型累计量，非现场雨量计"}
+              {snapshot?.provider === "qweather" && (
+                <>
+                  <br />
+                  强度 {number(current?.precipitationIntensity, 2)} mm/h ·{" "}
+                  {(
+                    {
+                      rain: "雨",
+                      snow: "雪",
+                      ice: "冰粒",
+                      mixed: "混合降水",
+                      none: "无降水",
+                      unknown: "类型未知",
+                    } as Record<string, string>
+                  )[current?.precipitationType ?? ""] ?? "类型暂无"}
+                </>
+              )}
             </span>
           </div>
         </>
@@ -335,7 +364,9 @@ export function WeatherDashboard() {
                     {hour.condition}
                   </span>
                   <span className="weather-hour-range">
-                    {timeRange(hour.time, 3600)}
+                    {snapshot?.provider === "qweather"
+                      ? "对应预报时段"
+                      : timeRange(hour.time, 3600)}
                   </span>
                   <span className="weather-hour-rain">
                     <Droplets size={10} />
@@ -352,7 +383,9 @@ export function WeatherDashboard() {
             )}
           </div>
           <div className="weather-forecast-note">
-            温度和天气对应标注时刻；降水概率对应此前一小时，不表示必定下雨。
+            {snapshot?.provider === "qweather"
+              ? "天气与降水概率为对应时段预报，不表示必定下雨。"
+              : "温度和天气对应标注时刻；降水概率对应此前一小时，不表示必定下雨。"}
           </div>
         </>
       ),
@@ -429,19 +462,52 @@ export function WeatherDashboard() {
                   : "气象数据已超过45分钟，可能已过时，请谨慎参考。"}
               </div>
             )}
-            <MagicBento items={items} />
+            {snapshot?.notices?.length ? (
+              <div className="weather-update-notice" role="status">
+                <AlertCircle size={14} />
+                <span>{snapshot.notices.join("；")}</span>
+              </div>
+            ) : null}
+            <MagicBento
+              items={[...items, ...weatherDetailItems(snapshot, clock)]}
+            />
             <div className="weather-data-footer">
-              <span>每5分钟自动更新 · 最近获取 {fetchedTime}</span>
+              <span>
+                每分钟检查更新 · 最近获取 {fetchedTime}
+                {snapshot?.stale ? " · 上次数据" : ""}
+              </span>
               <a
-                href="https://open-meteo.com/"
+                href={snapshot?.source.url ?? "https://open-meteo.com/"}
                 target="_blank"
                 rel="noreferrer"
               >
-                数据来源 Open-Meteo <ArrowUpRight size={11} />
+                数据来源 {snapshot?.source.name ?? "等待数据"}{" "}
+                <ArrowUpRight size={11} />
+              </a>
+              <a
+                href="https://www.weather.com.cn/weather1dn/10119010112A.shtml"
+                target="_blank"
+                rel="noreferrer"
+              >
+                中国天气网 · 景区预报 <ArrowUpRight size={11} />
               </a>
             </div>
+            <div className="weather-attributions">
+              {snapshot?.attributions?.map((s) =>
+                /^https?:\/\//i.test(s) ? (
+                  <a key={s} href={s} target="_blank" rel="noreferrer">
+                    {s}
+                  </a>
+                ) : (
+                  <span key={s}>{s}</span>
+                ),
+              )}
+            </div>
             <p className="weather-truth-note">
-              当前天气与预报均来自气象模型，可能与山中具体位置的实际感受不同，不是景区气象站实测。
+              {snapshot?.provider === "qweather"
+                ? "多源融合实况，非景区气象站实测。"
+                : "当前天气与预报来自气象模型，非景区气象站实测。"}
+              查询位置为凤翔峰附近代表点（32.16043°N，118.96479°E），山门与山顶可能有温差；自动检查不代表上游数据每分钟变化。
             </p>
           </div>
         </section>
