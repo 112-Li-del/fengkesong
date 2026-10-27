@@ -1369,6 +1369,9 @@ importers:
 
   examples/with-ai-sdk-v7:
     dependencies:
+      '@ai-sdk/mcp':
+        specifier: ^2.0.78
+        version: 2.0.78(zod@4.6.7)
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1(supports-color@10.2.2)
