@@ -26,7 +26,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { Thread } from "@/components/zh-ui/thread.aui";
-import { WeatherDashboard } from "@/components/weather/weather-dashboard";
+import { MapWorkspace } from "@/components/map/map-workspace";
 import {
   Dialog,
   DialogContent,
@@ -390,14 +390,14 @@ export function HistoryWorkspace({ runtime, storageError }: WorkspaceProps) {
               <PanelLeftOpen size={19} />
             </button>
           )}
-          <span className="history-current-title">栖霞山 · 天气</span>
+          <span className="history-current-title">栖霞山 · 地图伴游</span>
         </header>
         {storageError && (
           <div className="history-storage-error" role="alert">
             浏览器无法保存聊天记录，请检查存储空间或浏览器权限。
           </div>
         )}
-        <WeatherDashboard />
+        <MapWorkspace />
         <FloatingChat />
       </main>
       <Dialog open={mobileOpen} onOpenChange={setMobileOpen}>
