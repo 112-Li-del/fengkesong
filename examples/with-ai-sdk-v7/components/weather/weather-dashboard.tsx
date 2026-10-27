@@ -4,12 +4,14 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import {
   Cloud,
   CloudRain,
+  ChevronDown,
   Droplets,
   MapPin,
   Navigation,
   RefreshCw,
   Sun,
   Moon,
+  Thermometer,
   Wind,
   Clock3,
   ArrowUpRight,
@@ -57,6 +59,10 @@ export function WeatherDashboard() {
   const [refreshing, setRefreshing] = useState(false);
   const [failed, setFailed] = useState(false);
   const [clock, setClock] = useState(() => Date.now());
+  const [slide, setSlide] = useState(0);
+  const [reduced, setReduced] = useState(false);
+  const [open, setOpen] = useState(false);
+  const panel = useRef<HTMLDetailsElement>(null);
   const controller = useRef<AbortController | null>(null);
   const refresh = useCallback(async (force = false) => {
     controller.current?.abort();
@@ -105,6 +111,13 @@ export function WeatherDashboard() {
       window.removeEventListener("online", resume);
     };
   }, [refresh]);
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduced(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
   const current = snapshot?.current;
   const hours = snapshot?.hourly?.slice(0, 6) ?? [];
   const old = snapshot
@@ -118,6 +131,66 @@ export function WeatherDashboard() {
         minute: "2-digit",
       })
     : "—";
+  const slides = current
+    ? [
+        {
+          id: "temp",
+          icon: (
+            <ConditionIcon
+              condition={current.condition}
+              isDay={current.isDay ?? null}
+              size={14}
+            />
+          ),
+          text: `${number(current.temperature, 1)}°C ${current.condition}`,
+        },
+        {
+          id: "feels",
+          icon: <Thermometer size={13} />,
+          text: `体感 ${number(current.feelsLike, 1)}°C`,
+        },
+        {
+          id: "humidity",
+          icon: <Droplets size={13} />,
+          text: `湿度 ${number(current.humidity)}%`,
+        },
+        {
+          id: "wind",
+          icon: <Wind size={13} />,
+          text:
+            current.windSpeed == null
+              ? "风速暂无数据"
+              : `${number(current.windSpeed, 1)} km/h ${windDirection(current.windDirection)}`,
+        },
+        {
+          id: "rain",
+          icon: <CloudRain size={13} />,
+          text: `降水 ${number(current.precipitation, 1)}mm`,
+        },
+      ]
+    : [
+        {
+          id: "wait",
+          icon: <Cloud size={13} />,
+          text: failed ? "天气暂时不可用" : "正在获取天气",
+        },
+      ];
+  useEffect(() => {
+    if (reduced || slides.length <= 1) return;
+    const timer = window.setInterval(() => {
+      setSlide((prev) => (prev + 1) % slides.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, [slides.length, reduced]);
+  useEffect(() => {
+    if (!open) return;
+    const dismiss = (event: PointerEvent) => {
+      if (!panel.current?.contains(event.target as Node)) setOpen(false);
+    };
+    document.addEventListener("pointerdown", dismiss);
+    return () => document.removeEventListener("pointerdown", dismiss);
+  }, [open]);
+
   const items = [
     {
       id: "current",
@@ -286,47 +359,93 @@ export function WeatherDashboard() {
     },
   ];
   return (
-    <section className="qixia-weather-stage" aria-label="栖霞山常驻天气">
-      <div className="qixia-weather-wrap">
-        <div className="qixia-section-heading">
-          <div>
-            <div className="qixia-kicker">
-              <span /> QIXIA MOUNTAIN
-            </div>
-            <h1>山间天气</h1>
-            <p>只关注栖霞山附近，让出发多一份把握。</p>
-          </div>
-          <button
-            className="weather-refresh"
-            disabled={refreshing}
-            onClick={() => void refresh(true)}
-            aria-label="刷新栖霞山天气"
+    <details className="map-weather-panel" ref={panel} open={open}>
+      <summary
+        className="weather-summary"
+        onClick={(event) => {
+          event.preventDefault();
+          setOpen((prev) => !prev);
+        }}
+      >
+        <span className="weather-summary-icon">
+          <ConditionIcon
+            condition={current?.condition ?? ""}
+            isDay={current?.isDay ?? null}
+            size={16}
+          />
+        </span>
+        <span className="weather-summary-title">栖霞山天气</span>
+        <div className="weather-ticker">
+          <div
+            className="weather-ticker-track"
+            style={{
+              transform: `translateY(-${(slide % slides.length) * 20}px)`,
+            }}
           >
-            <RefreshCw size={15} className={refreshing ? "is-spinning" : ""} />
-            <span>{refreshing ? "更新中" : "刷新"}</span>
-          </button>
-        </div>
-        {(failed || old) && (
-          <div className="weather-update-notice" role="status">
-            <AlertCircle size={14} />
-            {failed
-              ? snapshot
-                ? "更新失败，以下保留上次获取的数据，请注意数据时间。"
-                : "天气接口暂时不可用，暂不显示天气数值。"
-              : "气象数据已超过45分钟，可能已过时，请谨慎参考。"}
+            {slides.map((entry) => (
+              <div
+                className={`weather-ticker-item${slides.length === 1 ? " is-pending" : ""}`}
+                key={entry.id}
+              >
+                {entry.icon}
+                <span className="weather-ticker-value">{entry.text}</span>
+              </div>
+            ))}
           </div>
-        )}
-        <MagicBento items={items} />
-        <div className="weather-data-footer">
-          <span>每5分钟自动更新 · 最近获取 {fetchedTime}</span>
-          <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">
-            数据来源 Open-Meteo <ArrowUpRight size={11} />
-          </a>
         </div>
-        <p className="weather-truth-note">
-          当前天气与预报均来自气象模型，可能与山中具体位置的实际感受不同，不是景区气象站实测。
-        </p>
+        <ChevronDown size={15} className="weather-summary-chevron" />
+      </summary>
+      <div className="weather-panel-body">
+        <section className="qixia-weather-stage" aria-label="栖霞山常驻天气">
+          <div className="qixia-weather-wrap">
+            <div className="qixia-section-heading">
+              <div>
+                <div className="qixia-kicker">
+                  <span /> QIXIA MOUNTAIN
+                </div>
+                <h1>山间天气</h1>
+                <p>只关注栖霞山附近，让出发多一份把握。</p>
+              </div>
+              <button
+                className="weather-refresh"
+                disabled={refreshing}
+                onClick={() => void refresh(true)}
+                aria-label="刷新栖霞山天气"
+              >
+                <RefreshCw
+                  size={15}
+                  className={refreshing ? "is-spinning" : ""}
+                />
+                <span>{refreshing ? "更新中" : "刷新"}</span>
+              </button>
+            </div>
+            {(failed || old) && (
+              <div className="weather-update-notice" role="status">
+                <AlertCircle size={14} />
+                {failed
+                  ? snapshot
+                    ? "更新失败，以下保留上次获取的数据，请注意数据时间。"
+                    : "天气接口暂时不可用，暂不显示天气数值。"
+                  : "气象数据已超过45分钟，可能已过时，请谨慎参考。"}
+              </div>
+            )}
+            <MagicBento items={items} />
+            <div className="weather-data-footer">
+              <span>每5分钟自动更新 · 最近获取 {fetchedTime}</span>
+              <a
+                href="https://open-meteo.com/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                数据来源 Open-Meteo <ArrowUpRight size={11} />
+              </a>
+            </div>
+            <p className="weather-truth-note">
+              当前天气与预报均来自气象模型，可能与山中具体位置的实际感受不同，不是景区气象站实测。
+            </p>
+          </div>
+        </section>
       </div>
-    </section>
+    </details>
   );
 }

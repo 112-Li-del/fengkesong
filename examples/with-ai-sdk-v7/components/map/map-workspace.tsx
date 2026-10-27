@@ -4,22 +4,23 @@ import {
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type FormEvent,
 } from "react";
 import { useAui } from "@assistant-ui/react";
+import { createPortal } from "react-dom";
 import {
   ArrowUpRight,
   LocateFixed,
   MapPin,
   Search,
-  CloudSun,
   RefreshCw,
   X,
   Route,
   Mountain,
   BellRing,
+  ChevronDown,
 } from "lucide-react";
-import { WeatherDashboard } from "@/components/weather/weather-dashboard";
 import { locationQuality } from "@/lib/location-quality";
 import {
   createProximityState,
@@ -32,6 +33,19 @@ import "./map.css";
 
 type Position = { point: LngLat; accuracy: number; timestamp: number };
 const scenicWGS84 = [118.96479, 32.16043];
+const compactQuery = "(max-width:720px)";
+function subscribeCompact(callback: () => void) {
+  const media = window.matchMedia(compactQuery);
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+}
+const getCompact = () => window.matchMedia(compactQuery).matches;
+const getServerCompact = () => false;
+function subscribeDock() {
+  return () => {};
+}
+const getDockNode = () => document.getElementById("qixia-location-dock");
+const getServerDock = () => null;
 export function MapWorkspace() {
   const runtime = useAui();
   const container = useRef<HTMLDivElement>(null);
@@ -74,13 +88,35 @@ export function MapWorkspace() {
     place: Place;
     distance: number;
   } | null>(null);
-  const select = useCallback((place: Place) => {
-    routeVersion.current++;
+  const routeOverlay = useRef<Overlay | null>(null);
+  const compact = useSyncExternalStore(
+    subscribeCompact,
+    getCompact,
+    getServerCompact,
+  );
+  const [browseOpen, setBrowseOpen] = useState<boolean | null>(null);
+  const [panelOpen, setPanelOpen] = useState(true);
+  const [dockOpen, setDockOpen] = useState(false);
+  const dockNode = useSyncExternalStore(
+    subscribeDock,
+    getDockNode,
+    getServerDock,
+  );
+  const clearWalk = useCallback(() => {
     walking.current?.clear();
-    setRouteNote("");
-    setSelected(place);
-    map.current?.setZoomAndCenter(17, place.location);
+    routeOverlay.current?.setMap(null);
+    routeOverlay.current = null;
   }, []);
+  const select = useCallback(
+    (place: Place) => {
+      routeVersion.current++;
+      clearWalk();
+      setRouteNote("");
+      setSelected(place);
+      map.current?.setZoomAndCenter(17, place.location);
+    },
+    [clearWalk],
+  );
   const search = useCallback(
     (keywords: string) => {
       const api = sdk.current,
@@ -119,7 +155,7 @@ export function MapWorkspace() {
         if (found.length) view.setZoomAndCenter(15, origin);
         setPlaces(found);
         setSelected(null);
-        walking.current?.clear();
+        clearWalk();
         routeVersion.current++;
         setRouteNote("");
         setSearchNote(
@@ -144,7 +180,7 @@ export function MapWorkspace() {
         });
       });
     },
-    [select],
+    [select, clearWalk],
   );
   const invalidatePending = useCallback(() => {
     searchVersion.current++;
@@ -187,6 +223,8 @@ export function MapWorkspace() {
           center: origin,
           zoom: 15,
           viewMode: "2D",
+          rotateEnable: false,
+          pitchEnable: false,
           resizeEnable: true,
         });
         setState("ready");
@@ -218,6 +256,7 @@ export function MapWorkspace() {
       resize.disconnect();
       clearInterval(tick);
       document.removeEventListener("visibilitychange", visibility);
+      routeOverlay.current?.setMap(null);
       map.current?.destroy();
       map.current = null;
     };
@@ -229,7 +268,7 @@ export function MapWorkspace() {
     watch.current = null;
     positionOverlays.current.forEach((item) => item.setMap(null));
     positionOverlays.current = [];
-    walking.current?.clear();
+    clearWalk();
     routeVersion.current++;
     setRouteNote("");
     setTracking(false);
@@ -416,14 +455,25 @@ export function MapWorkspace() {
       locationQuality(position.accuracy, position.timestamp) !== "usable"
     )
       return;
-    walking.current?.clear();
+    clearWalk();
     const version = ++routeVersion.current;
-    const planner = new api.Walking({ map: view, hideMarkers: false });
+    const planner = new api.Walking({ hideMarkers: true });
     walking.current = planner;
     setRouteNote("正在查询步行路线…");
     planner.search(position.point, selected.location, (status, result) => {
       if (version !== routeVersion.current) return;
       const route = result.routes?.[0];
+      if (status === "complete" && route) {
+        const path = route.steps?.flatMap((step) => step.path) ?? [];
+        routeOverlay.current = new api.Polyline({
+          map: view,
+          path,
+          strokeColor: "#277db1",
+          strokeWeight: 5,
+          lineJoin: "round",
+          lineCap: "round",
+        });
+      }
       setRouteNote(
         status === "complete" && route
           ? "约" +
@@ -496,119 +546,136 @@ export function MapWorkspace() {
           </a>
         </div>
       )}
-      <div className="map-place-panel">
-        <div className="map-panel-title">
+      <div className={`map-place-panel ${panelOpen ? "" : "is-collapsed"}`}>
+        <button
+          type="button"
+          className="map-panel-title"
+          aria-expanded={panelOpen}
+          aria-controls="map-panel-body"
+          onClick={() => setPanelOpen((value) => !value)}
+        >
           <MapPin size={17} />
           <strong>南京 · 栖霞山</strong>
           <span>{state === "ready" ? "地图导览" : "等待连接"}</span>
-        </div>
-        <form className="map-search" onSubmit={submit}>
-          <Search size={16} />
-          <input
-            aria-label="搜索栖霞山附近地点"
-            placeholder="搜索景点、厕所、餐饮…"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            maxLength={60}
-          />
-          <button disabled={state !== "ready" || searching} type="submit">
-            搜索
-          </button>
-        </form>
-        <div className="map-category-list">
-          {["景点", "厕所", "餐饮", "休息"].map((item) => (
-            <button
-              key={item}
-              aria-pressed={category === item}
-              disabled={state !== "ready" || searching}
-              onClick={() => {
-                setCategory(item);
-                setQuery("");
-                search(item);
-              }}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-        <p className="map-search-note" role="status">
-          {searching
-            ? "正在查询地点…"
-            : searchNote || "选择地点后，可查看详情或向助手提问。"}
-        </p>
-        {!!places.length && (
-          <details className="map-results" open>
-            <summary>附近地点 · {places.length}处</summary>
-            <div>
-              {places.map((place, index) => (
+          <ChevronDown size={16} className="map-panel-chevron" />
+        </button>
+        <div className="map-panel-body" id="map-panel-body">
+          <details
+            className="map-browse"
+            open={browseOpen ?? !compact}
+            onToggle={(event) => setBrowseOpen(event.currentTarget.open)}
+          >
+            <summary>查找景点与路线</summary>
+            <form className="map-search" onSubmit={submit}>
+              <Search size={16} />
+              <input
+                aria-label="搜索栖霞山附近地点"
+                placeholder="搜索景点、厕所、餐饮…"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                maxLength={60}
+              />
+              <button disabled={state !== "ready" || searching} type="submit">
+                搜索
+              </button>
+            </form>
+            <div className="map-category-list">
+              {["景点", "厕所", "餐饮", "休息"].map((item) => (
                 <button
-                  className={selected?.id === place.id ? "is-selected" : ""}
-                  key={place.id}
-                  onClick={() => select(place)}
+                  key={item}
+                  aria-pressed={category === item}
+                  disabled={state !== "ready" || searching}
+                  onClick={() => {
+                    setCategory(item);
+                    setQuery("");
+                    search(item);
+                  }}
                 >
-                  <span>{index + 1}</span>
-                  <span>
-                    <strong>{place.name}</strong>
-                    <small>
-                      {(typeof place.address === "string" && place.address) ||
-                        "高德地点信息"}
-                    </small>
-                  </span>
+                  {item}
                 </button>
               ))}
             </div>
+            <p className="map-search-note" role="status">
+              {searching
+                ? "正在查询地点…"
+                : searchNote || "选择地点后，可查看详情或向助手提问。"}
+            </p>
+            {!!places.length && (
+              <details className="map-results" open={!selected}>
+                <summary>附近地点 · {places.length}处</summary>
+                <div>
+                  {places.map((place, index) => (
+                    <button
+                      className={selected?.id === place.id ? "is-selected" : ""}
+                      key={place.id}
+                      onClick={() => select(place)}
+                    >
+                      <span>{index + 1}</span>
+                      <span>
+                        <strong>{place.name}</strong>
+                        <small>
+                          {(typeof place.address === "string" &&
+                            place.address) ||
+                            "高德地点信息"}
+                        </small>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </details>
+            )}
+            {selected && (
+              <div className="map-place-detail">
+                <button
+                  className="map-detail-close"
+                  aria-label="关闭地点详情"
+                  onClick={() => {
+                    setSelected(null);
+                    clearWalk();
+                    routeVersion.current++;
+                    setRouteNote("");
+                  }}
+                >
+                  <X size={14} />
+                </button>
+                <span className="map-detail-label">已选择地点</span>
+                <h2>{selected.name}</h2>
+                <p>
+                  {typeof selected.address === "string" ? selected.address : ""}
+                </p>
+                <div className="map-detail-actions">
+                  <button onClick={ask}>询问助手</button>
+                  <button onClick={planWalk} disabled={quality !== "usable"}>
+                    <Route size={13} />
+                    步行路线
+                  </button>
+                  <a
+                    href={
+                      "https://uri.amap.com/marker?position=" +
+                      selected.location.lng +
+                      "," +
+                      selected.location.lat +
+                      "&name=" +
+                      encodeURIComponent(selected.name) +
+                      "&coordinate=gaode&callnative=0"
+                    }
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="在高德中查看地点"
+                  >
+                    <ArrowUpRight size={16} />
+                  </a>
+                </div>
+                <p className="map-route-note" role="status">
+                  {routeNote ||
+                    (quality !== "usable"
+                      ? "获取较准确的新位置后，可查询步行路线。"
+                      : "路线依据高德道路数据，山中小路可能未覆盖。")}
+                </p>
+              </div>
+            )}
           </details>
-        )}
-        {selected && (
-          <div className="map-place-detail">
-            <button
-              className="map-detail-close"
-              aria-label="关闭地点详情"
-              onClick={() => {
-                setSelected(null);
-                walking.current?.clear();
-                routeVersion.current++;
-                setRouteNote("");
-              }}
-            >
-              <X size={14} />
-            </button>
-            <span className="map-detail-label">已选择地点</span>
-            <h2>{selected.name}</h2>
-            <p>
-              {typeof selected.address === "string" ? selected.address : ""}
-            </p>
-            <div className="map-detail-actions">
-              <button onClick={ask}>询问助手</button>
-              <button onClick={planWalk} disabled={quality !== "usable"}>
-                <Route size={13} />
-                步行路线
-              </button>
-              <a
-                href={
-                  "https://uri.amap.com/marker?position=" +
-                  selected.location.lng +
-                  "," +
-                  selected.location.lat +
-                  "&name=" +
-                  encodeURIComponent(selected.name) +
-                  "&coordinate=gaode&callnative=0"
-                }
-                target="_blank"
-                rel="noreferrer"
-                aria-label="在高德中查看地点"
-              >
-                <ArrowUpRight size={16} />
-              </a>
-            </div>
-            <p className="map-route-note" role="status">
-              {routeNote ||
-                (quality !== "usable"
-                  ? "获取较准确的新位置后，可查询步行路线。"
-                  : "路线依据高德道路数据，山中小路可能未覆盖。")}
-            </p>
-          </div>
-        )}
+        </div>
       </div>
       {nearby && tracking && autoEnabled && quality === "usable" && (
         <aside
@@ -654,114 +721,132 @@ export function MapWorkspace() {
           <small>来源：高德地点信息</small>
         </aside>
       )}
-      <details className="map-weather-panel">
-        <summary>
-          <CloudSun size={17} />
-          <span>栖霞山天气</span>
-        </summary>
-        <div>
-          <WeatherDashboard />
-        </div>
-      </details>
-      <div
-        className={`map-location-panel ${quality === "approximate" ? "is-approximate" : ""}`}
-      >
-        <div className="map-location-actions">
-          <button
-            onClick={startLocation}
-            disabled={state !== "ready"}
-            className={tracking ? "is-tracking" : ""}
+      {dockNode &&
+        createPortal(
+          <div
+            className={`map-location-panel map-location-dock ${dockOpen ? "is-open" : ""} ${quality === "approximate" ? "is-approximate" : ""}`}
+            aria-label="栖霞山定位"
           >
-            <LocateFixed size={15} />
-            {tracking ? "停止定位" : locationFailure ? "重新定位" : "开始定位"}
-          </button>
-          <button
-            disabled={state !== "ready"}
-            onClick={() => {
-              if (center.current)
-                map.current?.setZoomAndCenter(15, center.current);
-            }}
-          >
-            回到栖霞山
-          </button>
-        </div>
-        <p className="map-location-note" role="status">
-          {locationNote ||
-            (position
-              ? quality === "stale"
-                ? "位置已过时，请等待定位更新"
-                : (quality === "approximate"
-                    ? "粗略定位：误差半径 "
-                    : "预估误差半径 ") +
-                  Math.ceil(position.accuracy) +
-                  " 米"
-              : "点击开始后持续定位，靠近景点自动提示，可随时停止。")}
-        </p>
-        {position && (
-          <small className="map-location-source">
-            浏览器位置估计 · 定位时间{" "}
-            {new Date(position.timestamp).toLocaleTimeString("zh-CN", {
-              hour12: false,
-            })}
-          </small>
+            <div className="map-location-actions">
+              <button
+                onClick={startLocation}
+                disabled={state !== "ready"}
+                className={tracking ? "is-tracking" : ""}
+              >
+                <LocateFixed size={15} />
+                {tracking
+                  ? "停止定位"
+                  : locationFailure
+                    ? "重新定位"
+                    : "开始定位"}
+              </button>
+              <button
+                className="map-location-chevron"
+                aria-expanded={dockOpen}
+                aria-label={dockOpen ? "收起定位详情" : "展开定位详情"}
+                onClick={() => setDockOpen((value) => !value)}
+              >
+                <ChevronDown size={15} />
+              </button>
+            </div>
+            <div className="map-location-body">
+              <div className="map-location-body-inner">
+                <div className="map-location-actions">
+                  <button
+                    disabled={state !== "ready"}
+                    onClick={() => {
+                      if (center.current)
+                        map.current?.setZoomAndCenter(15, center.current);
+                    }}
+                  >
+                    回到栖霞山
+                  </button>
+                </div>
+                <p className="map-location-note" role="status">
+                  {locationNote ||
+                    (position
+                      ? quality === "stale"
+                        ? "位置已过时，请等待定位更新"
+                        : (quality === "approximate"
+                            ? "粗略定位：误差半径 "
+                            : "预估误差半径 ") +
+                          Math.ceil(position.accuracy) +
+                          " 米"
+                      : "点击开始后持续定位，靠近景点自动提示，可随时停止。")}
+                </p>
+                {position && (
+                  <small className="map-location-source">
+                    浏览器位置估计 · 定位时间{" "}
+                    {new Date(position.timestamp).toLocaleTimeString("zh-CN", {
+                      hour12: false,
+                    })}
+                  </small>
+                )}
+                {quality === "approximate" && (
+                  <p className="map-coarse-help">
+                    精度不足，暂停景点自动提示与步行路线。建议在手机开启精确定位后测试。
+                  </p>
+                )}
+                {locationFailure !== null && (
+                  <details className="map-location-help" open>
+                    <summary>定位失败排查</summary>
+                    <ol>
+                      <li>
+                        Windows 设置 → 隐私和安全性 →
+                        位置，检查定位服务与桌面应用访问权限。
+                      </li>
+                      <li>
+                        在独立的 Edge
+                        浏览器打开本站，并允许网站使用位置，再点击重新定位。
+                      </li>
+                      <li>
+                        手机测试请开启系统定位，通过 HTTPS
+                        地址访问。电脑内置预览不能保证返回位置。
+                      </li>
+                    </ol>
+                    <a
+                      href="https://support.microsoft.com/zh-cn/windows/privacy/windows-location-service-and-privacy"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      查看 Windows 定位说明
+                      <ArrowUpRight size={11} />
+                    </a>
+                  </details>
+                )}
+                <label className="map-auto-toggle">
+                  <input
+                    type="checkbox"
+                    checked={autoEnabled}
+                    onChange={(event) => {
+                      const enabled = event.target.checked;
+                      autoRef.current = enabled;
+                      setAutoEnabled(enabled);
+                      resetProximityPending(proximity.current);
+                      setNearby(null);
+                      setAutoNote(
+                        enabled
+                          ? "等待新的位置后检测附近景点"
+                          : "自动提示已关闭",
+                      );
+                    }}
+                  />
+                  <span>附近景点自动提示</span>
+                  <small>已载入{autoCount}处</small>
+                </label>
+                {tracking && autoEnabled && (
+                  <p className="map-auto-status" role="status">
+                    {autoNote}
+                  </p>
+                )}
+                <small>
+                  {mcp ? "助手已配置高德查询" : "助手高德查询尚未配置"}
+                </small>
+              </div>
+            </div>
+          </div>,
+          dockNode,
         )}
-        {quality === "approximate" && (
-          <p className="map-coarse-help">
-            精度不足，暂停景点自动提示与步行路线。建议在手机开启精确定位后测试。
-          </p>
-        )}
-        {locationFailure !== null && (
-          <details className="map-location-help" open>
-            <summary>定位失败排查</summary>
-            <ol>
-              <li>
-                Windows 设置 → 隐私和安全性 →
-                位置，检查定位服务与桌面应用访问权限。
-              </li>
-              <li>
-                在独立的 Edge
-                浏览器打开本站，并允许网站使用位置，再点击重新定位。
-              </li>
-              <li>
-                手机测试请开启系统定位，通过 HTTPS
-                地址访问。电脑内置预览不能保证返回位置。
-              </li>
-            </ol>
-            <a
-              href="https://support.microsoft.com/zh-cn/windows/privacy/windows-location-service-and-privacy"
-              target="_blank"
-              rel="noreferrer"
-            >
-              查看 Windows 定位说明
-              <ArrowUpRight size={11} />
-            </a>
-          </details>
-        )}
-        <label className="map-auto-toggle">
-          <input
-            type="checkbox"
-            checked={autoEnabled}
-            onChange={(event) => {
-              const enabled = event.target.checked;
-              autoRef.current = enabled;
-              setAutoEnabled(enabled);
-              resetProximityPending(proximity.current);
-              setNearby(null);
-              setAutoNote(
-                enabled ? "等待新的位置后检测附近景点" : "自动提示已关闭",
-              );
-            }}
-          />
-          <span>附近景点自动提示</span>
-          <small>已载入{autoCount}处</small>
-        </label>
-        {tracking && autoEnabled && (
-          <p className="map-auto-status" role="status">
-            {autoNote}
-          </p>
-        )}
-        <small>{mcp ? "助手已配置高德查询" : "助手高德查询尚未配置"}</small>
-      </div>
     </section>
   );
 }

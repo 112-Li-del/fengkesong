@@ -8,6 +8,24 @@ export type Place = {
 export type Overlay = { setMap(map: MapInstance | null): void };
 export type MapInstance = {
   destroy(): void;
+  setPitch(pitch: number): void;
+  setRotation(rotation: number): void;
+  getRotation(): number;
+  add(layer: unknown): void;
+  remove(layer: unknown): void;
+  render(): void;
+  customCoords: {
+    setCenter(point: [number, number]): void;
+    lngLatsToCoords(points: [number, number][]): number[][];
+    getCameraParams(): {
+      near: number;
+      far: number;
+      fov: number;
+      position: number[];
+      up: number[];
+      lookAt: number[];
+    };
+  };
   setZoomAndCenter(zoom: number, center: LngLat): void;
   addControl(control: unknown): void;
   resize(): void;
@@ -26,6 +44,12 @@ export type GeoInstance = {
   off(name: string, callback: (result: GeoResult) => void): void;
 };
 export type MapAPI = {
+  GLCustomLayer: new (options: {
+    zIndex: number;
+    init(gl: WebGLRenderingContext | WebGL2RenderingContext): void;
+    render(): void;
+  }) => { show(): void; hide(): void };
+  Polyline: new (options: Record<string, unknown>) => Overlay;
   Map: new (
     element: HTMLElement,
     options: Record<string, unknown>,
@@ -53,7 +77,13 @@ export type MapAPI = {
       destination: LngLat,
       callback: (
         status: string,
-        result: { routes?: { distance: number; time: number }[] },
+        result: {
+          routes?: {
+            distance: number;
+            time: number;
+            steps?: { path: LngLat[] }[];
+          }[];
+        },
       ) => void,
     ): void;
   };

@@ -5,8 +5,6 @@
   grid-auto-rows: minmax(143px, auto);
 }
 .weather-bento-card {
-  --light-x: -400px;
-  --light-y: -400px;
   position: relative;
   grid-column: span var(--span);
   grid-row: span var(--rows);
@@ -16,46 +14,43 @@
   color: #edf0e7;
   border: 1px solid #ffffff0c;
   box-shadow: 0 5px 16px #19231a08;
-  isolation: isolate;
-}
-.weather-bento-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    260px circle at var(--light-x) var(--light-y),
-    #d5e9b51c,
-    transparent 75%
-  );
-  opacity: 0;
-  transition: opacity 220ms;
-  pointer-events: none;
-  z-index: -1;
-}
-.weather-bento:hover .weather-bento-card::before {
-  opacity: 1;
-}
-.weather-bento-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: radial-gradient(
-    240px circle at var(--light-x) var(--light-y),
-    #d5e9b577,
-    transparent 70%
-  );
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
 }
 .weather-bento-content {
   padding: 21px 23px;
   height: 100%;
+}
+.weather-ticker {
+  position: relative;
+  height: 20px;
+  width: 152px;
+  overflow: hidden;
+  margin-left: auto;
+  flex: none;
+}
+.weather-ticker-track {
+  display: flex;
+  flex-direction: column;
+  transition: transform 520ms cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+.weather-ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+  font-size: 12px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+.weather-ticker-item > svg {
+  flex: none;
+  opacity: 0.6;
+}
+.weather-ticker-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.weather-ticker-item.is-pending {
+  opacity: 0.55;
 }
 .history-main {
   position: relative;
@@ -454,7 +449,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .weather-bento-card::before,
+  .weather-ticker-track,
   .weather-humidity-track span,
   .is-spinning {
     transition: none;
