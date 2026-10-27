@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { Thread } from "@/components/zh-ui/thread.aui";
 import { MapWorkspace } from "@/components/map/map-workspace";
+import { WeatherDashboard } from "@/components/weather/weather-dashboard";
 import {
   Dialog,
   DialogContent,
@@ -391,6 +392,8 @@ export function HistoryWorkspace({ runtime, storageError }: WorkspaceProps) {
             </button>
           )}
           <span className="history-current-title">栖霞山 · 地图伴游</span>
+          <WeatherDashboard />
+          <div className="history-header-dock" id="qixia-location-dock" />
         </header>
         {storageError && (
           <div className="history-storage-error" role="alert">
