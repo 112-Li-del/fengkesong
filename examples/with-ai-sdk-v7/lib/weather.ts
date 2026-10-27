@@ -58,6 +58,9 @@ const forecastSchema = z.object({
     precipitation: z.number().nullable().optional(),
     interval: z.number().positive().optional(),
     is_day: z.number().nullable().optional(),
+    wind_gusts_10m: z.number().nullable().optional(),
+    pressure_msl: z.number().nullable().optional(),
+    cloud_cover: z.number().nullable().optional(),
   }),
   hourly: z
     .object({
@@ -67,6 +70,9 @@ const forecastSchema = z.object({
       precipitation_probability: values,
       precipitation: values,
       weather_code: values,
+      visibility: values.optional(),
+      dew_point_2m: values.optional(),
+      uv_index: values.optional(),
     })
     .refine((hourly) =>
       [
@@ -75,6 +81,9 @@ const forecastSchema = z.object({
         hourly.precipitation,
         hourly.weather_code,
         ...(hourly.is_day ? [hourly.is_day] : []),
+        ...[hourly.visibility, hourly.dew_point_2m, hourly.uv_index].filter(
+          (array) => array !== undefined,
+        ),
       ].every((array) => array.length === hourly.time.length),
     )
     .optional(),
@@ -85,6 +94,9 @@ const forecastSchema = z.object({
       temperature_2m_max: values,
       temperature_2m_min: values,
       precipitation_probability_max: values,
+      sunrise: z.array(z.string()).optional(),
+      sunset: z.array(z.string()).optional(),
+      uv_index_max: values.optional(),
     })
     .refine((daily) =>
       [
@@ -159,29 +171,38 @@ function shiftDate(date: string, days: number) {
   return value.toISOString().slice(0, 10);
 }
 
-export async function getWeather(input: WeatherInput, signal?: AbortSignal) {
+export async function getWeather(
+  input: WeatherInput,
+  signal?: AbortSignal,
+  fixedLocation?: z.infer<typeof locationSchema>,
+) {
   try {
-    const searchURL = new URL("https://geocoding-api.open-meteo.com/v1/search");
-    searchURL.search = new URLSearchParams({
-      name: input.city,
-      count: "10",
-      language: "zh",
-      format: "json",
-    }).toString();
-    if (input.countryCode)
-      searchURL.searchParams.set("countryCode", input.countryCode);
-    const geocoding = geocodingSchema.parse(
-      await requestJSON(searchURL, signal),
-    );
-    let locations = [
-      ...new Map(
-        (geocoding.results ?? []).map((location) => [location.id, location]),
-      ).values(),
-    ];
-    if (!locations.length) {
-      locations = (
-        await findChineseDistricts(input.city, input.countryCode, signal)
-      ).map((location) => locationSchema.parse(location));
+    let locations = fixedLocation ? [fixedLocation] : [];
+    if (!fixedLocation) {
+      const searchURL = new URL(
+        "https://geocoding-api.open-meteo.com/v1/search",
+      );
+      searchURL.search = new URLSearchParams({
+        name: input.city,
+        count: "10",
+        language: "zh",
+        format: "json",
+      }).toString();
+      if (input.countryCode)
+        searchURL.searchParams.set("countryCode", input.countryCode);
+      const geocoding = geocodingSchema.parse(
+        await requestJSON(searchURL, signal),
+      );
+      locations = [
+        ...new Map(
+          (geocoding.results ?? []).map((location) => [location.id, location]),
+        ).values(),
+      ];
+      if (!locations.length) {
+        locations = (
+          await findChineseDistricts(input.city, input.countryCode, signal)
+        ).map((location) => locationSchema.parse(location));
+      }
     }
     if (!locations.length)
       return {
@@ -211,11 +232,11 @@ export async function getWeather(input: WeatherInput, signal?: AbortSignal) {
       latitude: String(location.latitude),
       longitude: String(location.longitude),
       current:
-        "temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,precipitation,is_day",
+        "temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,precipitation,is_day,wind_gusts_10m,pressure_msl,cloud_cover",
       daily:
-        "weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max",
+        "weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset,uv_index_max",
       hourly:
-        "temperature_2m,precipitation_probability,precipitation,weather_code,is_day",
+        "temperature_2m,precipitation_probability,precipitation,weather_code,is_day,visibility,dew_point_2m,uv_index",
       timezone: "auto",
       forecast_days: "7",
       temperature_unit: "celsius",
@@ -254,6 +275,10 @@ export async function getWeather(input: WeatherInput, signal?: AbortSignal) {
       .filter(
         (day) => requestedDate === "next_7_days" || day.date === requestedDate,
       );
+    const currentHour =
+      forecast.hourly?.time.findLastIndex(
+        (time) => time <= forecast.current.time,
+      ) ?? -1;
     return {
       status: "success" as const,
       location: {
@@ -287,6 +312,15 @@ export async function getWeather(input: WeatherInput, signal?: AbortSignal) {
           forecast.current.is_day == null
             ? null
             : forecast.current.is_day === 1,
+        windGust: forecast.current.wind_gusts_10m ?? null,
+        pressure: forecast.current.pressure_msl ?? null,
+        cloudCover: forecast.current.cloud_cover ?? null,
+        visibility:
+          forecast.hourly?.visibility?.[currentHour] == null
+            ? null
+            : forecast.hourly.visibility[currentHour]! / 1000,
+        dewPoint: forecast.hourly?.dew_point_2m?.[currentHour] ?? null,
+        uvIndex: forecast.hourly?.uv_index?.[currentHour] ?? null,
       },
       hourly: (forecast.hourly?.time ?? [])
         .map((time, index) => ({
@@ -304,6 +338,13 @@ export async function getWeather(input: WeatherInput, signal?: AbortSignal) {
         .filter((hour) => hour.time > forecast.current.time)
         .slice(0, 12),
       daily,
+      astronomy: {
+        date: localToday,
+        sunrise: forecast.daily.sunrise?.[0] ?? null,
+        sunset: forecast.daily.sunset?.[0] ?? null,
+        source: "Open-Meteo",
+      },
+      dailyUvMax: forecast.daily.uv_index_max?.[0] ?? null,
       source: {
         name: "Open-Meteo",
         url: "https://open-meteo.com/",
@@ -322,4 +363,48 @@ export async function getWeather(input: WeatherInput, signal?: AbortSignal) {
 }
 
 export type WeatherResult = Awaited<ReturnType<typeof getWeather>>;
-export type WeatherSnapshot = Extract<WeatherResult, { status: "success" }>;
+type ModelSnapshot = Extract<WeatherResult, { status: "success" }>;
+export type WeatherSnapshot = Omit<
+  ModelSnapshot,
+  "current" | "hourly" | "daily"
+> & {
+  hourly: {
+    time: string;
+    temperature: number | null;
+    isDay: boolean | null;
+    condition: string;
+    precipitationProbability: number | null;
+    precipitation: number | null;
+  }[];
+  daily: {
+    date: string;
+    condition: string;
+    maxTemperature: number | null;
+    minTemperature: number | null;
+    maxPrecipitationProbability: number | null;
+  }[];
+  current: ModelSnapshot["current"] & {
+    precipitationIntensity?: number | null;
+    precipitationType?: string | null;
+    visibility?: number | null;
+    dewPoint?: number | null;
+    uvIndex?: number | null;
+  };
+  provider?: "qweather" | "open-meteo";
+  timeBasis?: "retrieved" | "data";
+  stale?: boolean;
+  notices?: string[];
+  attributions?: string[];
+  minutely?: {
+    updatedAt: string;
+    summary: string;
+    points: { time: string; precipitation: number | null; type: string }[];
+  } | null;
+  indices?: {
+    date: string;
+    type: string;
+    name: string;
+    category: string;
+    text: string;
+  }[];
+};
