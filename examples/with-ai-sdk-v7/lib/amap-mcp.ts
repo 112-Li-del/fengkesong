@@ -26,7 +26,10 @@ export async function openAmapTools(signal: AbortSignal) {
       transport: {
         type: "http",
         url: url.toString(),
-        fetch: (input, init) =>
+        fetch: (
+          input: Parameters<typeof fetch>[0],
+          init: Parameters<typeof fetch>[1],
+        ) =>
           fetch(input, {
             ...init,
             signal: AbortSignal.any([
@@ -46,7 +49,10 @@ export async function openAmapTools(signal: AbortSignal) {
         ...definition,
         ...(execute
           ? {
-              execute: async (input, options) => {
+              execute: async (
+                input: Parameters<NonNullable<typeof execute>>[0],
+                options: Parameters<NonNullable<typeof execute>>[1],
+              ) => {
                 try {
                   return await execute(input, options);
                 } catch {
