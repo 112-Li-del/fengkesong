@@ -1381,6 +1381,9 @@ importers:
       '@assistant-ui/ai-sdk':
         specifier: workspace:*
         version: link:../../packages/ai-sdk
+      '@assistant-ui/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@assistant-ui/react':
         specifier: workspace:*
         version: link:../../packages/react
