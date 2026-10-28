@@ -3,6 +3,8 @@ export type Place = {
   id: string;
   name: string;
   address?: string;
+  referenceName?: string;
+  referenceCode?: string;
   location: LngLat;
 };
 export type Overlay = { setMap(map: MapInstance | null): void };
@@ -26,7 +28,7 @@ export type MapInstance = {
       lookAt: number[];
     };
   };
-  setZoomAndCenter(zoom: number, center: LngLat): void;
+  setZoomAndCenter(zoom: number, center: LngLat | [number, number]): void;
   addControl(control: unknown): void;
   resize(): void;
 };
@@ -73,8 +75,8 @@ export type MapAPI = {
   Walking: new (options: Record<string, unknown>) => {
     clear(): void;
     search(
-      origin: LngLat,
-      destination: LngLat,
+      origin: LngLat | [number, number],
+      destination: LngLat | [number, number],
       callback: (
         status: string,
         result: {
