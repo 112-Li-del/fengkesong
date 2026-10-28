@@ -392,6 +392,10 @@ export function HistoryWorkspace({ runtime, storageError }: WorkspaceProps) {
             </button>
           )}
           <span className="history-current-title">栖霞山 · 地图伴游</span>
+          <div
+            className="history-header-dock is-leading"
+            id="qixia-place-dock"
+          />
           <WeatherDashboard />
           <div className="history-header-dock" id="qixia-location-dock" />
         </header>
