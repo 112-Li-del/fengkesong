@@ -218,7 +218,7 @@ test("invalid ref names fail before fetching", (t) => {
   assert.throws(() => prepareCiBase("bad..ref", shallow));
 });
 
-test("only PR jobs use shallow history and prepare their comparison base", () => {
+test("comparison jobs prepare history without unauthenticated private fetches", () => {
   const workflow = readFileSync(
     new URL("../.github/workflows/code-quality.yaml", import.meta.url),
     "utf8",
@@ -232,10 +232,14 @@ test("only PR jobs use shallow history and prepare their comparison base", () =>
     const section = workflow
       .split(`\n  ${job}:\n`)[1]
       .split(/\n  [a-z-]+:\n/)[0];
-    assert.match(
-      section,
-      /fetch-depth: \$\{\{ github.event_name == 'pull_request' && 2 \|\| 0 \}\}/,
-    );
+    if (job === "build") {
+      assert.match(section, /fetch-depth: 0\n\s+persist-credentials: false/);
+    } else {
+      assert.match(
+        section,
+        /fetch-depth: \$\{\{ github.event_name == 'pull_request' && 2 \|\| 0 \}\}/,
+      );
+    }
     assert.match(
       section,
       /if: github.event_name == 'pull_request'\n\s+run: node scripts\/prepare-ci-base.mjs/,
