@@ -3,6 +3,7 @@ import {
   useCallback,
   useEffect,
   useRef,
+  useMemo,
   useState,
   useSyncExternalStore,
   type FormEvent,
@@ -21,6 +22,14 @@ import {
   BellRing,
   ChevronDown,
 } from "lucide-react";
+import { collectScenicPlaces } from "@/lib/scenic-places";
+import {
+  buildPlaceCatalog,
+  filterPlaceCatalog,
+  placeCategories,
+  type PlaceFilter,
+  type PlaceGroups,
+} from "@/lib/place-catalog";
 import { locationQuality } from "@/lib/location-quality";
 import {
   createProximityState,
@@ -33,18 +42,46 @@ import "./map.css";
 
 type Position = { point: LngLat; accuracy: number; timestamp: number };
 const scenicWGS84 = [118.96479, 32.16043];
-const compactQuery = "(max-width:720px)";
-function subscribeCompact(callback: () => void) {
-  const media = window.matchMedia(compactQuery);
-  media.addEventListener("change", callback);
-  return () => media.removeEventListener("change", callback);
+function initialPlaceGroups(): PlaceGroups {
+  return { 景点: collectScenicPlaces([]), 厕所: [], 餐饮: [], 休息: [] };
 }
-const getCompact = () => window.matchMedia(compactQuery).matches;
-const getServerCompact = () => false;
+function findNearby(
+  api: MapAPI,
+  origin: LngLat,
+  keywords: string,
+): Promise<{ status: string; places: Place[] }> {
+  return new Promise((resolve) => {
+    const timer = window.setTimeout(
+      () => resolve({ status: "timeout", places: [] }),
+      10000,
+    );
+    new api.PlaceSearch({
+      city: "南京",
+      citylimit: true,
+      pageSize: 50,
+      extensions: "base",
+    }).searchNearBy(keywords, origin, 3500, (status, result) => {
+      clearTimeout(timer);
+      resolve({
+        status,
+        places:
+          status === "complete"
+            ? (result.poiList?.pois ?? []).filter(
+                (place) =>
+                  place.location &&
+                  Number.isFinite(place.location.lng) &&
+                  Number.isFinite(place.location.lat),
+              )
+            : [],
+      });
+    });
+  });
+}
 function subscribeDock() {
   return () => {};
 }
 const getDockNode = () => document.getElementById("qixia-location-dock");
+const getPlaceDockNode = () => document.getElementById("qixia-place-dock");
 const getServerDock = () => null;
 export function MapWorkspace() {
   const runtime = useAui();
@@ -59,14 +96,27 @@ export function MapWorkspace() {
   const generation = useRef(0);
   const searchVersion = useRef(0);
   const latestFix = useRef(0);
+  const placePanel = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<"loading" | "missing" | "ready" | "error">(
     "loading",
   );
   const [retry, setRetry] = useState(0);
   const [mcp, setMcp] = useState(false);
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("景点");
-  const [places, setPlaces] = useState<Place[]>([]);
+  const [category, setCategory] = useState<PlaceFilter>("全部");
+  const [groups, setGroups] = useState<PlaceGroups>(initialPlaceGroups);
+  const [extraPlaces, setExtraPlaces] = useState<Place[]>([]);
+  const [searchResults, setSearchResults] = useState<Place[] | null>(null);
+  const [loadingCatalog, setLoadingCatalog] = useState(true);
+  const [catalogErrors, setCatalogErrors] = useState<string[]>([]);
+  const catalog = useMemo(
+    () => buildPlaceCatalog(groups, extraPlaces),
+    [groups, extraPlaces],
+  );
+  const places = useMemo(
+    () => filterPlaceCatalog(catalog, category, searchResults),
+    [catalog, category, searchResults],
+  );
   const [selected, setSelected] = useState<Place | null>(null);
   const [searching, setSearching] = useState(false);
   const [searchNote, setSearchNote] = useState("");
@@ -82,24 +132,23 @@ export function MapWorkspace() {
   const autoRef = useRef(true);
   const resumeAfter = useRef(0);
   const [autoEnabled, setAutoEnabled] = useState(true);
-  const [autoCount, setAutoCount] = useState(0);
+  const autoCount = groups.景点.length;
   const [autoNote, setAutoNote] = useState("开启定位后自动检测附近景点");
   const [nearby, setNearby] = useState<{
     place: Place;
     distance: number;
   } | null>(null);
   const routeOverlay = useRef<Overlay | null>(null);
-  const compact = useSyncExternalStore(
-    subscribeCompact,
-    getCompact,
-    getServerCompact,
-  );
-  const [browseOpen, setBrowseOpen] = useState<boolean | null>(null);
-  const [panelOpen, setPanelOpen] = useState(true);
+  const [panelOpen, setPanelOpen] = useState(false);
   const [dockOpen, setDockOpen] = useState(false);
   const dockNode = useSyncExternalStore(
     subscribeDock,
     getDockNode,
+    getServerDock,
+  );
+  const placeDockNode = useSyncExternalStore(
+    subscribeDock,
+    getPlaceDockNode,
     getServerDock,
   );
   const clearWalk = useCallback(() => {
@@ -113,80 +162,76 @@ export function MapWorkspace() {
       clearWalk();
       setRouteNote("");
       setSelected(place);
-      map.current?.setZoomAndCenter(17, place.location);
+      setPanelOpen(true);
+      map.current?.setZoomAndCenter(17, [
+        place.location.lng,
+        place.location.lat,
+      ]);
     },
     [clearWalk],
   );
-  const search = useCallback(
-    (keywords: string) => {
-      const api = sdk.current,
-        view = map.current,
-        origin = center.current;
-      if (!api || !view || !origin) return;
-      const version = ++searchVersion.current;
-      setSearching(true);
-      setSearchNote("");
-      new api.PlaceSearch({
-        city: "南京",
-        citylimit: true,
-        pageSize: keywords === "景点" ? 50 : 10,
-        extensions: "base",
-      }).searchNearBy(keywords, origin, 3500, (status, result) => {
-        if (version !== searchVersion.current || map.current !== view) return;
-        setSearching(false);
-        markers.current.forEach((marker) => marker.setMap(null));
-        markers.current = [];
-        const matches =
-          status === "complete"
-            ? (result.poiList?.pois ?? []).filter(
-                (place) =>
-                  place.location &&
-                  Number.isFinite(place.location.lng) &&
-                  Number.isFinite(place.location.lat),
-              )
-            : [];
-        if (keywords === "景点") {
-          targets.current = [
-            ...new Map(matches.map((place) => [place.id, place])).values(),
-          ];
-          setAutoCount(targets.current.length);
-        }
-        const found = matches.slice(0, 10);
-        if (found.length) view.setZoomAndCenter(15, origin);
-        setPlaces(found);
-        setSelected(null);
-        clearWalk();
-        routeVersion.current++;
-        setRouteNote("");
-        setSearchNote(
-          found.length
-            ? "高德地点数据 · 栖霞山周边3.5公里"
-            : status === "no_data"
-              ? "附近未找到匹配地点，试试其他关键词。"
-              : "地点查询失败，请检查网络或高德服务权限。",
-        );
-        markers.current = found.map((place, index) => {
-          const marker = new api.Marker({
-            map: view,
-            position: place.location,
-            content:
-              '<span class="scenic-place-marker">' +
-              String(index + 1) +
-              "</span>",
-            anchor: "bottom-center",
-          });
-          marker.on("click", () => select(place));
-          return marker;
-        });
-      });
-    },
-    [select, clearWalk],
-  );
+  const search = useCallback(async (keywords: string) => {
+    const api = sdk.current,
+      view = map.current,
+      origin = center.current;
+    if (!api || !view || !origin) return;
+    const version = ++searchVersion.current;
+    setSearching(true);
+    setSearchNote("");
+    const result = await findNearby(api, origin, keywords);
+    if (version !== searchVersion.current || map.current !== view) return;
+    setSearching(false);
+    setSearchResults(result.places);
+    setExtraPlaces((previous) => [
+      ...new Map(
+        [...previous, ...result.places].map((place) => [place.id, place]),
+      ).values(),
+    ]);
+    setSearchNote(
+      result.places.length
+        ? "找到" + result.places.length + "处地点"
+        : result.status === "no_data"
+          ? "附近没有匹配地点，试试其他关键词。"
+          : "查询暂不可用，请稍后重试。",
+    );
+  }, []);
+  const resetFilter = useCallback(() => {
+    searchVersion.current++;
+    setCategory("全部");
+    setQuery("");
+    setSearchResults(null);
+    setSearchNote("");
+    setSearching(false);
+  }, []);
+  const closePlacePanel = useCallback(() => {
+    setPanelOpen(false);
+  }, []);
+  useEffect(() => {
+    targets.current = [...groups.景点];
+  }, [groups]);
   const invalidatePending = useCallback(() => {
     searchVersion.current++;
     routeVersion.current++;
     generation.current++;
   }, []);
+  useEffect(() => {
+    if (!panelOpen) return;
+    const dismiss = (event: PointerEvent) => {
+      const target = event.target;
+      if (target instanceof Element && target.closest(".scenic-place-marker"))
+        return;
+      if (!placePanel.current?.contains(target as Node)) closePlacePanel();
+    };
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closePlacePanel();
+    };
+    document.addEventListener("pointerdown", dismiss);
+    document.addEventListener("keydown", escape);
+    return () => {
+      document.removeEventListener("pointerdown", dismiss);
+      document.removeEventListener("keydown", escape);
+    };
+  }, [panelOpen, closePlacePanel]);
   useEffect(() => {
     let cancelled = false;
     const abort = new AbortController();
@@ -228,7 +273,26 @@ export function MapWorkspace() {
           resizeEnable: true,
         });
         setState("ready");
-        search("景点");
+        setLoadingCatalog(true);
+        setCatalogErrors([]);
+        setGroups(initialPlaceGroups());
+        for (const item of placeCategories) {
+          if (cancelled) return;
+          const result = await findNearby(api, origin, item);
+          if (cancelled) return;
+          setGroups((previous) => ({
+            ...previous,
+            [item]:
+              item === "景点"
+                ? collectScenicPlaces(result.places)
+                : result.places,
+          }));
+          if (result.status !== "complete" && result.status !== "no_data")
+            setCatalogErrors((previous) => [...previous, item]);
+          if (item !== "休息")
+            await new Promise((resolve) => window.setTimeout(resolve, 650));
+        }
+        if (!cancelled) setLoadingCatalog(false);
       } catch {
         if (!cancelled) setState("error");
       }
@@ -260,7 +324,40 @@ export function MapWorkspace() {
       map.current?.destroy();
       map.current = null;
     };
-  }, [retry, search, invalidatePending]);
+  }, [retry, invalidatePending]);
+  useEffect(() => {
+    const api = sdk.current,
+      view = map.current;
+    if (state !== "ready" || !api || !view) return;
+    const overlays = places.map((place) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "scenic-place-marker";
+      button.dataset.category = place.category;
+      button.textContent = String(place.number);
+      button.title =
+        (place.referenceName ?? place.name) + " · " + place.category;
+      button.setAttribute(
+        "aria-label",
+        "查看" + (place.referenceName ?? place.name),
+      );
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        select(place);
+      });
+      return new api.Marker({
+        map: view,
+        position: [place.location.lng, place.location.lat],
+        content: button,
+        anchor: "bottom-center",
+      });
+    });
+    markers.current = overlays;
+    return () => {
+      overlays.forEach((marker) => marker.setMap(null));
+      if (markers.current === overlays) markers.current = [];
+    };
+  }, [state, retry, places, select]);
   function stopLocation() {
     setLocationFailure(null);
     generation.current++;
@@ -460,30 +557,34 @@ export function MapWorkspace() {
     const planner = new api.Walking({ hideMarkers: true });
     walking.current = planner;
     setRouteNote("正在查询步行路线…");
-    planner.search(position.point, selected.location, (status, result) => {
-      if (version !== routeVersion.current) return;
-      const route = result.routes?.[0];
-      if (status === "complete" && route) {
-        const path = route.steps?.flatMap((step) => step.path) ?? [];
-        routeOverlay.current = new api.Polyline({
-          map: view,
-          path,
-          strokeColor: "#277db1",
-          strokeWeight: 5,
-          lineJoin: "round",
-          lineCap: "round",
-        });
-      }
-      setRouteNote(
-        status === "complete" && route
-          ? "约" +
-              Math.round(route.distance) +
-              "米 · 高德估计" +
-              Math.ceil(route.time / 60) +
-              "分钟。山路实际通行请以景区指引为准。"
-          : "未查到可用步行路线，请参考景区路牌，勿按直线穿行。",
-      );
-    });
+    planner.search(
+      [position.point.lng, position.point.lat],
+      [selected.location.lng, selected.location.lat],
+      (status, result) => {
+        if (version !== routeVersion.current) return;
+        const route = result.routes?.[0];
+        if (status === "complete" && route) {
+          const path = route.steps?.flatMap((step) => step.path) ?? [];
+          routeOverlay.current = new api.Polyline({
+            map: view,
+            path,
+            strokeColor: "#277db1",
+            strokeWeight: 5,
+            lineJoin: "round",
+            lineCap: "round",
+          });
+        }
+        setRouteNote(
+          status === "complete" && route
+            ? "约" +
+                Math.round(route.distance) +
+                "米 · 高德估计" +
+                Math.ceil(route.time / 60) +
+                "分钟。山路实际通行请以景区指引为准。"
+            : "未查到可用步行路线，请参考景区路牌，勿按直线穿行。",
+        );
+      },
+    );
   }
   function ask() {
     if (!selected) return;
@@ -507,8 +608,8 @@ export function MapWorkspace() {
   function submit(event: FormEvent) {
     event.preventDefault();
     if (query.trim()) {
-      setCategory("");
-      search(query.trim());
+      setCategory("全部");
+      void search(query.trim());
     }
   }
   return (
@@ -546,137 +647,168 @@ export function MapWorkspace() {
           </a>
         </div>
       )}
-      <div className={`map-place-panel ${panelOpen ? "" : "is-collapsed"}`}>
-        <button
-          type="button"
-          className="map-panel-title"
-          aria-expanded={panelOpen}
-          aria-controls="map-panel-body"
-          onClick={() => setPanelOpen((value) => !value)}
-        >
-          <MapPin size={17} />
-          <strong>南京 · 栖霞山</strong>
-          <span>{state === "ready" ? "地图导览" : "等待连接"}</span>
-          <ChevronDown size={16} className="map-panel-chevron" />
-        </button>
-        <div className="map-panel-body" id="map-panel-body">
-          <details
-            className="map-browse"
-            open={browseOpen ?? !compact}
-            onToggle={(event) => setBrowseOpen(event.currentTarget.open)}
+      {placeDockNode &&
+        createPortal(
+          <div
+            ref={placePanel}
+            className={`map-place-panel map-place-dock ${panelOpen ? "" : "is-collapsed"}`}
           >
-            <summary>查找景点与路线</summary>
-            <form className="map-search" onSubmit={submit}>
-              <Search size={16} />
-              <input
-                aria-label="搜索栖霞山附近地点"
-                placeholder="搜索景点、厕所、餐饮…"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                maxLength={60}
-              />
-              <button disabled={state !== "ready" || searching} type="submit">
-                搜索
-              </button>
-            </form>
-            <div className="map-category-list">
-              {["景点", "厕所", "餐饮", "休息"].map((item) => (
-                <button
-                  key={item}
-                  aria-pressed={category === item}
-                  disabled={state !== "ready" || searching}
-                  onClick={() => {
-                    setCategory(item);
-                    setQuery("");
-                    search(item);
-                  }}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-            <p className="map-search-note" role="status">
-              {searching
-                ? "正在查询地点…"
-                : searchNote || "选择地点后，可查看详情或向助手提问。"}
-            </p>
-            {!!places.length && (
-              <details className="map-results" open={!selected}>
-                <summary>附近地点 · {places.length}处</summary>
-                <div>
-                  {places.map((place, index) => (
+            <button
+              type="button"
+              className="map-panel-title"
+              aria-expanded={panelOpen}
+              aria-controls="map-panel-body"
+              onClick={() =>
+                panelOpen ? closePlacePanel() : setPanelOpen(true)
+              }
+            >
+              <MapPin size={15} />
+              <strong>找地点</strong>
+              <span>{state === "ready" ? "地图导览" : "等待连接"}</span>
+              <ChevronDown size={15} className="map-panel-chevron" />
+            </button>
+            <div className="map-panel-body" id="map-panel-body">
+              <div className="map-browse">
+                <form className="map-search" onSubmit={submit}>
+                  <Search size={16} />
+                  <input
+                    aria-label="搜索栖霞山附近地点"
+                    placeholder="搜索景点、厕所、餐饮…"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    maxLength={60}
+                  />
+                  <button
+                    disabled={state !== "ready" || searching}
+                    type="submit"
+                  >
+                    搜索
+                  </button>
+                </form>
+                <div className="map-category-list">
+                  {(["全部", ...placeCategories] as const).map((item) => (
                     <button
-                      className={selected?.id === place.id ? "is-selected" : ""}
-                      key={place.id}
-                      onClick={() => select(place)}
+                      key={item}
+                      aria-pressed={category === item}
+                      data-category={item}
+                      disabled={state !== "ready"}
+                      onClick={() => {
+                        resetFilter();
+                        setCategory(item);
+                      }}
                     >
-                      <span>{index + 1}</span>
-                      <span>
-                        <strong>{place.name}</strong>
-                        <small>
-                          {(typeof place.address === "string" &&
-                            place.address) ||
-                            "高德地点信息"}
-                        </small>
-                      </span>
+                      {item}
                     </button>
                   ))}
                 </div>
-              </details>
-            )}
-            {selected && (
-              <div className="map-place-detail">
-                <button
-                  className="map-detail-close"
-                  aria-label="关闭地点详情"
-                  onClick={() => {
-                    setSelected(null);
-                    clearWalk();
-                    routeVersion.current++;
-                    setRouteNote("");
-                  }}
-                >
-                  <X size={14} />
-                </button>
-                <span className="map-detail-label">已选择地点</span>
-                <h2>{selected.name}</h2>
-                <p>
-                  {typeof selected.address === "string" ? selected.address : ""}
+                <p className="map-search-note" role="status">
+                  {searching
+                    ? "正在查询地点…"
+                    : searchResults !== null
+                      ? searchNote
+                      : (loadingCatalog
+                          ? "正在加载附近地点 · 已显示"
+                          : "已显示") +
+                        places.length +
+                        "处" +
+                        (catalogErrors.length
+                          ? " · " + catalogErrors.join("、") + "暂无法更新"
+                          : " · 点击标记查看")}
                 </p>
-                <div className="map-detail-actions">
-                  <button onClick={ask}>询问助手</button>
-                  <button onClick={planWalk} disabled={quality !== "usable"}>
-                    <Route size={13} />
-                    步行路线
-                  </button>
-                  <a
-                    href={
-                      "https://uri.amap.com/marker?position=" +
-                      selected.location.lng +
-                      "," +
-                      selected.location.lat +
-                      "&name=" +
-                      encodeURIComponent(selected.name) +
-                      "&coordinate=gaode&callnative=0"
-                    }
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="在高德中查看地点"
-                  >
-                    <ArrowUpRight size={16} />
-                  </a>
-                </div>
-                <p className="map-route-note" role="status">
-                  {routeNote ||
-                    (quality !== "usable"
-                      ? "获取较准确的新位置后，可查询步行路线。"
-                      : "路线依据高德道路数据，山中小路可能未覆盖。")}
-                </p>
+                {!!places.length && (
+                  <details className="map-results" open={!selected}>
+                    <summary>附近地点 · {places.length}处</summary>
+                    <div>
+                      {places.map((place) => (
+                        <button
+                          className={
+                            selected?.id === place.id ? "is-selected" : ""
+                          }
+                          key={place.id}
+                          onClick={() => select(place)}
+                        >
+                          <span data-category={place.category}>
+                            {place.number}
+                          </span>
+                          <span>
+                            <strong>{place.referenceName ?? place.name}</strong>
+                            <small>
+                              {(typeof place.address === "string" &&
+                                place.address) ||
+                                "高德地点信息"}
+                            </small>
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </details>
+                )}
+                {selected && (
+                  <div className="map-place-detail">
+                    <button
+                      className="map-detail-close"
+                      aria-label="关闭地点详情"
+                      onClick={() => {
+                        setSelected(null);
+                        clearWalk();
+                        routeVersion.current++;
+                        setRouteNote("");
+                      }}
+                    >
+                      <X size={14} />
+                    </button>
+                    <span className="map-detail-label">已选择地点</span>
+                    <h2>{selected.name}</h2>
+                    {selected.referenceCode && (
+                      <p>
+                        参考图 {selected.referenceCode} ·{" "}
+                        {selected.referenceName}
+                      </p>
+                    )}
+                    <p>
+                      {typeof selected.address === "string"
+                        ? selected.address
+                        : ""}
+                    </p>
+                    <div className="map-detail-actions">
+                      <button onClick={ask}>询问助手</button>
+                      <button
+                        onClick={planWalk}
+                        disabled={quality !== "usable"}
+                      >
+                        <Route size={13} />
+                        步行路线
+                      </button>
+                      <a
+                        href={
+                          "https://uri.amap.com/marker?position=" +
+                          selected.location.lng +
+                          "," +
+                          selected.location.lat +
+                          "&name=" +
+                          encodeURIComponent(selected.name) +
+                          "&coordinate=gaode&callnative=0"
+                        }
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="在高德中查看地点"
+                      >
+                        <ArrowUpRight size={16} />
+                      </a>
+                    </div>
+                    <p className="map-route-note" role="status">
+                      {routeNote ||
+                        (quality !== "usable"
+                          ? "获取较准确的新位置后，可查询步行路线。"
+                          : "路线依据高德道路数据，山中小路可能未覆盖。")}
+                    </p>
+                  </div>
+                )}
               </div>
-            )}
-          </details>
-        </div>
-      </div>
+            </div>
+          </div>,
+          placeDockNode,
+        )}
       {nearby && tracking && autoEnabled && quality === "usable" && (
         <aside
           className="map-nearby-card"
