@@ -13,15 +13,31 @@ cd my-app
 
 ### Environment Variables
 
-Copy `.env.example` to `.env.local` in this directory and configure an OpenAI-compatible Chat Completions service:
+团队只通过 Git 同步本目录的 `.env.example`，每个人的真实密钥保存在自己的 `.env.local`，该文件继续忽略提交。
 
-```sh
-OPENAI_API_KEY=
-OPENAI_BASE_URL=
-OPENAI_MODEL=
+首次加入或拉取更新后，在本目录执行：
+
+```powershell
+pnpm env:sync
+# 也可直接运行，避免触发整个 monorepo 的依赖检查：
+node scripts/sync-env.mjs
 ```
 
-All three values are required and must belong to the same service. Choose a model that supports streaming and tool calling. The service is not restricted to DeepSeek. Keep real credentials in the ignored .env.local file, never use a NEXT_PUBLIC_ prefix for keys, and restart the development server after changes. Legacy DEEPSEEK_* variables remain supported when OPENAI_API_KEY is absent.
+脚本只向 `.env.local` 追加缺少的空白变量名，保留原有密钥、注释和自定义配置，不复制模板中的配置值。
+已在系统环境变量或其他开发环境文件中声明的项不会被新空白项覆盖；遵循开发环境的变量优先级。
+随后对照 `.env.example` 填写新增项，重启开发服务。`pnpm dev` 也会自动补齐并提示配置状态。
+
+| 功能 | 变量 | 未填写时 |
+| --- | --- | --- |
+| 聊天模型 | OPENAI_API_KEY、OPENAI_BASE_URL、OPENAI_MODEL | 聊天不可用 |
+| 高德地图 | AMAP_JS_API_KEY、AMAP_JS_SECURITY_CODE | 地图不可用 |
+| 高德助手查询 | AMAP_WEB_SERVICE_KEY | 助手地图工具不可用 |
+| 和风天气 | QWEATHER_API_HOST，以及 QWEATHER_API_KEY / QWEATHER_JWT 二选一 | 使用 Open-Meteo 备用预报，不提供和风分钟降水、生活指数 |
+
+模型三项须对应同一服务，支持流式和工具调用。旧版 DEEPSEEK_* 仍兼容。密钥通过团队的私密渠道分发或各自申请，脚本不会自动获取朋友的密钥；不要给密钥添加 NEXT_PUBLIC_ 前缀。
+
+只读检查可运行 `pnpm env:check` 或 `node scripts/sync-env.mjs --check`。只提示变量是否填写，不输出值、不调用外部 API，也不验证凭据和额度。
+天气的实际来源以 `/api/weather/qixia` 返回的 `provider` 和展开面板中的来源为准：`open-meteo` 是模型预报，`qweather` 才是和风数据。填写了和风配置但接口失败时也可能降级。
 
 ### Run
 
