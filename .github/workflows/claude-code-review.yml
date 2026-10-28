@@ -3,6 +3,8 @@ name: Claude Code Review
 # Same-repository PRs use the existing pull_request job and Claude GitHub App.
 # Fork PRs use a separate pull_request_target job whose workflow and checkout
 # come only from the trusted base branch.
+# Enable ENABLE_CLAUDE_REVIEW only after installing the Claude GitHub App
+# and configuring CLAUDE_CODE_OAUTH_TOKEN in this repository.
 on:
   pull_request:
     branches: [main]
