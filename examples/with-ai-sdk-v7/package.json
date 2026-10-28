@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/sync-env.mjs && next dev",
+    "env:sync": "node scripts/sync-env.mjs",
+    "env:check": "node scripts/sync-env.mjs --check",
     "build": "next build",
     "start": "next start"
   },
