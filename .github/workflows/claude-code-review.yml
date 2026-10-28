@@ -72,7 +72,8 @@ env:
 jobs:
   claude-review:
     if: >-
-      github.event_name == 'pull_request'
+      vars.ENABLE_CLAUDE_REVIEW == 'true'
+      && github.event_name == 'pull_request'
       && github.event.pull_request.draft == false
       && github.event.pull_request.head.repo.full_name == github.repository
       && github.event.sender.type != 'Bot'
@@ -180,7 +181,8 @@ jobs:
 
   claude-fork-review:
     if: >-
-      github.event_name == 'pull_request_target'
+      vars.ENABLE_CLAUDE_REVIEW == 'true'
+      && github.event_name == 'pull_request_target'
       && github.event.pull_request.draft == false
       && github.event.pull_request.head.repo.full_name != github.repository
       && github.event.sender.type != 'Bot'

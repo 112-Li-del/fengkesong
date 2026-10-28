@@ -185,10 +185,15 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Setup pnpm and node.js
+      - name: Setup node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # ratchet:actions/setup-node@v7.0.0
+        with:
+          node-version: 24
+
+      - name: Setup pnpm
         uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # ratchet:pnpm/setup@v3.1.1
         with:
-          runtime: node@24
+          node-version-file: false
           cache: false
           install: false
 
@@ -237,7 +242,7 @@ jobs:
       - name: Checkout code repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7.0.1
         with:
-          fetch-depth: ${{ github.event_name == 'pull_request' && 2 || 0 }}
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Prepare CI comparison base
@@ -409,8 +414,8 @@ jobs:
   build-apps:
     name: Build Changed Apps
     if: ${{ !cancelled() }}
-    runs-on: blacksmith-8vcpu-ubuntu-2404
-    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout code repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7.0.1
