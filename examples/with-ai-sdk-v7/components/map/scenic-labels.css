@@ -1,0 +1,123 @@
+.scenic-coordinate {
+  position: relative;
+  width: 0;
+  height: 0;
+}
+.scenic-site-dot {
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+.scenic-site-dot::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: #a94d31;
+  border: 2px solid #fffaf0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #8d482477;
+}
+.scenic-coordinate.is-selected .scenic-site-dot::after {
+  inset: 0;
+  background: #aa2e21;
+  box-shadow: 0 0 0 5px #b54f3333;
+}
+.scenic-site-art {
+  display: block;
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  left: -24px;
+  top: -53px;
+  pointer-events: none;
+  background-image: url("/maps/qixia-watercolor-atlas.png");
+  background-position: var(--art-position);
+  background-size: 200% 200%;
+  background-repeat: no-repeat;
+}
+.scenic-site-art[hidden] {
+  display: none;
+}
+.map-place-panel.has-selection .autumn-catalog-intro,
+.map-place-panel.has-selection .map-search,
+.map-place-panel.has-selection .map-category-list,
+.map-place-panel.has-selection .map-search-note,
+.map-place-panel.has-selection .map-results,
+.map-place-panel.has-selection .autumn-unverified {
+  display: none;
+}
+.scenic-label-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+.scenic-label-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.scenic-label-line {
+  stroke: #996945;
+  stroke-width: 1;
+  opacity: 0.7;
+  fill: none;
+}
+.scenic-label-line.is-selected {
+  stroke: #a82c21;
+  stroke-width: 1.6;
+  opacity: 1;
+}
+.scenic-site-label {
+  position: absolute;
+  z-index: 1;
+  pointer-events: auto;
+  width: max-content;
+  height: 28px;
+  padding: 3px 7px;
+  border: 1px solid #cbac7d;
+  border-radius: 5px;
+  background: #fff8e9f5;
+  color: #6e402b;
+  white-space: nowrap;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px #775a251a;
+}
+.scenic-site-label.is-selected {
+  border-color: #a54430;
+  background: #a54430;
+  color: #fff9ed;
+  z-index: 2;
+}
+.scenic-site-label:hover,
+.scenic-site-label:focus-visible,
+.scenic-site-dot:focus-visible {
+  outline: 2px solid #a54430;
+  outline-offset: 2px;
+}
+@media (max-width: 720px) {
+  .scenic-site-label {
+    font-size: 11px;
+    padding: 3px 5px;
+  }
+  .scenic-site-art {
+    width: 40px;
+    height: 40px;
+    left: -20px;
+    top: -45px;
+  }
+}

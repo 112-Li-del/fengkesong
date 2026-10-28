@@ -37,11 +37,29 @@ import {
   updateProximity,
 } from "@/lib/proximity";
 import { loadAmap } from "./load-amap";
+import { addAutumnLayer } from "./autumn-layer";
+import { scenicNavigation } from "./scenic-navigation";
+import {
+  scenicCenter,
+  scenicPlaces,
+  unverifiedPlaces,
+  scenicSearchResults,
+  withinScenicView,
+} from "@/lib/qixia-map";
 import type { MapAPI, MapInstance, LngLat, Overlay, Place } from "./amap-types";
 import "./map.css";
+import "./autumn-map.css";
+import "./scenic-labels.css";
 
 type Position = { point: LngLat; accuracy: number; timestamp: number };
-const scenicWGS84 = [118.96479, 32.16043];
+const compactQuery = "(max-width:720px), (max-height:500px)";
+function subscribeCompact(callback: () => void) {
+  const media = window.matchMedia(compactQuery);
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+}
+const getCompact = () => window.matchMedia(compactQuery).matches;
+const getServerCompact = () => false;
 function initialPlaceGroups(): PlaceGroups {
   return { 景点: collectScenicPlaces([]), 厕所: [], 餐饮: [], 休息: [] };
 }
@@ -89,7 +107,13 @@ export function MapWorkspace() {
   const map = useRef<MapInstance | null>(null);
   const sdk = useRef<MapAPI | null>(null);
   const center = useRef<LngLat | null>(null);
+  const navigation = useRef<ReturnType<typeof scenicNavigation> | null>(null);
+  const selectionFrame = useRef(0);
   const markers = useRef<Overlay[]>([]);
+  const autumnLayer = useRef<Awaited<ReturnType<typeof addAutumnLayer>> | null>(
+    null,
+  );
+  const [illustrated, setIllustrated] = useState(true);
   const positionOverlays = useRef<Overlay[]>([]);
   const walking = useRef<InstanceType<MapAPI["Walking"]> | null>(null);
   const watch = useRef<number | null>(null);
@@ -139,6 +163,12 @@ export function MapWorkspace() {
     distance: number;
   } | null>(null);
   const routeOverlay = useRef<Overlay | null>(null);
+  const compact = useSyncExternalStore(
+    subscribeCompact,
+    getCompact,
+    getServerCompact,
+  );
+  const [browseOpen, setBrowseOpen] = useState<boolean | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const [dockOpen, setDockOpen] = useState(false);
   const dockNode = useSyncExternalStore(
@@ -157,16 +187,21 @@ export function MapWorkspace() {
     routeOverlay.current = null;
   }, []);
   const select = useCallback(
-    (place: Place) => {
+    (place: Place, reveal = false) => {
+      searchVersion.current++;
+      setSearching(false);
+      cancelAnimationFrame(selectionFrame.current);
       routeVersion.current++;
       clearWalk();
       setRouteNote("");
       setSelected(place);
+      autumnLayer.current?.setSelected(place.id);
       setPanelOpen(true);
-      map.current?.setZoomAndCenter(17, [
-        place.location.lng,
-        place.location.lat,
-      ]);
+      setBrowseOpen(true);
+      if (reveal)
+        selectionFrame.current = requestAnimationFrame(() =>
+          navigation.current?.reveal(place.location),
+        );
     },
     [clearWalk],
   );
@@ -180,17 +215,18 @@ export function MapWorkspace() {
     setSearchNote("");
     const result = await findNearby(api, origin, keywords);
     if (version !== searchVersion.current || map.current !== view) return;
+    const found = scenicSearchResults(result.places);
     setSearching(false);
-    setSearchResults(result.places);
+    setSearchResults(found);
     setExtraPlaces((previous) => [
       ...new Map(
-        [...previous, ...result.places].map((place) => [place.id, place]),
+        [...previous, ...found].map((place) => [place.id, place]),
       ).values(),
     ]);
     setSearchNote(
-      result.places.length
-        ? "找到" + result.places.length + "处地点"
-        : result.status === "no_data"
+      found.length
+        ? "找到" + found.length + "处地点"
+        : result.status === "no_data" || result.status === "complete"
           ? "附近没有匹配地点，试试其他关键词。"
           : "查询暂不可用，请稍后重试。",
     );
@@ -218,7 +254,12 @@ export function MapWorkspace() {
     if (!panelOpen) return;
     const dismiss = (event: PointerEvent) => {
       const target = event.target;
-      if (target instanceof Element && target.closest(".scenic-place-marker"))
+      if (
+        target instanceof Element &&
+        target.closest(
+          ".scenic-place-marker, .scenic-site-dot, .scenic-site-label",
+        )
+      )
         return;
       if (!placePanel.current?.contains(target as Node)) closePlacePanel();
     };
@@ -254,24 +295,33 @@ export function MapWorkspace() {
           return;
         }
         const api = await loadAmap(config.key);
-        const origin = await new Promise<LngLat>((resolve, reject) =>
-          api.convertFrom(scenicWGS84, "gps", (status, result) => {
-            const point = result.locations?.[0];
-            if (status === "complete" && point) resolve(point);
-            else reject(new Error("Coordinate conversion failed"));
-          }),
-        );
+        const origin = scenicCenter;
         if (cancelled || !container.current) return;
         sdk.current = api;
         center.current = origin;
         map.current = new api.Map(container.current, {
-          center: origin,
-          zoom: 15,
+          center: [origin.lng, origin.lat],
+          zoom: 16,
+          zooms: [12, 19],
+          features: ["bg", "road"],
           viewMode: "2D",
           rotateEnable: false,
           pitchEnable: false,
           resizeEnable: true,
+          doubleClickZoom: false,
         });
+        const view = map.current;
+        navigation.current = scenicNavigation(view, container.current);
+        autumnLayer.current = await addAutumnLayer(
+          api,
+          map.current,
+          select,
+          abort.signal,
+        );
+        if (cancelled) {
+          autumnLayer.current.remove();
+          return;
+        }
         setState("ready");
         setLoadingCatalog(true);
         setCatalogErrors([]);
@@ -284,8 +334,8 @@ export function MapWorkspace() {
             ...previous,
             [item]:
               item === "景点"
-                ? collectScenicPlaces(result.places)
-                : result.places,
+                ? collectScenicPlaces(scenicSearchResults(result.places))
+                : scenicSearchResults(result.places),
           }));
           if (result.status !== "complete" && result.status !== "no_data")
             setCatalogErrors((previous) => [...previous, item]);
@@ -298,7 +348,7 @@ export function MapWorkspace() {
       }
     }
     void initialize();
-    const resize = new ResizeObserver(() => map.current?.resize());
+    const resize = new ResizeObserver(() => navigation.current?.resize());
     if (container.current) resize.observe(container.current);
     const tick = window.setInterval(() => setClock(Date.now()), 10000);
     const visibility = () => {
@@ -319,39 +369,46 @@ export function MapWorkspace() {
       watch.current = null;
       resize.disconnect();
       clearInterval(tick);
+      cancelAnimationFrame(selectionFrame.current);
       document.removeEventListener("visibilitychange", visibility);
       routeOverlay.current?.setMap(null);
+      autumnLayer.current?.remove();
+      autumnLayer.current = null;
+      navigation.current?.remove();
+      navigation.current = null;
       map.current?.destroy();
       map.current = null;
     };
-  }, [retry, invalidatePending]);
+  }, [retry, select, invalidatePending]);
   useEffect(() => {
     const api = sdk.current,
       view = map.current;
     if (state !== "ready" || !api || !view) return;
-    const overlays = places.map((place) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "scenic-place-marker";
-      button.dataset.category = place.category;
-      button.textContent = String(place.number);
-      button.title =
-        (place.referenceName ?? place.name) + " · " + place.category;
-      button.setAttribute(
-        "aria-label",
-        "查看" + (place.referenceName ?? place.name),
-      );
-      button.addEventListener("click", (event) => {
-        event.stopPropagation();
-        select(place);
+    const overlays = places
+      .filter((place) => !scenicPlaces.some((scenic) => scenic.id === place.id))
+      .map((place) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "scenic-place-marker";
+        button.dataset.category = place.category;
+        button.textContent = String(place.number);
+        button.title =
+          (place.referenceName ?? place.name) + " · " + place.category;
+        button.setAttribute(
+          "aria-label",
+          "查看" + (place.referenceName ?? place.name),
+        );
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          select(place);
+        });
+        return new api.Marker({
+          map: view,
+          position: [place.location.lng, place.location.lat],
+          content: button,
+          anchor: "bottom-center",
+        });
       });
-      return new api.Marker({
-        map: view,
-        position: [place.location.lng, place.location.lat],
-        content: button,
-        anchor: "bottom-center",
-      });
-    });
     markers.current = overlays;
     return () => {
       overlays.forEach((marker) => marker.setMap(null));
@@ -488,7 +545,14 @@ export function MapWorkspace() {
             setClock(Date.now());
             setLocationNote("");
             setLocationFailure(null);
-            if (first || (!centeredUsable && fixQuality === "usable")) {
+            if (!withinScenicView(point))
+              setLocationNote(
+                "你的位置在栖霞山浏览范围外，地图仍保持景区视角。",
+              );
+            if (
+              withinScenicView(point) &&
+              (first || (!centeredUsable && fixQuality === "usable"))
+            ) {
               const span = Math.max(
                 120,
                 Math.min(
@@ -499,7 +563,7 @@ export function MapWorkspace() {
               const scale =
                 156543.03392 * Math.cos((point.lat * Math.PI) / 180);
               const zoom = Math.max(
-                3,
+                15,
                 Math.min(
                   16,
                   Math.floor(
@@ -613,12 +677,63 @@ export function MapWorkspace() {
     }
   }
   return (
-    <section className="scenic-map-stage" aria-label="栖霞山地图导览">
+    <section
+      className={`scenic-map-stage ${illustrated ? "is-autumn" : "is-standard"}`}
+      aria-label="栖霞山地图导览"
+    >
       <div
         className="scenic-map-canvas"
         ref={container}
         aria-label="高德地图"
       />
+      <div className="autumn-map-tools" aria-label="地图视图控制">
+        <div className="autumn-view-switch" role="group" aria-label="地图风格">
+          {[true, false].map((value) => (
+            <button
+              key={String(value)}
+              disabled={state !== "ready"}
+              aria-pressed={illustrated === value}
+              onClick={() => {
+                setIllustrated(value);
+                autumnLayer.current?.setIllustrated(value);
+              }}
+            >
+              {value ? "赏秋手绘" : "高德底图"}
+            </button>
+          ))}
+        </div>
+        <div className="autumn-zoom-tools">
+          <button
+            disabled={state !== "ready"}
+            aria-label="放大地图"
+            onClick={() => {
+              navigation.current?.zoomBy(1);
+            }}
+          >
+            ＋
+          </button>
+          <button
+            disabled={state !== "ready"}
+            aria-label="缩小地图"
+            onClick={() => {
+              navigation.current?.zoomBy(-1);
+            }}
+          >
+            −
+          </button>
+          <button
+            disabled={state !== "ready"}
+            onClick={() => navigation.current?.fitOverview()}
+          >
+            全景
+          </button>
+        </div>
+      </div>
+      <div className="autumn-map-caption">
+        <span className="autumn-caption-dot" />
+        <span>景点实位 · 插画意象</span>
+        <small>细线连接名称与真实位置</small>
+      </div>
       {state !== "ready" && (
         <div className="map-connection-state" role="status">
           <Mountain size={32} strokeWidth={1.3} />
@@ -663,12 +778,33 @@ export function MapWorkspace() {
               }
             >
               <MapPin size={15} />
-              <strong>找地点</strong>
-              <span>{state === "ready" ? "地图导览" : "等待连接"}</span>
+              <strong>南京 · 栖霞山</strong>
+              <span>{state === "ready" ? "赏秋导览" : "等待连接"}</span>
               <ChevronDown size={15} className="map-panel-chevron" />
             </button>
             <div className="map-panel-body" id="map-panel-body">
-              <div className="map-browse">
+              <details
+                className="map-browse"
+                open={browseOpen ?? !compact}
+                onToggle={(event) => setBrowseOpen(event.currentTarget.open)}
+              >
+                <summary>发现山中景点 · {scenicPlaces.length} 处</summary>
+                <button
+                  className="autumn-all-places"
+                  disabled={state !== "ready"}
+                  onClick={() => {
+                    resetFilter();
+                    setCategory("景点");
+                    navigation.current?.fitOverview();
+                  }}
+                >
+                  全部景点 · {scenicPlaces.length} 处
+                </button>
+                <div className="autumn-catalog-intro">
+                  <span>QIXIA MOUNTAIN</span>
+                  <h2>循着秋色，走进山间</h2>
+                  <p>点击插画或景点名称，查看这座山的故事。</p>
+                </div>
                 <form className="map-search" onSubmit={submit}>
                   <Search size={16} />
                   <input
@@ -725,7 +861,7 @@ export function MapWorkspace() {
                             selected?.id === place.id ? "is-selected" : ""
                           }
                           key={place.id}
-                          onClick={() => select(place)}
+                          onClick={() => select(place, true)}
                         >
                           <span data-category={place.category}>
                             {place.number}
@@ -743,6 +879,13 @@ export function MapWorkspace() {
                     </div>
                   </details>
                 )}
+                <details className="autumn-unverified">
+                  <summary>还有 {unverifiedPlaces.length} 处待核实</summary>
+                  <p>
+                    {unverifiedPlaces.join("、")}
+                    。暂未匹配到可靠的高德点位，核实后再加入地图。
+                  </p>
+                </details>
                 {selected && (
                   <div className="map-place-detail">
                     <button
@@ -750,6 +893,7 @@ export function MapWorkspace() {
                       aria-label="关闭地点详情"
                       onClick={() => {
                         setSelected(null);
+                        autumnLayer.current?.setSelected(null);
                         clearWalk();
                         routeVersion.current++;
                         setRouteNote("");
@@ -804,7 +948,7 @@ export function MapWorkspace() {
                     </p>
                   </div>
                 )}
-              </div>
+              </details>
             </div>
           </div>,
           placeDockNode,
@@ -843,7 +987,7 @@ export function MapWorkspace() {
           <button
             className="map-nearby-open"
             onClick={() => {
-              select(nearby.place);
+              select(nearby.place, true);
               setNearby(null);
             }}
           >
@@ -864,13 +1008,22 @@ export function MapWorkspace() {
                 onClick={startLocation}
                 disabled={state !== "ready"}
                 className={tracking ? "is-tracking" : ""}
+                aria-label={
+                  tracking
+                    ? "停止定位"
+                    : locationFailure
+                      ? "重新定位"
+                      : "开始定位"
+                }
               >
                 <LocateFixed size={15} />
-                {tracking
-                  ? "停止定位"
-                  : locationFailure
-                    ? "重新定位"
-                    : "开始定位"}
+                <span className="map-location-button-label">
+                  {tracking
+                    ? "停止定位"
+                    : locationFailure
+                      ? "重新定位"
+                      : "开始定位"}
+                </span>
               </button>
               <button
                 className="map-location-chevron"
@@ -887,8 +1040,7 @@ export function MapWorkspace() {
                   <button
                     disabled={state !== "ready"}
                     onClick={() => {
-                      if (center.current)
-                        map.current?.setZoomAndCenter(15, center.current);
+                      navigation.current?.fitOverview();
                     }}
                   >
                     回到栖霞山
