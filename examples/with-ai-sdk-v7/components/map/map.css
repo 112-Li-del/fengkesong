@@ -889,3 +889,44 @@
 .map-terrain-orbit button:hover {
   background: #e5ecd9;
 }
+
+.map-category-list {
+  gap: 5px;
+}
+.map-category-list button {
+  padding: 6px;
+  min-width: 0;
+}
+.scenic-place-marker[data-category="厕所"],
+.map-results button > span:first-child[data-category="厕所"] {
+  background: #edf4fa;
+  border-color: #86a6bc;
+  color: #416782;
+}
+.scenic-place-marker[data-category="餐饮"],
+.map-results button > span:first-child[data-category="餐饮"] {
+  background: #fff5e8;
+  border-color: #cba66d;
+  color: #8c622d;
+}
+.scenic-place-marker[data-category="休息"],
+.map-results button > span:first-child[data-category="休息"] {
+  background: #f1eff7;
+  border-color: #a59ab7;
+  color: #6c6081;
+}
+.scenic-place-marker:focus-visible {
+  outline: 2px solid #415e34;
+  outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+  .history-workspace .history-header .map-place-dock .map-panel-body {
+    position: fixed;
+    top: 63px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-height: calc(100dvh - 145px);
+  }
+}
