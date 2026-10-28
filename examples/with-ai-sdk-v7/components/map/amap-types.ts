@@ -26,7 +26,23 @@ export type MapInstance = {
       lookAt: number[];
     };
   };
-  setZoomAndCenter(zoom: number, center: LngLat): void;
+  setZoomAndCenter(
+    zoom: number,
+    center: LngLat | number[],
+    immediately?: boolean,
+  ): void;
+  setLimitBounds(bounds: unknown): void;
+  clearLimitBounds(): void;
+  setZooms(zooms: number[]): void;
+  setCenter(center: number[], immediately?: boolean): void;
+  lngLatToContainer(point: number[]): { x: number; y: number };
+  containerToLngLat(point: number[]): LngLat;
+  getContainer(): HTMLElement;
+  getZoom(): number;
+  getCenter(): LngLat;
+  on(name: string, callback: () => void): void;
+  off(name: string, callback: () => void): void;
+  setZoom(zoom: number): void;
   addControl(control: unknown): void;
   resize(): void;
 };
@@ -44,6 +60,12 @@ export type GeoInstance = {
   off(name: string, callback: (result: GeoResult) => void): void;
 };
 export type MapAPI = {
+  Pixel: new (x: number, y: number) => unknown;
+  Bounds: new (southwest: number[], northeast: number[]) => unknown;
+  ImageLayer: new (options: Record<string, unknown>) => Overlay & {
+    show(): void;
+    hide(): void;
+  };
   GLCustomLayer: new (options: {
     zIndex: number;
     init(gl: WebGLRenderingContext | WebGL2RenderingContext): void;
@@ -54,15 +76,16 @@ export type MapAPI = {
     element: HTMLElement,
     options: Record<string, unknown>,
   ) => MapInstance;
-  Marker: new (
-    options: Record<string, unknown>,
-  ) => Overlay & { on(name: string, callback: () => void): void };
+  Marker: new (options: Record<string, unknown>) => Overlay & {
+    on(name: string, callback: () => void): void;
+    setzIndex(zIndex: number): void;
+  };
   Circle: new (options: Record<string, unknown>) => Overlay;
   Geolocation: new (options: Record<string, unknown>) => GeoInstance;
   PlaceSearch: new (options: Record<string, unknown>) => {
     searchNearBy(
       keywords: string,
-      center: LngLat,
+      center: LngLat | number[],
       radius: number,
       callback: (
         status: string,
@@ -74,7 +97,7 @@ export type MapAPI = {
     clear(): void;
     search(
       origin: LngLat,
-      destination: LngLat,
+      destination: LngLat | number[],
       callback: (
         status: string,
         result: {
