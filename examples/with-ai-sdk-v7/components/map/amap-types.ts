@@ -3,6 +3,8 @@ export type Place = {
   id: string;
   name: string;
   address?: string;
+  referenceName?: string;
+  referenceCode?: string;
   location: LngLat;
 };
 export type Overlay = { setMap(map: MapInstance | null): void };
@@ -96,7 +98,7 @@ export type MapAPI = {
   Walking: new (options: Record<string, unknown>) => {
     clear(): void;
     search(
-      origin: LngLat,
+      origin: LngLat | number[],
       destination: LngLat | number[],
       callback: (
         status: string,
