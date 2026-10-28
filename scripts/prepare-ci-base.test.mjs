@@ -189,8 +189,15 @@ test("supports non-main bases with slashes", (t) => {
   );
 });
 
-test("a full checkout remains unchanged", (t) => {
+test("a full checkout needs no remote credentials or network access", (t) => {
   const { full, git } = fixture(t);
+  git(
+    full,
+    "remote",
+    "set-url",
+    "origin",
+    "https://example.invalid/unavailable.git",
+  );
   const refs = git(full, "show-ref");
   prepareCiBase("main", full);
   assert.equal(git(full, "show-ref"), refs);
@@ -218,7 +225,7 @@ test("invalid ref names fail before fetching", (t) => {
   assert.throws(() => prepareCiBase("bad..ref", shallow));
 });
 
-test("only PR jobs use shallow history and prepare their comparison base", () => {
+test("credential-free jobs use full history and other PR jobs prepare shallow history", () => {
   const workflow = readFileSync(
     new URL("../.github/workflows/code-quality.yaml", import.meta.url),
     "utf8",
@@ -232,10 +239,14 @@ test("only PR jobs use shallow history and prepare their comparison base", () =>
     const section = workflow
       .split(`\n  ${job}:\n`)[1]
       .split(/\n  [a-z-]+:\n/)[0];
-    assert.match(
-      section,
-      /fetch-depth: \$\{\{ github.event_name == 'pull_request' && 2 \|\| 0 \}\}/,
-    );
+    if (section.includes("persist-credentials: false")) {
+      assert.match(section, /fetch-depth: 0\n/);
+    } else {
+      assert.match(
+        section,
+        /fetch-depth: \$\{\{ github.event_name == 'pull_request' && 2 \|\| 0 \}\}/,
+      );
+    }
     assert.match(
       section,
       /if: github.event_name == 'pull_request'\n\s+run: node scripts\/prepare-ci-base.mjs/,
