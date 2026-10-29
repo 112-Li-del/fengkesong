@@ -52,6 +52,14 @@ export const scenicPlaces: ScenicPlace[] = [...catalog, ...extraCatalog].map(
   (place) => ({ ...place, tier: primaryPlaces.has(place.name) ? 1 : 2 }),
 );
 
+const correctedProviderIds = new Set([
+  "B0FFFFAB2W",
+  "B0MBFS3D1J",
+  "B0JDSRSXG7",
+  "B001912HP8",
+  "B0FFFFKJRG",
+]);
+
 // 导览图上的服务设施（卫生间、停车场、观光车站等），默认隐藏，可在地图面板开关。
 export const facilityPlaces: FacilityPlace[] = facilityCatalog;
 export const unverifiedPlaces = [
@@ -79,8 +87,20 @@ export function scenicSearchResults(places: Place[]) {
   return [
     ...new Map(
       places
-        .filter((place) => withinScenicView(place.location))
-        .map((place) => [place.id, place]),
+        .filter(
+          (place) =>
+            place.id !== "B0FFF0FKGJ" && withinScenicView(place.location),
+        )
+        .map((place) => [
+          place.id,
+          {
+            ...place,
+            name: correctedProviderIds.has(place.id)
+              ? (scenicPlaces.find((scenic) => scenic.id === place.id)?.name ??
+                place.name)
+              : place.name,
+          },
+        ]),
     ).values(),
   ];
 }
