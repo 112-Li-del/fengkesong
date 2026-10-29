@@ -1,0 +1,74 @@
+// 栖霞山景点插画图标索引（public/landmarks 下的人工绘制 PNG）
+// 由 58 张图自动生成：key 为景点中文名，value 为可直接用于 <img src> 的路径。
+// 新增图标时把 PNG 放进 public/landmarks，并在本表补一行即可。
+
+export const landmarkIcons: Readonly<Record<string, string>> = {
+  百草园: "/landmarks/百草园.png",
+  般若台遗址: "/landmarks/般若台遗址.png",
+  半馆: "/landmarks/半馆.png",
+  彩虹明镜: "/landmarks/彩虹明镜.png",
+  畅观亭: "/landmarks/畅观亭.png",
+  德云庵: "/landmarks/德云庵.png",
+  定照庵石刻: "/landmarks/定照庵石刻.png",
+  枫林湖: "/landmarks/枫林湖.png",
+  凤翔峰: "/landmarks/凤翔峰.png",
+  公共厕所: "/landmarks/公共厕所.png",
+  哼哈殿: "/landmarks/哼哈殿.png",
+  红枫林: "/landmarks/红枫林.png",
+  红叶谷: "/landmarks/红叶谷.png",
+  蝴蝶谷: "/landmarks/蝴蝶谷.png",
+  虎山: "/landmarks/虎山.png",
+  话山亭: "/landmarks/话山亭.png",
+  环翠亭: "/landmarks/环翠亭.png",
+  景区南门: "/landmarks/景区南门.png",
+  九龙坡: "/landmarks/九龙坡.png",
+  李香君墓: "/landmarks/李香君墓.png",
+  岭南高奇先生墓道: "/landmarks/岭南高奇先生墓道.png",
+  陆羽茶庄: "/landmarks/陆羽茶庄.png",
+  萌宠乐园: "/landmarks/萌宠乐园.png",
+  弥勒殿: "/landmarks/弥勒殿.png",
+  明征君碑: "/landmarks/明征君碑.png",
+  凝霜亭: "/landmarks/凝霜亭.png",
+  牌坊: "/landmarks/牌坊.png",
+  毘灵宝殿: "/landmarks/毘灵宝殿.png",
+  栖霞古寺: "/landmarks/栖霞古寺.png",
+  栖霞古镇: "/landmarks/栖霞古镇.png",
+  栖霞山森林营地: "/landmarks/栖霞山森林营地.png",
+  千佛崖石窟: "/landmarks/千佛崖石窟.png",
+  千佛岩: "/landmarks/千佛岩.png",
+  千佛斋素菜馆: "/landmarks/千佛斋素菜馆.png",
+  乾隆行宫遗址: "/landmarks/乾隆行宫遗址.png",
+  乾隆御花园: "/landmarks/乾隆御花园.png",
+  秋枫亭: "/landmarks/秋枫亭.png",
+  森境侏罗纪: "/landmarks/森境侏罗纪.png",
+  纱帽峰: "/landmarks/纱帽峰.png",
+  舍利塔: "/landmarks/舍利塔.png",
+  始皇临江处: "/landmarks/始皇临江处.png",
+  受降井: "/landmarks/受降井.png",
+  霜红苑: "/landmarks/霜红苑.png",
+  太虚亭: "/landmarks/太虚亭.png",
+  桃花湖: "/landmarks/桃花湖.png",
+  桃花涧: "/landmarks/桃花涧.png",
+  桃花坞: "/landmarks/桃花坞.png",
+  天开岩: "/landmarks/天开岩.png",
+  卧云亭: "/landmarks/卧云亭.png",
+  五松阁: "/landmarks/五松阁.png",
+  夕佳亭: "/landmarks/夕佳亭.png",
+  小营盘娱乐场: "/landmarks/小营盘娱乐场.png",
+  饮马池: "/landmarks/饮马池.png",
+  印心湖: "/landmarks/印心湖.png",
+  有灵云意: "/landmarks/有灵云意.png",
+  斋堂: "/landmarks/斋堂.png",
+  珍珠泉: "/landmarks/珍珠泉.png",
+  钟鼓楼: "/landmarks/钟鼓楼.png",
+};
+
+// 个别景点共用一张图（示例：钟楼、鼓楼合画成“钟鼓楼”）
+export const landmarkIconAliases: Readonly<Record<string, string>> = {
+  钟楼: "钟鼓楼",
+  鼓楼: "钟鼓楼",
+};
+
+export function landmarkIcon(name: string): string | undefined {
+  return landmarkIcons[name] ?? landmarkIcons[landmarkIconAliases[name] ?? ""];
+}

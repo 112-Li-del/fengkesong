@@ -1,3 +1,4 @@
+import { landmarkIcon } from "@/lib/landmark-icons";
 import { scenicPlaces } from "@/lib/qixia-map";
 import { layoutScenicMarkers, type ScreenRect } from "@/lib/scenic-layout";
 import type { MapAPI, MapInstance, Place } from "./amap-types";
@@ -25,8 +26,21 @@ export function scenicMarkers(
   const entries = scenicPlaces.map((place) => {
     const root = document.createElement("div");
     root.className = "scenic-coordinate";
-    const art = document.createElement("span");
-    art.className = "scenic-site-art art-" + place.art;
+    const icon = landmarkIcon(place.name);
+    let art: HTMLElement;
+    if (icon) {
+      const img = document.createElement("img");
+      img.className = "scenic-site-art is-icon";
+      img.src = icon;
+      img.alt = "";
+      img.draggable = false;
+      img.decoding = "async";
+      art = img;
+    } else {
+      const span = document.createElement("span");
+      span.className = "scenic-site-art art-" + place.art;
+      art = span;
+    }
     art.setAttribute("aria-hidden", "true");
     const dot = document.createElement("button");
     dot.type = "button";
