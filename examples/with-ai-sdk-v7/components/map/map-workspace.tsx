@@ -44,6 +44,7 @@ import { scenicNavigation } from "./scenic-navigation";
 import {
   scenicCenter,
   scenicPlaces,
+  facilityPlaces,
   unverifiedPlaces,
   scenicSearchResults,
   withinScenicView,
@@ -116,6 +117,7 @@ export function MapWorkspace() {
     null,
   );
   const [illustrated, setIllustrated] = useState(true);
+  const [dotsOnly, setDotsOnly] = useState(false);
   const positionOverlays = useRef<Overlay[]>([]);
   const walking = useRef<InstanceType<MapAPI["Walking"]> | null>(null);
   const watch = useRef<number | null>(null);
@@ -144,6 +146,8 @@ export function MapWorkspace() {
     [catalog, category, searchResults],
   );
   const [selected, setSelected] = useState<Place | null>(null);
+  const [showFacilities, setShowFacilities] = useState(false);
+  const facilitiesWanted = useRef(false);
   const [knowledgeOpen, setKnowledgeOpen] = useState(false);
   const [searching, setSearching] = useState(false);
   const [searchNote, setSearchNote] = useState("");
@@ -208,6 +212,10 @@ export function MapWorkspace() {
     },
     [clearWalk],
   );
+  useEffect(() => {
+    facilitiesWanted.current = showFacilities;
+    autumnLayer.current?.setFacilities(showFacilities);
+  }, [showFacilities]);
   const search = useCallback(async (keywords: string) => {
     const api = sdk.current,
       view = map.current,
@@ -311,7 +319,6 @@ export function MapWorkspace() {
         map.current = new api.Map(container.current, {
           center: [origin.lng, origin.lat],
           zoom: 16,
-          zooms: [12, 19],
           features: ["bg", "road"],
           viewMode: "2D",
           rotateEnable: false,
@@ -331,6 +338,7 @@ export function MapWorkspace() {
           autumnLayer.current.remove();
           return;
         }
+        autumnLayer.current.setFacilities(facilitiesWanted.current);
         setState("ready");
         setLoadingCatalog(true);
         setCatalogErrors([]);
@@ -383,7 +391,6 @@ export function MapWorkspace() {
       routeOverlay.current?.setMap(null);
       autumnLayer.current?.remove();
       autumnLayer.current = null;
-      navigation.current?.remove();
       navigation.current = null;
       map.current?.destroy();
       map.current = null;
@@ -693,7 +700,7 @@ export function MapWorkspace() {
   }
   return (
     <section
-      className={`scenic-map-stage ${illustrated ? "is-autumn" : "is-standard"}`}
+      className={`scenic-map-stage ${illustrated ? "is-autumn" : "is-standard"}${dotsOnly ? " is-dots-only" : ""}`}
       aria-label="栖霞山地图导览"
     >
       <div
@@ -710,12 +717,22 @@ export function MapWorkspace() {
               aria-pressed={illustrated === value}
               onClick={() => {
                 setIllustrated(value);
-                autumnLayer.current?.setIllustrated(value);
               }}
             >
               {value ? "赏秋手绘" : "高德底图"}
             </button>
           ))}
+        </div>
+        <div className="autumn-display-tools">
+          <button
+            disabled={state !== "ready"}
+            aria-pressed={dotsOnly}
+            aria-label="隐藏景点插画与名称，只保留节点"
+            title="隐藏景点插画与名称，只保留节点"
+            onClick={() => setDotsOnly((value) => !value)}
+          >
+            仅节点
+          </button>
         </div>
         <div className="autumn-zoom-tools">
           <button
@@ -814,6 +831,17 @@ export function MapWorkspace() {
                   }}
                 >
                   全部景点 · {scenicPlaces.length} 处
+                </button>
+                <button
+                  className={
+                    "map-facility-toggle" + (showFacilities ? " is-on" : "")
+                  }
+                  aria-pressed={showFacilities}
+                  disabled={state !== "ready"}
+                  onClick={() => setShowFacilities((value) => !value)}
+                >
+                  {showFacilities ? "隐藏服务设施" : "显示服务设施"} ·{" "}
+                  {facilityPlaces.length} 处
                 </button>
                 <div className="autumn-catalog-intro">
                   <span>QIXIA MOUNTAIN</span>

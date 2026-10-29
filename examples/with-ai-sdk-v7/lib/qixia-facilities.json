@@ -1,0 +1,442 @@
+[
+  {
+    "id": "QXF001",
+    "name": "入口",
+    "en": "Way In",
+    "group": "gate",
+    "location": {
+      "lng": 118.955772,
+      "lat": 32.15069
+    }
+  },
+  {
+    "id": "QXF002",
+    "name": "出口",
+    "en": "Way Out",
+    "group": "out",
+    "location": {
+      "lng": 118.955832,
+      "lat": 32.150948
+    }
+  },
+  {
+    "id": "QXF003",
+    "name": "游客中心",
+    "en": "Tourist Center",
+    "group": "center",
+    "location": {
+      "lng": 118.955454,
+      "lat": 32.150221
+    }
+  },
+  {
+    "id": "QXF004",
+    "name": "问询处",
+    "en": "Inquiry",
+    "group": "info",
+    "location": {
+      "lng": 118.955301,
+      "lat": 32.150319
+    }
+  },
+  {
+    "id": "QXF005",
+    "name": "问询处",
+    "en": "Inquiry",
+    "group": "info",
+    "location": {
+      "lng": 118.95547,
+      "lat": 32.150308
+    }
+  },
+  {
+    "id": "QXF006",
+    "name": "问询处",
+    "en": "Inquiry",
+    "group": "info",
+    "location": {
+      "lng": 118.966827,
+      "lat": 32.147252
+    }
+  },
+  {
+    "id": "QXF007",
+    "name": "检票处",
+    "en": "Ticket Check",
+    "group": "check",
+    "location": {
+      "lng": 118.955893,
+      "lat": 32.150538
+    }
+  },
+  {
+    "id": "QXF008",
+    "name": "检票处",
+    "en": "Ticket Check",
+    "group": "check",
+    "location": {
+      "lng": 118.959895,
+      "lat": 32.15216
+    }
+  },
+  {
+    "id": "QXF009",
+    "name": "检票处",
+    "en": "Ticket Check",
+    "group": "check",
+    "location": {
+      "lng": 118.966787,
+      "lat": 32.147871
+    }
+  },
+  {
+    "id": "QXF010",
+    "name": "售票处",
+    "en": "Ticket Office",
+    "group": "ticket",
+    "location": {
+      "lng": 118.955657,
+      "lat": 32.150296
+    }
+  },
+  {
+    "id": "QXF011",
+    "name": "售票处",
+    "en": "Ticket Office",
+    "group": "ticket",
+    "location": {
+      "lng": 118.967058,
+      "lat": 32.147256
+    }
+  },
+  {
+    "id": "QXF012",
+    "name": "医疗室",
+    "en": "Clinic",
+    "group": "medical",
+    "location": {
+      "lng": 118.955362,
+      "lat": 32.150142
+    }
+  },
+  {
+    "id": "QXF013",
+    "name": "医疗室",
+    "en": "Clinic",
+    "group": "medical",
+    "location": {
+      "lng": 118.967487,
+      "lat": 32.147265
+    }
+  },
+  {
+    "id": "QXF014",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.967405,
+      "lat": 32.158869
+    }
+  },
+  {
+    "id": "QXF015",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.963424,
+      "lat": 32.158921
+    }
+  },
+  {
+    "id": "QXF016",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.96943,
+      "lat": 32.156047
+    }
+  },
+  {
+    "id": "QXF017",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.961086,
+      "lat": 32.152997
+    }
+  },
+  {
+    "id": "QXF018",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.956185,
+      "lat": 32.151473
+    }
+  },
+  {
+    "id": "QXF019",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.960161,
+      "lat": 32.150936
+    }
+  },
+  {
+    "id": "QXF020",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.956686,
+      "lat": 32.15086
+    }
+  },
+  {
+    "id": "QXF021",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.966597,
+      "lat": 32.15001
+    }
+  },
+  {
+    "id": "QXF022",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.964295,
+      "lat": 32.149343
+    }
+  },
+  {
+    "id": "QXF023",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.955549,
+      "lat": 32.15013
+    }
+  },
+  {
+    "id": "QXF024",
+    "name": "停车场",
+    "en": "Parking",
+    "group": "parking",
+    "location": {
+      "lng": 118.954034,
+      "lat": 32.150721
+    }
+  },
+  {
+    "id": "QXF025",
+    "name": "停车场",
+    "en": "Parking",
+    "group": "parking",
+    "location": {
+      "lng": 118.954131,
+      "lat": 32.15034
+    }
+  },
+  {
+    "id": "QXF026",
+    "name": "停车场",
+    "en": "Parking",
+    "group": "parking",
+    "location": {
+      "lng": 118.956027,
+      "lat": 32.148654
+    }
+  },
+  {
+    "id": "QXF027",
+    "name": "停车场",
+    "en": "Parking",
+    "group": "parking",
+    "location": {
+      "lng": 118.966199,
+      "lat": 32.14789
+    }
+  },
+  {
+    "id": "QXF028",
+    "name": "停车场",
+    "en": "Parking",
+    "group": "parking",
+    "location": {
+      "lng": 118.965569,
+      "lat": 32.146204
+    }
+  },
+  {
+    "id": "QXF029",
+    "name": "游览车停靠站",
+    "en": "Sightseeing Bus Stop",
+    "group": "bus",
+    "location": {
+      "lng": 118.971116,
+      "lat": 32.158421
+    }
+  },
+  {
+    "id": "QXF030",
+    "name": "游览车停靠站",
+    "en": "Sightseeing Bus Stop",
+    "group": "bus",
+    "location": {
+      "lng": 118.968365,
+      "lat": 32.159326
+    }
+  },
+  {
+    "id": "QXF031",
+    "name": "游览车停靠站",
+    "en": "Sightseeing Bus Stop",
+    "group": "bus",
+    "location": {
+      "lng": 118.962363,
+      "lat": 32.15761
+    }
+  },
+  {
+    "id": "QXF032",
+    "name": "游览车停靠站",
+    "en": "Sightseeing Bus Stop",
+    "group": "bus",
+    "location": {
+      "lng": 118.963905,
+      "lat": 32.155549
+    }
+  },
+  {
+    "id": "QXF033",
+    "name": "游览车停靠站",
+    "en": "Sightseeing Bus Stop",
+    "group": "bus",
+    "location": {
+      "lng": 118.956908,
+      "lat": 32.151212
+    }
+  },
+  {
+    "id": "QXF034",
+    "name": "游览车停靠站",
+    "en": "Sightseeing Bus Stop",
+    "group": "bus",
+    "location": {
+      "lng": 118.966702,
+      "lat": 32.148183
+    }
+  },
+  {
+    "id": "QXF035",
+    "name": "游览车停靠站",
+    "en": "Sightseeing Bus Stop",
+    "group": "bus",
+    "location": {
+      "lng": 118.965482,
+      "lat": 32.151012
+    }
+  },
+  {
+    "id": "QXF036",
+    "name": "自助能量补给站",
+    "en": "Self-service Supply Station",
+    "group": "supply",
+    "location": {
+      "lng": 118.963141,
+      "lat": 32.158231
+    }
+  },
+  {
+    "id": "QXF037",
+    "name": "自助能量补给站",
+    "en": "Self-service Supply Station",
+    "group": "supply",
+    "location": {
+      "lng": 118.969543,
+      "lat": 32.156406
+    }
+  },
+  {
+    "id": "QXF038",
+    "name": "消防器材室",
+    "en": "Fire Equipment Room",
+    "group": "fire",
+    "location": {
+      "lng": 118.960978,
+      "lat": 32.156927
+    }
+  },
+  {
+    "id": "QXF039",
+    "name": "消防器材室",
+    "en": "Fire Equipment Room",
+    "group": "fire",
+    "location": {
+      "lng": 118.964227,
+      "lat": 32.156797
+    }
+  },
+  {
+    "id": "QXF040",
+    "name": "消防器材室",
+    "en": "Fire Equipment Room",
+    "group": "fire",
+    "location": {
+      "lng": 118.960176,
+      "lat": 32.152154
+    }
+  },
+  {
+    "id": "QXF041",
+    "name": "消防器材室",
+    "en": "Fire Equipment Room",
+    "group": "fire",
+    "location": {
+      "lng": 118.957025,
+      "lat": 32.14995
+    }
+  },
+  {
+    "id": "QXF042",
+    "name": "消防器材室",
+    "en": "Fire Equipment Room",
+    "group": "fire",
+    "location": {
+      "lng": 118.967818,
+      "lat": 32.147276
+    }
+  },
+  {
+    "id": "QXF043",
+    "name": "森林消防半专业队",
+    "en": "Forest Fire Squad",
+    "group": "squad",
+    "location": {
+      "lng": 118.965506,
+      "lat": 32.147591
+    }
+  },
+  {
+    "id": "QXF044",
+    "name": "旅游文创馆",
+    "en": "Cultural & Creative Shop",
+    "group": "shop",
+    "location": {
+      "lng": 118.955384,
+      "lat": 32.151
+    }
+  }
+]

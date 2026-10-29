@@ -1,29 +1,16 @@
-import { terrainToGcj, terrainSchema } from "@/lib/terrain";
 import roads from "@/lib/qixia-roads.json";
 import type { MapAPI, MapInstance, Place, Overlay } from "./amap-types";
+import { facilityMarkers } from "./facility-markers";
 import { scenicMarkers } from "./scenic-markers";
 
-export async function addAutumnLayer(
+export function addAutumnLayer(
   api: MapAPI,
   map: MapInstance,
   onSelect: (place: Place) => void,
   signal: AbortSignal,
 ) {
   const overlays: Overlay[] = [];
-  const response = await fetch("/terrain/qixia.json", { signal });
-  if (!response.ok) throw new Error("Terrain unavailable");
-  const terrain = terrainSchema.parse(await response.json());
   if (signal.aborted) throw new DOMException("Aborted", "AbortError");
-  const [w, s, e, n] = terrain.bounds;
-  const wash = new api.ImageLayer({
-    url: "/maps/qixia-terrain-wash.png",
-    bounds: new api.Bounds(terrainToGcj(w, s), terrainToGcj(e, n)),
-    opacity: 0.72,
-    zIndex: 8,
-    zooms: [12, 19],
-  });
-  wash.setMap(map);
-  overlays.push(wash);
   for (const outline of [true, false])
     for (const path of roads.paths)
       overlays.push(
@@ -40,14 +27,14 @@ export async function addAutumnLayer(
         }),
       );
   const markers = scenicMarkers(api, map, onSelect);
+  const facilities = facilityMarkers(api, map, onSelect);
   return {
     remove() {
       markers.remove();
+      facilities.remove();
       overlays.forEach((layer) => layer.setMap(null));
     },
-    setIllustrated(value: boolean) {
-      value ? wash.show() : wash.hide();
-    },
     setSelected: markers.setSelected,
+    setFacilities: facilities.setVisible,
   };
 }

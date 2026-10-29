@@ -7,9 +7,17 @@ export function scenicMarkers(
   map: MapInstance,
   onSelect: (place: Place) => void,
 ) {
+  // 导览图配准得来的细部点位（id 以 QXS 开头）：远景只留圆点，放大后才展开插画与名称，
+  // 否则 100 多个标签会在山门一带糊成一片。
+  const minorRoots: HTMLElement[] = [];
   const entries = scenicPlaces.map((place) => {
     const root = document.createElement("div");
     root.className = "scenic-coordinate";
+    const minor = place.id.startsWith("QXS");
+    if (minor) {
+      root.classList.add("is-minor");
+      minorRoots.push(root);
+    }
     const icon = landmarkIcon(place.name);
     let art: HTMLElement;
     if (icon) {
@@ -73,6 +81,13 @@ export function scenicMarkers(
       label.addEventListener(name, (event) => event.stopPropagation());
     return { place, root, dot, marker, label };
   });
+  const MINOR_REVEAL_ZOOM = 16.6;
+  const revealMinor = () => {
+    const reveal = map.getZoom() >= MINOR_REVEAL_ZOOM;
+    for (const root of minorRoots) root.classList.toggle("is-revealed", reveal);
+  };
+  revealMinor();
+  map.on("zoomend", revealMinor);
   return {
     setSelected(id: string | null) {
       for (const entry of entries) {
@@ -85,6 +100,7 @@ export function scenicMarkers(
       }
     },
     remove() {
+      map.off("zoomend", revealMinor);
       entries.forEach((entry) => entry.marker.setMap(null));
     },
   };
