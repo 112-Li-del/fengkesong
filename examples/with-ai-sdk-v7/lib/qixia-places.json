@@ -321,7 +321,8 @@
       "lat": 32.158487
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F1"
   },
   {
     "id": "B001912JDN",
@@ -333,7 +334,8 @@
       "lat": 32.156694
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F2"
   },
   {
     "id": "B0FFGHFYWY",
@@ -345,7 +347,8 @@
       "lat": 32.15321
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "C4"
   },
   {
     "id": "B0LDD5CW33",
@@ -357,19 +360,8 @@
       "lat": 32.146498
     },
     "art": "maple",
-    "tier": 3
-  },
-  {
-    "id": "B0FFFFAB2W",
-    "name": "毘灵宝殿",
-    "providerName": "栖霞山名胜风景区-毗卢宝殿",
-    "address": "栖霞街88号栖霞山风景名胜区栖霞古寺内",
-    "location": {
-      "lng": 118.95945,
-      "lat": 32.152115
-    },
-    "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F10"
   },
   {
     "id": "B0FFFFKJRG",
@@ -381,19 +373,8 @@
       "lat": 32.151247
     },
     "art": "temple",
-    "tier": 3
-  },
-  {
-    "id": "B0FFF0FKGJ",
-    "name": "德云庵",
-    "providerName": "栖霞山名胜风景区-德云庵",
-    "address": "栖霞街88号栖霞山风景名胜区内(西侧)",
-    "location": {
-      "lng": 118.960538,
-      "lat": 32.153709
-    },
-    "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F3"
   },
   {
     "id": "B0FFFF6043",
@@ -405,11 +386,12 @@
       "lat": 32.15176
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F4"
   },
   {
     "id": "B0JDSRSXG7",
-    "name": "有灵云意",
+    "name": "有凌云意",
     "providerName": "有凌云意",
     "address": "栖霞街104号",
     "location": {
@@ -417,7 +399,8 @@
       "lat": 32.156411
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F5"
   },
   {
     "id": "B0M6NHF2DG",
@@ -429,7 +412,8 @@
       "lat": 32.148679
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D8"
   },
   {
     "id": "B0KRK9CH8P",
@@ -441,7 +425,8 @@
       "lat": 32.154661
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F6"
   },
   {
     "id": "B0FFF0FKGI",
@@ -453,19 +438,8 @@
       "lat": 32.153555
     },
     "art": "temple",
-    "tier": 3
-  },
-  {
-    "id": "B0MBFS3D1J",
-    "name": "定照庵石刻",
-    "providerName": "栖霞山定照庵石刻",
-    "address": "栖霞街88号栖霞山风景名胜区内(东侧)",
-    "location": {
-      "lng": 118.971714,
-      "lat": 32.154234
-    },
-    "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F7"
   },
   {
     "id": "B0MU3UOUOP",
@@ -477,7 +451,8 @@
       "lat": 32.154943
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F11"
   },
   {
     "id": "B0H6X5V9VE",
@@ -489,7 +464,8 @@
       "lat": 32.157848
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F8"
   },
   {
     "id": "B0FFHNLM4E",
@@ -501,7 +477,8 @@
       "lat": 32.152156
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D1"
   },
   {
     "id": "B0FFFF5YUS",
@@ -513,7 +490,8 @@
       "lat": 32.152494
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D11"
   },
   {
     "id": "B0L315VK7T",
@@ -525,7 +503,8 @@
       "lat": 32.158149
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F9"
   },
   {
     "id": "B0K0KHC2MA",
@@ -537,7 +516,8 @@
       "lat": 32.156589
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F12"
   },
   {
     "id": "B0L31HVBHB",
@@ -549,7 +529,8 @@
       "lat": 32.157383
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F13"
   },
   {
     "id": "B0MRFSSJLS",
@@ -561,11 +542,12 @@
       "lat": 32.158534
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F14"
   },
   {
     "id": "B001912HP8",
-    "name": "小营盘娱乐场",
+    "name": "小营盘遗址",
     "providerName": "栖霞山名胜风景区-小营盘遗址",
     "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内",
     "location": {
@@ -573,6 +555,7 @@
       "lat": 32.153355
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D12"
   }
 ]

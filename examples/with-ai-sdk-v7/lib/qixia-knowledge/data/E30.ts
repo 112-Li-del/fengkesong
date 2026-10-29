@@ -68,5 +68,5 @@ export const placeE30: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "无独立知识卡片；据官方公众号及龙虎网等公开资料整理。桃树数量为景区宣传口径。",
+  note: "桃树数量为景区宣传口径。",
 };

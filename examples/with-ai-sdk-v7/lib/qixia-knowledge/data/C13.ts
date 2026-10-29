@@ -11,7 +11,7 @@ export const placeC13: QixiaPlaceKnowledge = {
   summary:
     "位于栖霞山风景区内龙山之巅，可于茶庄小憩、与陆羽对饮，品尝口味独特的农家菜着。",
   history:
-    "茶庄一说始建于2001年，一说唐大历年间建造。[3][11][15][17] 据导游讲，唐代茶圣陆羽曾在栖霞山居住一年多。[8][16][18]",
+    "茶庄一说始建于2001年，一说唐大历年间建造。[3][11][15][17] 唐代茶圣陆羽曾在栖霞山居住一年多。[8][16][18]",
   historySources: [
     "[1] 位置（C）：https://m.maigoo.com/citiao/113006.html",
     "[2] 游玩体验（C）：https://m.maigoo.com/citiao/113006.html",

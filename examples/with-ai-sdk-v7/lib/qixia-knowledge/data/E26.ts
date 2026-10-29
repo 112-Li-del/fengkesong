@@ -104,5 +104,4 @@ export const placeE26: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "A",
-  note: "无独立知识卡片；据百度百科及国家文物局名录等公开资料整理。",
 };

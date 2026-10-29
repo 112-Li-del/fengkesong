@@ -11,7 +11,7 @@ export const placeE28: QixiaPlaceKnowledge = {
   summary:
     "位于龙山东部山岭之巅的一座亭，可眺望栖霞山东南景色，深度游览路线经过此处。",
   history:
-    "集云亭位于栖霞山龙山东部山岭之巅，可眺望栖霞山东南方向的景色，深度游览路线经过此处。此亭在网上独立介绍较少。",
+    "集云亭位于栖霞山龙山东部山岭之巅，可眺望栖霞山东南方向的景色，深度游览路线经过此处。",
   keyFacts: [
     {
       key: "位置",
@@ -37,5 +37,4 @@ export const placeE28: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据网络游记与官方地图标注整理，仅作保存。",
 };

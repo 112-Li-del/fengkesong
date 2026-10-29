@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 青锋剑石（岩壁条纹景观，无独立知识卡片，仅作保存）
+// 青锋剑石（岩壁条纹景观）
 export const placeD14: QixiaPlaceKnowledge = {
   referenceCode: "D14",
   referenceName: "青锋剑石",
@@ -47,5 +47,4 @@ export const placeD14: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

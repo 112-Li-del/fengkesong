@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 畅观亭（乾隆行宫建筑之一，无独立知识卡片，仅作保存）
+// 畅观亭（乾隆行宫建筑之一）
 export const placeD11: QixiaPlaceKnowledge = {
   referenceCode: "D11",
   referenceName: "畅观亭",
@@ -47,5 +47,4 @@ export const placeD11: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

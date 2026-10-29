@@ -67,5 +67,4 @@ export const placeE20: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "无独立知识卡片；据百度百科及南京市文广旅局公开资料整理。",
 };

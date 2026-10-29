@@ -57,5 +57,5 @@ export const placeE14: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "无独立知识卡片；古籍所载「德云庵」即今德云亭所在。",
+  note: "古籍所载「德云庵」即今德云亭所在。",
 };

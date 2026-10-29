@@ -47,5 +47,5 @@ export const placeE21: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "无独立知识卡片；据官方公众号「南京栖霞山」「一票逛三园」宣传资料整理。动物种类以园方实际展示为准。",
+  note: "动物种类以园方实际展示为准。",
 };

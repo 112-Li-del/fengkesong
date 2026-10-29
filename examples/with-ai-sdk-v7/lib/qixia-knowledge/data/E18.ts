@@ -73,5 +73,5 @@ export const placeE18: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "无独立知识卡片；据百度百科等公开资料整理。墓塔名单存在多种记载，故并列呈现。",
+  note: "墓塔名单存在多种记载，故并列呈现。",
 };

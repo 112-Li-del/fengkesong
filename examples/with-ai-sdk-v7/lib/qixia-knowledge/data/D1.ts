@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 受降井（近代历史与和平记忆，无独立知识卡片，仅作保存）
+// 受降井（近代历史与和平记忆）
 export const placeD1: QixiaPlaceKnowledge = {
   referenceCode: "D1",
   referenceName: "受降井",
@@ -55,5 +55,4 @@ export const placeD1: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

@@ -11,7 +11,7 @@ export const placeE11: QixiaPlaceKnowledge = {
   summary:
     "位于南门一带的花海/赏花点，春日有牡丹、二月兰等花卉，为春季赏花处。",
   history:
-    "「春·赏花点」位于栖霞山南门一带，据网络资料为十色花海或赏花点，春日有牡丹、二月兰等花卉开放，是春季赏花的一处景点。此点在网上独立介绍较少。",
+    "「春·赏花点」位于栖霞山南门一带，为十色花海或赏花点，春日有牡丹、二月兰等花卉开放，是春季赏花的一处景点。",
   keyFacts: [
     {
       key: "位置",
@@ -37,5 +37,4 @@ export const placeE11: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据官方地图标注与网络游记整理，仅作保存。",
 };

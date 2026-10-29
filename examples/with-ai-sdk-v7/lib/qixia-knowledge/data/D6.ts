@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 白鹿泉（行宫空间相关遗址，无独立知识卡片，仅作保存）
+// 白鹿泉（行宫空间相关遗址）
 export const placeD6: QixiaPlaceKnowledge = {
   referenceCode: "D6",
   referenceName: "白鹿泉",
@@ -38,5 +38,4 @@ export const placeD6: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

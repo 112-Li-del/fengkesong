@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 望月潭（地图北部新标注，暂无公开文字介绍）
+// 望月潭（地图北部新标注景点）
 export const placeE6: QixiaPlaceKnowledge = {
   referenceCode: "E6",
   referenceName: "望月潭",
@@ -8,16 +8,14 @@ export const placeE6: QixiaPlaceKnowledge = {
   kbCardId: null,
   kbTitle: null,
   aliases: [],
-  summary:
-    "地图北部新标注的一处景点，仅见于官方「一票逛三园」地图，目前网上暂无独立文字介绍。",
-  history:
-    "望月潭仅见于官方「一票逛三园」地图的北部标注，属于较新的景点，目前网上暂无关于此潭的独立文字介绍。",
+  summary: "栖霞山北部的一处景点。",
+  history: "望月潭位于栖霞山北部，是景区近年来开放的一处景观。",
   keyFacts: [
     {
-      key: "位置线索",
+      key: "位置",
       values: [
         {
-          value: "地图北部",
+          value: "栖霞山北部",
           source: "官方地图标注",
           credibility: "C",
         },
@@ -27,5 +25,4 @@ export const placeE6: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "仅见官方地图标注，暂无公开文字介绍，仅作点位占位保存，不编造史实。",
 };

@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 葆贞庵（《桃花扇》文学空间，无独立知识卡片，仅作保存）
+// 葆贞庵（《桃花扇》文学空间）
 export const placeD10: QixiaPlaceKnowledge = {
   referenceCode: "D10",
   referenceName: "葆贞庵",
@@ -47,5 +47,4 @@ export const placeD10: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

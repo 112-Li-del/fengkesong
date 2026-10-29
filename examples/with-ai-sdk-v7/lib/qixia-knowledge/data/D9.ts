@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 九乡河（山前河流，无独立知识卡片，仅作保存）
+// 九乡河（山前河流）
 export const placeD9: QixiaPlaceKnowledge = {
   referenceCode: "D9",
   referenceName: "九乡河",
@@ -27,5 +27,4 @@ export const placeD9: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

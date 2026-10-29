@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 小营盘遗址（行宫守卫遗址，无独立知识卡片，仅作保存）
+// 小营盘遗址（行宫守卫遗址）
 export const placeD12: QixiaPlaceKnowledge = {
   referenceCode: "D12",
   referenceName: "小营盘遗址",
@@ -57,5 +57,4 @@ export const placeD12: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

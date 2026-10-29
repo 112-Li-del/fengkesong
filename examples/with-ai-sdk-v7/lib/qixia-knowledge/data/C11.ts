@@ -86,5 +86,5 @@ export const placeC11: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "知识库暂无独立卡片；已据南京职教网与中国火炬网 2024-12/2025-01 报道整理，百草园与「半馆中草药文化园」的关系待核。",
+  note: "百草园与「半馆中草药文化园」的关系待核。",
 };

@@ -159,5 +159,5 @@ export const placeC10: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "知识库暂无独立卡片；已据百度百科与栖霞山导游词整理，馆名与展厅两处记载不一致，已并列保留，待现场核对。",
+  note: "馆名与展厅两处记载不一致，已并列保留，待现场核对。",
 };

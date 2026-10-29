@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 徐十郎茶肆（山前历史茶肆，无独立知识卡片，仅作保存）
+// 徐十郎茶肆（山前历史茶肆）
 export const placeD3: QixiaPlaceKnowledge = {
   referenceCode: "D3",
   referenceName: "徐十郎茶肆",
@@ -37,5 +37,4 @@ export const placeD3: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

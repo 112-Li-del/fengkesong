@@ -109,5 +109,4 @@ export const placeC5: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "知识库暂无独立卡片；已据扬子晚报 2003 年「拟建枫林湖」与 2008 年红叶谷报道整理，待建卡后展示。",
 };
