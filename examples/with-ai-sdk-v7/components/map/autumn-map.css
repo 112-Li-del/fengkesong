@@ -81,14 +81,6 @@
 .autumn-unverified p {
   line-height: 1.8;
 }
-.autumn-forest {
-  display: block;
-  width: 84px;
-  height: 84px;
-  background-image: url("/maps/qixia-watercolor-atlas.png");
-  background-size: 200% 200%;
-  background-repeat: no-repeat;
-}
 .art-temple {
   --art-position: 0% 0%;
 }
@@ -100,15 +92,6 @@
 }
 .art-maple {
   --art-position: 100% 100%;
-}
-.autumn-forest {
-  background-position: var(--art-position);
-}
-.autumn-forest {
-  width: 100px;
-  height: 100px;
-  opacity: 0.72;
-  pointer-events: none;
 }
 .autumn-all-places {
   width: 100%;
@@ -225,11 +208,6 @@
   }
   .autumn-catalog-intro h2 {
     font-size: 18px;
-  }
-  .autumn-forest {
-    width: 50px;
-    height: 50px;
-    opacity: 0.5;
   }
   .history-workspace .history-header {
     gap: 7px;
