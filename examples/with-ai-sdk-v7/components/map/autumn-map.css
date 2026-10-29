@@ -105,6 +105,7 @@
   gap: 12px;
 }
 .autumn-view-switch,
+.autumn-display-tools,
 .autumn-zoom-tools {
   display: flex;
   padding: 4px;
