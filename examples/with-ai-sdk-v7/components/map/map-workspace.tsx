@@ -117,6 +117,7 @@ export function MapWorkspace() {
     null,
   );
   const [illustrated, setIllustrated] = useState(true);
+  const [dotsOnly, setDotsOnly] = useState(false);
   const positionOverlays = useRef<Overlay[]>([]);
   const walking = useRef<InstanceType<MapAPI["Walking"]> | null>(null);
   const watch = useRef<number | null>(null);
@@ -699,7 +700,7 @@ export function MapWorkspace() {
   }
   return (
     <section
-      className={`scenic-map-stage ${illustrated ? "is-autumn" : "is-standard"}`}
+      className={`scenic-map-stage ${illustrated ? "is-autumn" : "is-standard"}${dotsOnly ? " is-dots-only" : ""}`}
       aria-label="栖霞山地图导览"
     >
       <div
@@ -721,6 +722,17 @@ export function MapWorkspace() {
               {value ? "赏秋手绘" : "高德底图"}
             </button>
           ))}
+        </div>
+        <div className="autumn-display-tools">
+          <button
+            disabled={state !== "ready"}
+            aria-pressed={dotsOnly}
+            aria-label="隐藏景点插画与名称，只保留节点"
+            title="隐藏景点插画与名称，只保留节点"
+            onClick={() => setDotsOnly((value) => !value)}
+          >
+            仅节点
+          </button>
         </div>
         <div className="autumn-zoom-tools">
           <button
