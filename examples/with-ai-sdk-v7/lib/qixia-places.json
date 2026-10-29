@@ -361,7 +361,7 @@
   },
   {
     "id": "B0FFFFAB2W",
-    "name": "毘灵宝殿",
+    "name": "毗卢宝殿",
     "providerName": "栖霞山名胜风景区-毗卢宝殿",
     "address": "栖霞街88号栖霞山风景名胜区栖霞古寺内",
     "location": {
@@ -373,24 +373,12 @@
   },
   {
     "id": "B0FFFFKJRG",
-    "name": "弥勒殿",
+    "name": "弥勒圣境",
     "providerName": "栖霞山名胜风景区-弥勒圣境",
     "address": "栖霞山名胜风景区摄山栖霞寺内(东侧)",
     "location": {
       "lng": 118.959662,
       "lat": 32.151247
-    },
-    "art": "temple",
-    "tier": 3
-  },
-  {
-    "id": "B0FFF0FKGJ",
-    "name": "德云庵",
-    "providerName": "栖霞山名胜风景区-德云庵",
-    "address": "栖霞街88号栖霞山风景名胜区内(西侧)",
-    "location": {
-      "lng": 118.960538,
-      "lat": 32.153709
     },
     "art": "temple",
     "tier": 3
@@ -409,7 +397,7 @@
   },
   {
     "id": "B0JDSRSXG7",
-    "name": "有灵云意",
+    "name": "有凌云意",
     "providerName": "有凌云意",
     "address": "栖霞街104号",
     "location": {
@@ -457,7 +445,7 @@
   },
   {
     "id": "B0MBFS3D1J",
-    "name": "定照庵石刻",
+    "name": "定照庵碑刻",
     "providerName": "栖霞山定照庵石刻",
     "address": "栖霞街88号栖霞山风景名胜区内(东侧)",
     "location": {
@@ -565,7 +553,7 @@
   },
   {
     "id": "B001912HP8",
-    "name": "小营盘娱乐场",
+    "name": "小营盘遗址",
     "providerName": "栖霞山名胜风景区-小营盘遗址",
     "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内",
     "location": {

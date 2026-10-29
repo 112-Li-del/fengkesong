@@ -171,7 +171,7 @@
     "id": "QXS015",
     "name": "双亭",
     "providerName": "双亭",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "address": "栖霞山风景名胜区内（据官方导览图配准；高德暂无独立匹配，与秋枫亭是否重复待核实）",
     "location": {
       "lng": 118.966023,
       "lat": 32.157331
@@ -264,13 +264,13 @@
     "tier": 3
   },
   {
-    "id": "QXS023",
+    "id": "B0FFFEVMY2",
     "name": "德云亭",
     "providerName": "德云亭",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
     "location": {
-      "lng": 118.960777,
-      "lat": 32.154585
+      "lng": 118.960474,
+      "lat": 32.155214
     },
     "art": "pavilion",
     "tier": 3
@@ -373,24 +373,12 @@
   },
   {
     "id": "QXS032",
-    "name": "玲珑池遗址",
-    "providerName": "玲珑池遗址",
+    "name": "玲峰池",
+    "providerName": "玲峰池",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
       "lng": 118.964223,
       "lat": 32.153266
-    },
-    "art": "pagoda",
-    "tier": 3
-  },
-  {
-    "id": "QXS033",
-    "name": "定照庵碑刻",
-    "providerName": "定照庵碑刻",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
-    "location": {
-      "lng": 118.969774,
-      "lat": 32.153546
     },
     "art": "pagoda",
     "tier": 3
@@ -421,8 +409,8 @@
   },
   {
     "id": "QXS036",
-    "name": "青锋剑",
-    "providerName": "青锋剑",
+    "name": "青锋剑石",
+    "providerName": "青锋剑石",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
       "lng": 118.965443,
@@ -517,8 +505,8 @@
   },
   {
     "id": "QXS044",
-    "name": "白莲池（用牙池）",
-    "providerName": "白莲池（用牙池）",
+    "name": "白莲池",
+    "providerName": "白莲池",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
       "lng": 118.957985,
@@ -528,21 +516,9 @@
     "tier": 3
   },
   {
-    "id": "QXS045",
-    "name": "毗卢宝殿",
-    "providerName": "毗卢宝殿",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
-    "location": {
-      "lng": 118.958969,
-      "lat": 32.151708
-    },
-    "art": "temple",
-    "tier": 3
-  },
-  {
     "id": "QXS046",
-    "name": "白鹿泉遗址",
-    "providerName": "白鹿泉遗址",
+    "name": "白鹿泉",
+    "providerName": "白鹿泉",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
       "lng": 118.962788,
@@ -612,13 +588,13 @@
     "tier": 3
   },
   {
-    "id": "QXS052",
+    "id": "B0FFFFAF7Z",
     "name": "紫峰阁",
     "providerName": "紫峰阁",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西南角)",
     "location": {
-      "lng": 118.959776,
-      "lat": 32.151055
+      "lng": 118.96044,
+      "lat": 32.15126
     },
     "art": "pavilion",
     "tier": 3
