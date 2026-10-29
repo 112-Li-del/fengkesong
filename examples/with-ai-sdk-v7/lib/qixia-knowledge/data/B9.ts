@@ -25,33 +25,61 @@ export const placeB9: QixiaPlaceKnowledge = {
   ],
   keyFacts: [
     {
-      key: "位置",
+      key: "行宫采石场",
       values: [
         {
-          value: "栖霞山",
+          value:
+            "玲峰池北侧古采石场约 10×10×15 米，可采石料约 1500 立方米，砂岩与行宫外宫墙一致，考为建宫墙取石处",
+          source: "https://www.sohu.com/a/35629381_114812",
+          credibility: "B",
+        },
+      ],
+    },
+    {
+      key: "出土龙凤石雕",
+      values: [
+        {
+          value:
+            "2012 年 11 月李香君墓附近出土 5–6 块龙凤石雕，3 块可拼「双凤呈祥」，伴千余平方米青砖瓦砾，疑为行宫（万松山房）构件",
+          source: "https://www.chinanews.com.cn/cul/2012/11-09/4315568.shtml",
+          credibility: "B",
+        },
+      ],
+    },
+    {
+      key: "宫内佛龛",
+      values: [
+        {
+          value:
+            "行宫内 2.2×2.05 米石壁中心有佛龛，约 65×40×50 厘米，佛像已佚；千佛岩龛数 1994 年 250 个、2000 年 254 个",
+          source: "https://www.chinanews.com.cn/cul/2013/11-15/5506541.shtml",
+          credibility: "B",
+        },
+      ],
+    },
+    {
+      key: "南巡题咏",
+      values: [
+        {
+          value: "乾隆五次驻跸共 45 天，咏栖霞诗 119 首、匾联 44 幅、佛赞 1 篇",
+          source: "https://news.sina.com.cn/o/2008-10-29/072214646330s.shtml",
+          credibility: "B",
+        },
+      ],
+    },
+
+    {
+      key: "位置",
+      group: "location",
+      values: [
+        {
+          value: "栖霞山中峰之左，与东峰相连",
           source: "https://zh.wikipedia.org/zh-cn/栖霞寺",
-          credibility: "C",
-        },
-        {
-          value: "古寺的后面",
-          source:
-            "https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-guided-tour-2026-10.md",
-          credibility: "C",
-        },
-        {
-          value: "中峰之左，与东峰相连",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/shanshanzhi-1790.md",
-          credibility: "C",
-        },
-        {
-          value: "中峰的左面",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaxinzhi-1934.md",
           credibility: "C",
         },
       ],
     },
+
     {
       key: "建造者",
       values: [
@@ -280,6 +308,25 @@ export const placeB9: QixiaPlaceKnowledge = {
   ],
   timeline: [
     {
+      date: "2012-11",
+      what: "行宫附近出土龙凤石雕与青砖瓦砾",
+      source: "https://www.chinanews.com.cn/cul/2012/11-09/4315568.shtml",
+      credibility: "B",
+    },
+    {
+      date: "2013-11",
+      what: "行宫内石壁发现佛龛（佛像已佚）",
+      source: "https://www.chinanews.com.cn/cul/2013/11-15/5506541.shtml",
+      credibility: "B",
+    },
+    {
+      date: "2015-10",
+      what: "玲峰池北侧发现行宫宫墙古采石场",
+      source: "https://www.sohu.com/a/35629381_114812",
+      credibility: "B",
+    },
+
+    {
       date: "清代",
       what: "为乾隆在栖霞山建行宫",
       source: "https://zh.wikipedia.org/zh-cn/栖霞寺",
@@ -360,4 +407,18 @@ export const placeB9: QixiaPlaceKnowledge = {
     },
   ],
   credibility: "C",
+  gushu: {
+    book: "摄山志（清·陈毅辑，乾隆五十五年刊）",
+    note: "古籍作「栖霞行宫」，乾隆二十二年建。",
+    records: [
+      {
+        chapter: "卷一/图序/栖霞",
+        text: "栖霞\n行宫栖霞\n栖霞行宫\n在中峰之左，与东峰相连，秀石磋峨，茂林蒙密，白鹿泉潴其中。乾隆二十二年，翠华重幸，大吏恭建以驻清跸。泉之下鳞次而栉比者，曰春雨山房，曰太古堂，曰武夷一曲精庐。泉之上岖嵚而历落者，曰话山亭，曰有凌云意折旋而左，曲磴层栏，以逹于寝殿，则白下、卷阿、夕佳楼在焉。更上一层，则为石梁精舍。凡此嘉名，俱邀宸锡。虽瓦屋疏櫺，不施绘藻，而阴阳高下，位置天然。几暇篇章，于此尤富云。",
+      },
+      {
+        chapter: "卷首/天章/诗",
+        text: "驻跸栖霞行宫作\n建业路犹西，栖霞适可栖。声名冠白下，树木见萧齐。一宿诚，多费。诸峰率入题。山房春雨足，春雨山房，是处旧名也。颇望霁光霓。面势延清瞩，林峦景未藏。流银响琴瑟，依绿抚琳琅。藻绘信何有，茅茨觉倍强。漫重举僧绍，傲志恐无当。",
+      },
+    ],
+  },
 };

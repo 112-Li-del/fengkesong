@@ -85,49 +85,16 @@ export const placeB4: QixiaPlaceKnowledge = {
     },
     {
       key: "位置",
+      group: "location",
       values: [
         {
-          value: "寺旁",
+          value: "栖霞寺山门前西侧御碑亭内",
           source: "https://zh.wikipedia.org/zh-cn/栖霞寺",
-          credibility: "C",
-        },
-        {
-          value: "江苏省南京市栖霞寺山门前西侧的碑亭内",
-          source: "https://zh.wikipedia.org/zh-cn/明征君碑",
-          credibility: "C",
-        },
-        {
-          value: "栖霞寺",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/shanshanzhi-1790.md",
-          credibility: "C",
-        },
-        {
-          value: "弥勒殿的右侧一碑亭内",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaxinzhi-1934.md",
-          credibility: "C",
-        },
-        {
-          value: "弥勒殿右侧",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiashanzhi-1962.md",
-          credibility: "C",
-        },
-        {
-          value: "栖霞寺前右侧御碑亭内",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiajianzhi-1999.md",
-          credibility: "C",
-        },
-        {
-          value: "寺前右侧御碑亭内",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaquzhi-1999.md",
           credibility: "C",
         },
       ],
     },
+
     {
       key: "全名",
       values: [
@@ -791,4 +758,18 @@ export const placeB4: QixiaPlaceKnowledge = {
     },
   ],
   credibility: "C",
+  gushu: {
+    book: "摄山志（清·陈毅辑，乾隆五十五年刊）",
+    note: "古籍作「明征君碑」「明隐君碑」，唐高宗御制。",
+    records: [
+      {
+        chapter: "卷四/碑铭",
+        text: "御制摄山栖霞寺明征君碑铭\n唐髙宗髙正臣书\n朕闻钟山玉阙，羽驾之所巡游，昆岳金台，蜺衣之所翔集。虽复真宗窅渺，神理希微，犹居三界之中，未出九天之外。唯有乘如广运，妙觉圆明，因无生以济有生，就无象而成大象。道隔去来之际，筌系靡得其端；理忘动寂之机，随迎罕窥其奥。得其门者，如髻宝之希逢；臻其极者，似昙花之难遇。南齐征君明僧绍者，平原人也。仲雍诞其绵允，井伯播其灵苗，芳源肇于孟明，因即以明为姓。曾祖忱，晋著作郎。祖玩，晋建威将军。凤经流誉，雅韵隆于八儒；豹略申戮，香名高于七校。父略，宋平原太守、中书侍郎。朱明出抚，扬惠化而傍沾；紫诰攸司，罄忠规而奉上。",
+      },
+      {
+        chapter: "卷一/图序",
+        text: "图序\n摄山在江宁府东北。山多药草，可以摄生，故名摄山。人以重岩如伞，名伞山。南齐明僧绍隐此，舍宅为寺。山有三峰，中峰屹立，东西拱抱。寺在中峰之麓，唐髙宗制明隐君碑，碑阴书栖霞二大字，因以名。寺。左有舍利石塔，镌琢极工，隋文帝所建也。东通无量殿，一泉曰品外泉。殿东有阁，翼然曰紫峰。循中峰而上，有千佛岩，齐时随石势凿成千佛。旁有石曰纱帽峰，今上赐名玉冠。其前平石曰明月台。自紫峰阁循涧而上，渡春雨桥，即白鹿泉。昔邨民逐鹿至此得之，潴以为池，清泠可爱。中峰之脊曰石梁，旁有玲峰池，绝顶为最高峰。峰下迤西，矗石凌空，曰天开岩。北为幽居庵，稍南为霞心庵，为万松山房。其丽于西峰者，曰叠浪崖曰：德云庵，曰般若台、珍珠泉。台右层峦邃谷，云布星罗。乾隆二十二年，始恭建行殿。自后羲驾时巡，皆蒙临幸。山川应运，遇合有时，自屡邀宾赏而林泉岩壑，益复竞秀争奇，颉颃蓬阆，云山经用始鲜明，况蒙圣天子驻辇挥毫，锡之光宠耶？此山何幸而得此也？其景之尤最者，并绘图缀说，为山恣之冠。",
+      },
+    ],
+  },
 };
