@@ -1,14 +1,14 @@
-// 栖霞山景点插画图标索引（public/landmarks 下的人工绘制 PNG）
-// 由 58 张图自动生成：key 为景点中文名，value 为可直接用于 <img src> 的路径。
-// 新增图标时把 PNG 放进 public/landmarks，并在本表补一行即可。
-
 export const landmarkIcons: Readonly<Record<string, string>> = {
   百草园: "/landmarks/百草园.png",
   般若台遗址: "/landmarks/般若台遗址.png",
   半馆: "/landmarks/半馆.png",
+  南门售票处: "/landmarks/南门售票处.png",
+  西门售票处: "/landmarks/西门售票处.png",
+  游客中心: "/landmarks/游客中心.png",
   彩虹明镜: "/landmarks/彩虹明镜.png",
   畅观亭: "/landmarks/畅观亭.png",
   德云庵: "/landmarks/德云庵.png",
+  叠浪岩: "/landmarks/叠浪岩.png",
   定照庵石刻: "/landmarks/定照庵石刻.png",
   枫林湖: "/landmarks/枫林湖.png",
   凤翔峰: "/landmarks/凤翔峰.png",
@@ -24,6 +24,7 @@ export const landmarkIcons: Readonly<Record<string, string>> = {
   九龙坡: "/landmarks/九龙坡.png",
   李香君墓: "/landmarks/李香君墓.png",
   岭南高奇先生墓道: "/landmarks/岭南高奇先生墓道.png",
+  凌虚室: "/landmarks/凌虚室.png",
   陆羽茶庄: "/landmarks/陆羽茶庄.png",
   萌宠乐园: "/landmarks/萌宠乐园.png",
   弥勒殿: "/landmarks/弥勒殿.png",
@@ -55,18 +56,20 @@ export const landmarkIcons: Readonly<Record<string, string>> = {
   五松阁: "/landmarks/五松阁.png",
   夕佳亭: "/landmarks/夕佳亭.png",
   小营盘娱乐场: "/landmarks/小营盘娱乐场.png",
+  一线天: "/landmarks/一线天.png",
   饮马池: "/landmarks/饮马池.png",
   印心湖: "/landmarks/印心湖.png",
-  有灵云意: "/landmarks/有灵云意.png",
+  幽居庵: "/landmarks/幽居庵.png",
+  有凌云意: "/landmarks/有灵云意.png",
+  月牙池: "/landmarks/月牙池.png",
   斋堂: "/landmarks/斋堂.png",
   珍珠泉: "/landmarks/珍珠泉.png",
   钟鼓楼: "/landmarks/钟鼓楼.png",
 };
-
-// 个别景点共用一张图（示例：钟楼、鼓楼合画成“钟鼓楼”）
 export const landmarkIconAliases: Readonly<Record<string, string>> = {
   钟楼: "钟鼓楼",
   鼓楼: "钟鼓楼",
+  有凌云意: "有灵云意",
 };
 
 export function landmarkIcon(name: string): string | undefined {

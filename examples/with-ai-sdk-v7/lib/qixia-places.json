@@ -409,8 +409,7 @@
   },
   {
     "id": "B0JDSRSXG7",
-    "name": "有灵云意",
-    "providerName": "有凌云意",
+    "name": "有凌云意",
     "address": "栖霞街104号",
     "location": {
       "lng": 118.957999,
@@ -574,5 +573,104 @@
     },
     "art": "temple",
     "tier": 3
+  },
+  {
+    "id": "B0FFGNJSL5",
+    "name": "一线天",
+    "providerName": "栖霞山名胜风景区-一线天",
+    "address": "栖霞山风景名胜区内",
+    "location": {
+      "lng": 118.964542,
+      "lat": 32.155194
+    },
+    "art": "maple"
+  },
+  {
+    "id": "B001912JCZ",
+    "name": "月牙池",
+    "providerName": "栖霞山名胜风景区-月牙池",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
+    "location": {
+      "lng": 118.958193,
+      "lat": 32.152418
+    },
+    "art": "pavilion"
+  },
+  {
+    "id": "B001912IKB",
+    "name": "幽居庵",
+    "providerName": "栖霞山名胜风景区-幽居庵",
+    "address": "栖霞街88号栖霞山风景名胜区内西侧",
+    "location": {
+      "lng": 118.963097,
+      "lat": 32.155701
+    },
+    "art": "temple"
+  },
+  {
+    "id": "B001912JNK",
+    "name": "叠浪岩",
+    "providerName": "栖霞山名胜风景区-叠浪岩",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
+    "location": {
+      "lng": 118.959544,
+      "lat": 32.153237
+    },
+    "art": "maple"
+  },
+  {
+    "id": "B0FFF0FKGX",
+    "name": "凌虚室",
+    "providerName": "栖霞山名胜风景区-凌虚室",
+    "address": "栖霞街88号栖霞山风景名胜区",
+    "location": {
+      "lng": 118.964084,
+      "lat": 32.152755
+    },
+    "art": "temple"
+  },
+  {
+    "id": "B00190Z2DS",
+    "name": "游客中心",
+    "providerName": "栖霞山风景名胜区游客服务中心(栖霞大道店)",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
+    "location": {
+      "lng": 118.9547,
+      "lat": 32.150235
+    },
+    "art": "pavilion"
+  },
+  {
+    "id": "B001913YX0",
+    "name": "西门售票处",
+    "providerName": "栖霞山风景名胜区西门售票处",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
+    "location": {
+      "lng": 118.954566,
+      "lat": 32.150215
+    },
+    "art": "pavilion"
+  },
+  {
+    "id": "B0G0M1MPTG",
+    "name": "南门售票处",
+    "providerName": "栖霞山风景名胜区南门售票处",
+    "address": "宁镇线与玻璃厂路交叉口东260米",
+    "location": {
+      "lng": 118.965153,
+      "lat": 32.145722
+    },
+    "art": "pavilion"
+  },
+  {
+    "id": "B0LD077N44",
+    "name": "栖霞山森林营地",
+    "providerName": "南山鸣教育·栖霞山森林营地",
+    "address": "栖霞街88号",
+    "location": {
+      "lng": 118.967425,
+      "lat": 32.148025
+    },
+    "art": "pavilion"
   }
 ]

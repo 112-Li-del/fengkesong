@@ -4,7 +4,7 @@ import type { LngLat, Place } from "../components/map/amap-types";
 export type ScenicPlace = Place & {
   providerName: string;
   art: string;
-  tier: number;
+  tier?: number;
 };
 
 export const scenicPlaces: ScenicPlace[] = catalog;
