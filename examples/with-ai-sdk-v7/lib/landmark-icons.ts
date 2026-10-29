@@ -70,6 +70,7 @@ export const landmarkIconAliases: Readonly<Record<string, string>> = {
   钟楼: "钟鼓楼",
   鼓楼: "钟鼓楼",
   有凌云意: "有灵云意",
+  毗卢宝殿: "毘灵宝殿",
 };
 
 export function landmarkIcon(name: string): string | undefined {
