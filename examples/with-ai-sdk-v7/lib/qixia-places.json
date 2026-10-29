@@ -297,7 +297,7 @@
       "lat": 32.158487
     },
     "art": "maple",
-    "tier": 1
+    "tier": 3
   },
   {
     "id": "B001912JDN",
@@ -309,7 +309,7 @@
       "lat": 32.156694
     },
     "art": "maple",
-    "tier": 2
+    "tier": 3
   },
   {
     "id": "B0FFGHFYWY",
@@ -321,7 +321,7 @@
       "lat": 32.15321
     },
     "art": "maple",
-    "tier": 2
+    "tier": 3
   },
   {
     "id": "B0LDD5CW33",
@@ -333,7 +333,7 @@
       "lat": 32.146498
     },
     "art": "maple",
-    "tier": 2
+    "tier": 3
   },
   {
     "id": "B0FFFFAB2W",
@@ -345,7 +345,7 @@
       "lat": 32.152115
     },
     "art": "temple",
-    "tier": 2
+    "tier": 3
   },
   {
     "id": "B0FFFFKJRG",
@@ -357,7 +357,7 @@
       "lat": 32.151247
     },
     "art": "temple",
-    "tier": 2
+    "tier": 3
   },
   {
     "id": "B0FFF0FKGJ",
@@ -369,7 +369,7 @@
       "lat": 32.153709
     },
     "art": "temple",
-    "tier": 2
+    "tier": 3
   },
   {
     "id": "B0FFFF6043",
@@ -393,7 +393,7 @@
       "lat": 32.156411
     },
     "art": "pavilion",
-    "tier": 2
+    "tier": 3
   },
   {
     "id": "B0M6NHF2DG",
@@ -405,7 +405,7 @@
       "lat": 32.148679
     },
     "art": "temple",
-    "tier": 2
+    "tier": 3
   },
   {
     "id": "B0KRK9CH8P",
@@ -417,7 +417,7 @@
       "lat": 32.154661
     },
     "art": "temple",
-    "tier": 2
+    "tier": 3
   },
   {
     "id": "B0FFF0FKGI",
