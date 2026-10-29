@@ -66,7 +66,7 @@ function FloatingChat() {
   const [closedFor, setClosedFor] = useState<string | null>(null);
   const count = useAuiState((s) => s.thread.messages.length);
   const threadId = useAuiState((s) => s.threads.mainThreadId);
-  const title = useAuiState((s) => s.threadListItem.title) || "与枫松客聊聊";
+  const title = useAuiState((s) => s.threadListItem.title) || "与枫客松聊聊";
   const context = `${threadId}:${count}`;
   const expanded =
     openedFor === context || (count > 0 && closedFor !== context);
@@ -274,7 +274,7 @@ function Sidebar({
     <div className="history-sidebar-content">
       <div className="history-brand">
         <MessageSquare size={21} strokeWidth={1.7} />
-        <strong>枫松客</strong>
+        <strong>枫客松</strong>
         <button
           className="history-icon-button"
           onClick={onClose}
