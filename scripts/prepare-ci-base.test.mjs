@@ -189,8 +189,15 @@ test("supports non-main bases with slashes", (t) => {
   );
 });
 
-test("a full checkout remains unchanged", (t) => {
+test("a full checkout needs no remote credentials or network access", (t) => {
   const { full, git } = fixture(t);
+  git(
+    full,
+    "remote",
+    "set-url",
+    "origin",
+    "https://example.invalid/unavailable.git",
+  );
   const refs = git(full, "show-ref");
   prepareCiBase("main", full);
   assert.equal(git(full, "show-ref"), refs);
@@ -218,7 +225,7 @@ test("invalid ref names fail before fetching", (t) => {
   assert.throws(() => prepareCiBase("bad..ref", shallow));
 });
 
-test("comparison jobs prepare history without unauthenticated private fetches", () => {
+test("credential-free jobs use full history and other PR jobs prepare shallow history", () => {
   const workflow = readFileSync(
     new URL("../.github/workflows/code-quality.yaml", import.meta.url),
     "utf8",
@@ -232,8 +239,8 @@ test("comparison jobs prepare history without unauthenticated private fetches", 
     const section = workflow
       .split(`\n  ${job}:\n`)[1]
       .split(/\n  [a-z-]+:\n/)[0];
-    if (job === "build") {
-      assert.match(section, /fetch-depth: 0\n\s+persist-credentials: false/);
+    if (section.includes("persist-credentials: false")) {
+      assert.match(section, /fetch-depth: 0\n/);
     } else {
       assert.match(
         section,
