@@ -14,8 +14,43 @@ export type FacilityPlace = Place & {
   group: string;
 };
 
-// 前 46 条来自高德 POI（坐标已核验）；其余来自官方导览图配准，误差约 ±20–40 m。
-export const scenicPlaces: ScenicPlace[] = [...catalog, ...extraCatalog];
+const primaryPlaces = new Set([
+  "牌坊",
+  "哼哈殿",
+  "霜红苑",
+  "彩虹明镜",
+  "桃花涧",
+  "桃花坞",
+  "桃花湖",
+  "卧云亭",
+  "钟鼓楼",
+  "钟楼",
+  "鼓楼",
+  "明征君碑",
+  "栖霞古寺",
+  "舍利塔",
+  "千佛岩",
+  "纱帽峰",
+  "乾隆行宫遗址",
+  "话山亭",
+  "天开岩",
+  "乾隆御花园",
+  "红叶谷",
+  "枫林湖",
+  "印心湖",
+  "始皇临江处",
+  "太虚亭",
+  "萌宠乐园",
+  "半馆",
+  "百草园",
+  "饮马池",
+  "陆羽茶庄",
+  "景区南门",
+]);
+
+export const scenicPlaces: ScenicPlace[] = [...catalog, ...extraCatalog].map(
+  (place) => ({ ...place, tier: primaryPlaces.has(place.name) ? 1 : 2 }),
+);
 
 // 导览图上的服务设施（卫生间、停车场、观光车站等），默认隐藏，可在地图面板开关。
 export const facilityPlaces: FacilityPlace[] = facilityCatalog;

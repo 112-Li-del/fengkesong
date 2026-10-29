@@ -298,7 +298,3 @@
   line-height: 16px;
   padding: 3px 6px;
 }
-.scenic-coordinate.is-selected .scenic-site-label,
-.scenic-coordinate.is-selected .scenic-site-art {
-  display: block;
-}
