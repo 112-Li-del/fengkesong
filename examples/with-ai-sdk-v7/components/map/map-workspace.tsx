@@ -205,10 +205,6 @@ export function MapWorkspace() {
         selectionFrame.current = requestAnimationFrame(() =>
           navigation.current?.reveal(place.location),
         );
-      map.current?.setZoomAndCenter(17, [
-        place.location.lng,
-        place.location.lat,
-      ]);
     },
     [clearWalk],
   );
