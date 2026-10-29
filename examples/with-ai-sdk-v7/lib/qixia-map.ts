@@ -1,4 +1,6 @@
 import catalog from "./qixia-places.json";
+import extraCatalog from "./qixia-places-extra.json";
+import facilityCatalog from "./qixia-facilities.json";
 import type { LngLat, Place } from "../components/map/amap-types";
 
 export type ScenicPlace = Place & {
@@ -7,7 +9,16 @@ export type ScenicPlace = Place & {
   tier: number;
 };
 
-export const scenicPlaces: ScenicPlace[] = catalog;
+export type FacilityPlace = Place & {
+  en: string;
+  group: string;
+};
+
+// 前 46 条来自高德 POI（坐标已核验）；其余来自官方导览图配准，误差约 ±20–40 m。
+export const scenicPlaces: ScenicPlace[] = [...catalog, ...extraCatalog];
+
+// 导览图上的服务设施（卫生间、停车场、观光车站等），默认隐藏，可在地图面板开关。
+export const facilityPlaces: FacilityPlace[] = facilityCatalog;
 export const unverifiedPlaces = [
   "霜红苑",
   "桃花涧",

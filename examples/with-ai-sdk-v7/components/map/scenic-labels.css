@@ -112,3 +112,186 @@
     top: -45px;
   }
 }
+
+/* 服务设施点位（导览图图例里的卫生间、停车场、观光车站等） */
+.facility-pin {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid #8a6b46;
+  border-radius: 50%;
+  background: #fff8e9f2;
+  color: #6e402b;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 3px #775a2533;
+  transition:
+    transform 0.16s ease,
+    background-color 0.16s ease;
+}
+.facility-pin:hover,
+.facility-pin:focus-visible {
+  transform: scale(1.18);
+  outline: 2px solid #a54430;
+  outline-offset: 2px;
+}
+.facility-pin.group-toilet {
+  border-color: #3f6d92;
+  color: #3f6d92;
+}
+.facility-pin.group-parking {
+  border-color: #35674c;
+  color: #35674c;
+}
+.facility-pin.group-bus {
+  border-color: #5d4a90;
+  color: #5d4a90;
+}
+.facility-pin.group-fire {
+  border-color: #a33b30;
+  color: #a33b30;
+}
+.facility-pin.group-supply {
+  border-color: #8a6d3b;
+  color: #8a6d3b;
+}
+/* 出入口与票务：比普通设施更醒目 */
+.facility-pin.group-gate,
+.facility-pin.group-out {
+  border-color: #7d2f22;
+  color: #7d2f22;
+  box-shadow: 0 0 0 2px rgba(165, 68, 48, 0.18);
+}
+.facility-pin.group-center {
+  border-color: #1f5b74;
+  color: #1f5b74;
+  box-shadow: 0 0 0 2px rgba(31, 91, 116, 0.16);
+}
+.facility-pin.group-check {
+  border-color: #6a5334;
+  color: #6a5334;
+}
+.facility-pin.group-ticket {
+  border-color: #8a5a26;
+  color: #8a5a26;
+}
+.facility-pin.group-medical {
+  border-color: #a33b30;
+  color: #a33b30;
+}
+.facility-pin.group-squad {
+  border-color: #6d3b1f;
+  color: #6d3b1f;
+}
+/* 远景：收缩成纯色小点，避免入口一带十几个徽章叠成一团 */
+.facility-pin.is-compact {
+  width: 10px;
+  height: 10px;
+  border-width: 0;
+  background: currentColor;
+  box-shadow: 0 0 0 1.5px #fff8e9;
+}
+.facility-pin.is-compact span {
+  display: none;
+}
+.facility-pin.is-compact:hover,
+.facility-pin.is-compact:focus-visible {
+  transform: scale(1.5);
+}
+
+/* 远景聚合簇：相邻设施合并成一颗带数字的圆章 */
+.facility-cluster {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid #8a6b46;
+  border-radius: 50%;
+  background: #fff8e9f2;
+  color: #6e402b;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 4px #775a2540;
+  transition: transform 0.16s ease;
+}
+.facility-cluster.is-group {
+  border-color: #7d2f22;
+  background: #fff5e3;
+  color: #7d2f22;
+}
+.facility-cluster:hover,
+.facility-cluster:focus-visible {
+  transform: scale(1.12);
+  outline: 2px solid #a54430;
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .facility-cluster {
+    transition: none;
+  }
+  .facility-cluster:hover,
+  .facility-cluster:focus-visible {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .facility-pin:hover,
+  .facility-pin:focus-visible {
+    transform: none;
+  }
+}
+
+.map-facility-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 7px 10px;
+  border: 1px dashed #cbac7d;
+  border-radius: 6px;
+  background: #fffdf6;
+  color: #6e402b;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.map-facility-toggle.is-on {
+  border-style: solid;
+  border-color: #a54430;
+  background: #fdf0e6;
+  color: #a54430;
+}
+.map-facility-toggle:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* 细部点位：远景只留圆点，放大后才放出插画与名称 */
+.scenic-coordinate.is-minor:not(.is-revealed) .scenic-site-art,
+.scenic-coordinate.is-minor:not(.is-revealed) .scenic-site-label {
+  display: none;
+}
+.scenic-coordinate.is-minor .scenic-site-dot::after {
+  background: #b06a48;
+}
+.scenic-coordinate.is-minor.is-revealed .scenic-site-label {
+  font-size: 11px;
+  height: 24px;
+  line-height: 16px;
+  padding: 3px 6px;
+}
+.scenic-coordinate.is-selected .scenic-site-label,
+.scenic-coordinate.is-selected .scenic-site-art {
+  display: block;
+}

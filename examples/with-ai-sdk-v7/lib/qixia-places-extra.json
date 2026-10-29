@@ -1,0 +1,698 @@
+[
+  {
+    "id": "QXS001",
+    "name": "虎爪岩",
+    "providerName": "虎爪岩",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.95566,
+      "lat": 32.151451
+    },
+    "art": "maple",
+    "tier": 3
+  },
+  {
+    "id": "QXS002",
+    "name": "栖霞山大桥",
+    "providerName": "栖霞山大桥",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.959688,
+      "lat": 32.158539
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS003",
+    "name": "碧云亭",
+    "providerName": "碧云亭",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.959331,
+      "lat": 32.156115
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS004",
+    "name": "虎山瀑布",
+    "providerName": "虎山瀑布",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.961984,
+      "lat": 32.156856
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS005",
+    "name": "读枫阁",
+    "providerName": "读枫阁",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.960616,
+      "lat": 32.156164
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS006",
+    "name": "揽秋湖",
+    "providerName": "揽秋湖",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.961475,
+      "lat": 32.155937
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS007",
+    "name": "叠浪岩",
+    "providerName": "叠浪岩",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.961392,
+      "lat": 32.155336
+    },
+    "art": "maple",
+    "tier": 3
+  },
+  {
+    "id": "QXS008",
+    "name": "半月池",
+    "providerName": "半月池",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.965691,
+      "lat": 32.159426
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS009",
+    "name": "寻仙崖瀑布",
+    "providerName": "寻仙崖瀑布",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.966207,
+      "lat": 32.159106
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS010",
+    "name": "望月潭",
+    "providerName": "望月潭",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.965898,
+      "lat": 32.158979
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS011",
+    "name": "望月桥",
+    "providerName": "望月桥",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.965667,
+      "lat": 32.158698
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS012",
+    "name": "印心湖",
+    "providerName": "印心湖",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.96722,
+      "lat": 32.158372
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS013",
+    "name": "天街",
+    "providerName": "天街",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.971813,
+      "lat": 32.158503
+    },
+    "art": "temple",
+    "tier": 3
+  },
+  {
+    "id": "QXS014",
+    "name": "揽红池",
+    "providerName": "揽红池",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.963771,
+      "lat": 32.158252
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS015",
+    "name": "双亭",
+    "providerName": "双亭",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.966023,
+      "lat": 32.157331
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS016",
+    "name": "铺翠池",
+    "providerName": "铺翠池",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.96412,
+      "lat": 32.157752
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS017",
+    "name": "春·赏花点",
+    "providerName": "春·赏花点",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.965348,
+      "lat": 32.156617
+    },
+    "art": "maple",
+    "tier": 3
+  },
+  {
+    "id": "QXS018",
+    "name": "乾隆御碑",
+    "providerName": "乾隆御碑",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.96393,
+      "lat": 32.156468
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS019",
+    "name": "珍珠泉",
+    "providerName": "珍珠泉",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.962408,
+      "lat": 32.155458
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS020",
+    "name": "高僧塔林",
+    "providerName": "高僧塔林",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.964946,
+      "lat": 32.155697
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS021",
+    "name": "禹王碑",
+    "providerName": "禹王碑",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.966035,
+      "lat": 32.155581
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS022",
+    "name": "幽居桥",
+    "providerName": "幽居桥",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.963907,
+      "lat": 32.155549
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS023",
+    "name": "德云亭",
+    "providerName": "德云亭",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.960777,
+      "lat": 32.154585
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS024",
+    "name": "了凡问道",
+    "providerName": "了凡问道",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.965762,
+      "lat": 32.155096
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS025",
+    "name": "读枫文化美食园",
+    "providerName": "读枫文化美食园",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.959454,
+      "lat": 32.154259
+    },
+    "art": "temple",
+    "tier": 3
+  },
+  {
+    "id": "QXS026",
+    "name": "桃花扇亭",
+    "providerName": "桃花扇亭",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.960858,
+      "lat": 32.154199
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS027",
+    "name": "桃花坞",
+    "providerName": "桃花坞",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.960277,
+      "lat": 32.153774
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS028",
+    "name": "高奇峰墓园",
+    "providerName": "高奇峰墓园",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.960098,
+      "lat": 32.153426
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS029",
+    "name": "德云桥",
+    "providerName": "德云桥",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.9603,
+      "lat": 32.152918
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS030",
+    "name": "桃花涧",
+    "providerName": "桃花涧",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.959545,
+      "lat": 32.152876
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS031",
+    "name": "凌虚室遗址",
+    "providerName": "凌虚室遗址",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.964731,
+      "lat": 32.153603
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS032",
+    "name": "玲珑池遗址",
+    "providerName": "玲珑池遗址",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.964223,
+      "lat": 32.153266
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS033",
+    "name": "定照庵碑刻",
+    "providerName": "定照庵碑刻",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.969774,
+      "lat": 32.153546
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS034",
+    "name": "试茶亭",
+    "providerName": "试茶亭",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.964983,
+      "lat": 32.15314
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS035",
+    "name": "白乳泉",
+    "providerName": "白乳泉",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.965042,
+      "lat": 32.152954
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS036",
+    "name": "青锋剑",
+    "providerName": "青锋剑",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.965443,
+      "lat": 32.152988
+    },
+    "art": "maple",
+    "tier": 3
+  },
+  {
+    "id": "QXS037",
+    "name": "「太古」摩崖石刻",
+    "providerName": "「太古」摩崖石刻",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.961675,
+      "lat": 32.152142
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS038",
+    "name": "萌宠乐园",
+    "providerName": "萌宠乐园",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.967181,
+      "lat": 32.152954
+    },
+    "art": "maple",
+    "tier": 3
+  },
+  {
+    "id": "QXS039",
+    "name": "虚云亭",
+    "providerName": "虚云亭",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.969362,
+      "lat": 32.152902
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS040",
+    "name": "得趣亭",
+    "providerName": "得趣亭",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.962608,
+      "lat": 32.151873
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS041",
+    "name": "栖霞飞天",
+    "providerName": "栖霞飞天",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.960097,
+      "lat": 32.151903
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS042",
+    "name": "千佛斋",
+    "providerName": "千佛斋",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.9592,
+      "lat": 32.151909
+    },
+    "art": "temple",
+    "tier": 3
+  },
+  {
+    "id": "QXS043",
+    "name": "青峰涧",
+    "providerName": "青峰涧",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.963731,
+      "lat": 32.152091
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS044",
+    "name": "白莲池（用牙池）",
+    "providerName": "白莲池（用牙池）",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.957985,
+      "lat": 32.151973
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS045",
+    "name": "毗卢宝殿",
+    "providerName": "毗卢宝殿",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.958969,
+      "lat": 32.151708
+    },
+    "art": "temple",
+    "tier": 3
+  },
+  {
+    "id": "QXS046",
+    "name": "白鹿泉遗址",
+    "providerName": "白鹿泉遗址",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.962788,
+      "lat": 32.151484
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS047",
+    "name": "品外泉",
+    "providerName": "品外泉",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.961095,
+      "lat": 32.151503
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS048",
+    "name": "中峰涧",
+    "providerName": "中峰涧",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.964724,
+      "lat": 32.152147
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS049",
+    "name": "江总碑",
+    "providerName": "江总碑",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.958031,
+      "lat": 32.151746
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS050",
+    "name": "春雨桥",
+    "providerName": "春雨桥",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.960929,
+      "lat": 32.151209
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS051",
+    "name": "春雨桥瀑布",
+    "providerName": "春雨桥瀑布",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.961435,
+      "lat": 32.150921
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS052",
+    "name": "紫峰阁",
+    "providerName": "紫峰阁",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.959776,
+      "lat": 32.151055
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS053",
+    "name": "寂然法师像",
+    "providerName": "寂然法师像",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.957442,
+      "lat": 32.151249
+    },
+    "art": "pagoda",
+    "tier": 3
+  },
+  {
+    "id": "QXS054",
+    "name": "集云亭",
+    "providerName": "集云亭",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.966081,
+      "lat": 32.150631
+    },
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "QXS055",
+    "name": "龙山",
+    "providerName": "龙山",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.96397,
+      "lat": 32.149524
+    },
+    "art": "maple",
+    "tier": 3
+  },
+  {
+    "id": "QXS056",
+    "name": "九龙坡",
+    "providerName": "九龙坡",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.958737,
+      "lat": 32.149086
+    },
+    "art": "maple",
+    "tier": 3
+  },
+  {
+    "id": "QXS057",
+    "name": "天鹅凼",
+    "providerName": "天鹅凼",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.967906,
+      "lat": 32.148639
+    },
+    "art": "water",
+    "tier": 3
+  },
+  {
+    "id": "QXS058",
+    "name": "财神殿",
+    "providerName": "财神殿",
+    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "location": {
+      "lng": 118.957393,
+      "lat": 32.152019
+    },
+    "art": "temple",
+    "tier": 3
+  }
+]

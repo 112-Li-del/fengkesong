@@ -1,5 +1,6 @@
 import roads from "@/lib/qixia-roads.json";
 import type { MapAPI, MapInstance, Place, Overlay } from "./amap-types";
+import { facilityMarkers } from "./facility-markers";
 import { scenicMarkers } from "./scenic-markers";
 
 export function addAutumnLayer(
@@ -26,11 +27,14 @@ export function addAutumnLayer(
         }),
       );
   const markers = scenicMarkers(api, map, onSelect);
+  const facilities = facilityMarkers(api, map, onSelect);
   return {
     remove() {
       markers.remove();
+      facilities.remove();
       overlays.forEach((layer) => layer.setMap(null));
     },
     setSelected: markers.setSelected,
+    setFacilities: facilities.setVisible,
   };
 }

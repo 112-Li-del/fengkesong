@@ -44,6 +44,7 @@ import { scenicNavigation } from "./scenic-navigation";
 import {
   scenicCenter,
   scenicPlaces,
+  facilityPlaces,
   unverifiedPlaces,
   scenicSearchResults,
   withinScenicView,
@@ -144,6 +145,8 @@ export function MapWorkspace() {
     [catalog, category, searchResults],
   );
   const [selected, setSelected] = useState<Place | null>(null);
+  const [showFacilities, setShowFacilities] = useState(false);
+  const facilitiesWanted = useRef(false);
   const [knowledgeOpen, setKnowledgeOpen] = useState(false);
   const [searching, setSearching] = useState(false);
   const [searchNote, setSearchNote] = useState("");
@@ -208,6 +211,10 @@ export function MapWorkspace() {
     },
     [clearWalk],
   );
+  useEffect(() => {
+    facilitiesWanted.current = showFacilities;
+    autumnLayer.current?.setFacilities(showFacilities);
+  }, [showFacilities]);
   const search = useCallback(async (keywords: string) => {
     const api = sdk.current,
       view = map.current,
@@ -330,6 +337,7 @@ export function MapWorkspace() {
           autumnLayer.current.remove();
           return;
         }
+        autumnLayer.current.setFacilities(facilitiesWanted.current);
         setState("ready");
         setLoadingCatalog(true);
         setCatalogErrors([]);
@@ -811,6 +819,17 @@ export function MapWorkspace() {
                   }}
                 >
                   全部景点 · {scenicPlaces.length} 处
+                </button>
+                <button
+                  className={
+                    "map-facility-toggle" + (showFacilities ? " is-on" : "")
+                  }
+                  aria-pressed={showFacilities}
+                  disabled={state !== "ready"}
+                  onClick={() => setShowFacilities((value) => !value)}
+                >
+                  {showFacilities ? "隐藏服务设施" : "显示服务设施"} ·{" "}
+                  {facilityPlaces.length} 处
                 </button>
                 <div className="autumn-catalog-intro">
                   <span>QIXIA MOUNTAIN</span>
