@@ -311,7 +311,6 @@ export function MapWorkspace() {
         map.current = new api.Map(container.current, {
           center: [origin.lng, origin.lat],
           zoom: 16,
-          zooms: [12, 19],
           features: ["bg", "road"],
           viewMode: "2D",
           rotateEnable: false,
@@ -383,7 +382,6 @@ export function MapWorkspace() {
       routeOverlay.current?.setMap(null);
       autumnLayer.current?.remove();
       autumnLayer.current = null;
-      navigation.current?.remove();
       navigation.current = null;
       map.current?.destroy();
       map.current = null;
@@ -710,7 +708,6 @@ export function MapWorkspace() {
               aria-pressed={illustrated === value}
               onClick={() => {
                 setIllustrated(value);
-                autumnLayer.current?.setIllustrated(value);
               }}
             >
               {value ? "赏秋手绘" : "高德底图"}
