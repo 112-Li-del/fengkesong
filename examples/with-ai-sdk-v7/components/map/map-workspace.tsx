@@ -37,6 +37,8 @@ import {
   updateProximity,
 } from "@/lib/proximity";
 import { loadAmap } from "./load-amap";
+import { KnowledgeModal, PlaceKnowledge } from "./place-knowledge";
+import { getQixiaKnowledgeByCode } from "@/lib/qixia-knowledge";
 import { addAutumnLayer } from "./autumn-layer";
 import { scenicNavigation } from "./scenic-navigation";
 import {
@@ -142,6 +144,7 @@ export function MapWorkspace() {
     [catalog, category, searchResults],
   );
   const [selected, setSelected] = useState<Place | null>(null);
+  const [knowledgeOpen, setKnowledgeOpen] = useState(false);
   const [searching, setSearching] = useState(false);
   const [searchNote, setSearchNote] = useState("");
   const [tracking, setTracking] = useState(false);
@@ -202,6 +205,10 @@ export function MapWorkspace() {
         selectionFrame.current = requestAnimationFrame(() =>
           navigation.current?.reveal(place.location),
         );
+      map.current?.setZoomAndCenter(17, [
+        place.location.lng,
+        place.location.lat,
+      ]);
     },
     [clearWalk],
   );
@@ -261,10 +268,16 @@ export function MapWorkspace() {
         )
       )
         return;
+      // 知识浮层打开时，点击由浮层自身处理，不要顺带收起地点面板
+      if (knowledgeOpen) return;
       if (!placePanel.current?.contains(target as Node)) closePlacePanel();
     };
     const escape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closePlacePanel();
+      if (event.key === "Escape") {
+        // 知识浮层打开时，Esc 只关闭浮层，不收起地点面板
+        if (knowledgeOpen) return;
+        closePlacePanel();
+      }
     };
     document.addEventListener("pointerdown", dismiss);
     document.addEventListener("keydown", escape);
@@ -272,7 +285,7 @@ export function MapWorkspace() {
       document.removeEventListener("pointerdown", dismiss);
       document.removeEventListener("keydown", escape);
     };
-  }, [panelOpen, closePlacePanel]);
+  }, [panelOpen, knowledgeOpen, closePlacePanel]);
   useEffect(() => {
     let cancelled = false;
     const abort = new AbortController();
@@ -899,6 +912,7 @@ export function MapWorkspace() {
                       aria-label="关闭地点详情"
                       onClick={() => {
                         setSelected(null);
+                        setKnowledgeOpen(false);
                         autumnLayer.current?.setSelected(null);
                         clearWalk();
                         routeVersion.current++;
@@ -952,6 +966,10 @@ export function MapWorkspace() {
                           ? "获取较准确的新位置后，可查询步行路线。"
                           : "路线依据高德道路数据，山中小路可能未覆盖。")}
                     </p>
+                    <PlaceKnowledge
+                      place={selected}
+                      onExpand={() => setKnowledgeOpen(true)}
+                    />
                   </div>
                 )}
               </details>
@@ -1137,6 +1155,13 @@ export function MapWorkspace() {
           </div>,
           dockNode,
         )}
+      {selected && knowledgeOpen && (
+        <KnowledgeModal
+          knowledge={getQixiaKnowledgeByCode(selected.referenceCode)!}
+          place={selected}
+          onClose={() => setKnowledgeOpen(false)}
+        />
+      )}
     </section>
   );
 }
