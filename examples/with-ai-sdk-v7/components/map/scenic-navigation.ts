@@ -1,4 +1,4 @@
-import { clampScenicCenter, scenicOverview } from "@/lib/scenic-view";
+import { scenicOverview } from "@/lib/scenic-view";
 import type { MapInstance, LngLat } from "./amap-types";
 
 export function scenicNavigation(map: MapInstance, container: HTMLElement) {
@@ -9,24 +9,9 @@ export function scenicNavigation(map: MapInstance, container: HTMLElement) {
       window.matchMedia("(max-width:720px), (max-height:500px)").matches,
     );
   let overview = measure();
-  let adjusting = false;
-  const restrict = () => {
-    if (adjusting) return;
-    const point = map.getCenter();
-    const next = clampScenicCenter(point);
-    if (
-      Math.abs(point.lng - next.lng) < 1e-8 &&
-      Math.abs(point.lat - next.lat) < 1e-8
-    )
-      return;
-    adjusting = true;
-    map.setCenter([next.lng, next.lat], true);
-    adjusting = false;
-  };
   map.clearLimitBounds();
-  map.setZooms([overview.zoom, 19]);
-  map.on("mapmove", restrict);
-  map.on("moveend", restrict);
+  map.setZooms([2, 20]);
+  map.setStatus({ dragEnable: true });
   const fitOverview = (immediately = false) =>
     map.setZoomAndCenter(
       overview.zoom,
@@ -70,23 +55,14 @@ export function scenicNavigation(map: MapInstance, container: HTMLElement) {
         container.clientWidth / 2 + pixel.x - targetX,
         container.clientHeight / 2 + pixel.y - targetY,
       ]);
-      const next = clampScenicCenter(center);
-      map.setCenter([next.lng, next.lat]);
+      map.setCenter([center.lng, center.lat]);
     },
     zoomBy(delta: number) {
-      map.setZoom(Math.max(overview.zoom, Math.min(19, map.getZoom() + delta)));
+      map.setZoom(Math.max(2, Math.min(20, map.getZoom(10) + delta)));
     },
     resize() {
-      const wasOverview = Math.abs(map.getZoom() - overview.zoom) < 0.15;
       overview = measure();
       map.resize();
-      map.setZooms([overview.zoom, 19]);
-      if (wasOverview) fitOverview(true);
-      restrict();
-    },
-    remove() {
-      map.off("mapmove", restrict);
-      map.off("moveend", restrict);
     },
   };
 }

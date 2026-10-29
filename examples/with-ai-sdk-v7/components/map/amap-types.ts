@@ -36,11 +36,12 @@ export type MapInstance = {
   setLimitBounds(bounds: unknown): void;
   clearLimitBounds(): void;
   setZooms(zooms: number[]): void;
+  setStatus(status: { dragEnable: boolean }): void;
   setCenter(center: number[], immediately?: boolean): void;
   lngLatToContainer(point: number[]): { x: number; y: number };
   containerToLngLat(point: number[]): LngLat;
   getContainer(): HTMLElement;
-  getZoom(): number;
+  getZoom(digits?: number): number;
   getCenter(): LngLat;
   on(name: string, callback: () => void): void;
   off(name: string, callback: () => void): void;
