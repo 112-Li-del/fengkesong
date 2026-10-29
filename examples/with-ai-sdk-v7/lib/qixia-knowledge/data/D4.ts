@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 品外泉（陆羽品泉故事，无独立知识卡片，仅作保存）
+// 品外泉（陆羽品泉故事）
 export const placeD4: QixiaPlaceKnowledge = {
   referenceCode: "D4",
   referenceName: "品外泉",
@@ -47,5 +47,4 @@ export const placeD4: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

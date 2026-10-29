@@ -78,5 +78,4 @@ export const placeC8: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "知识库暂无独立卡片；已据栖霞山导游词整理位置、形制与观景，古籍出处待查后补。",
 };

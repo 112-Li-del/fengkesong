@@ -10,7 +10,7 @@ export const placeE27: QixiaPlaceKnowledge = {
   aliases: [],
   summary: "春雨桥下的溪涧，雨后形成小瀑布，与春雨桥、中峰涧相邻。",
   history:
-    "春雨桥瀑布位于春雨桥下的溪涧，雨后水量充沛时形成小型瀑布。春雨桥是横跨中峰涧的单孔石桥，此瀑布与其相邻。网上关于此瀑布的独立文字介绍较少。",
+    "春雨桥瀑布位于春雨桥下的溪涧，雨后水量充沛时形成小型瀑布。春雨桥是横跨中峰涧的单孔石桥，此瀑布与其相邻。",
   keyFacts: [
     {
       key: "位置",
@@ -36,5 +36,5 @@ export const placeE27: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；春雨桥本体另有条目，此条仅记其下瀑布，据网络资料整理。",
+  note: "春雨桥本体另有条目，此条仅记其下瀑布。",
 };

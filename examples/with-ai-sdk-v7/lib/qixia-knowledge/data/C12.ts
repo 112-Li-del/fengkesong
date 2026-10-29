@@ -81,5 +81,5 @@ export const placeC12: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "知识库暂无独立卡片；已据搜狐 2019 年登山赛报道与十六番游客记述整理，传说成分较多，池水成因此说待核。",
+  note: "传说成分较多，池水成因此说待核。",
 };

@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 珍珠泉（旧泉眼，无独立知识卡片，仅作保存）
+// 珍珠泉（旧泉眼）
 export const placeD5: QixiaPlaceKnowledge = {
   referenceCode: "D5",
   referenceName: "珍珠泉",
@@ -37,5 +37,4 @@ export const placeD5: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

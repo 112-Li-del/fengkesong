@@ -74,6 +74,24 @@ import { placeE29 } from "./data/E29";
 import { placeE30 } from "./data/E30";
 import { placeE31 } from "./data/E31";
 import { placeE32 } from "./data/E32";
+import { placeE33 } from "./data/E33";
+import { placeE34 } from "./data/E34";
+import { placeE35 } from "./data/E35";
+// 地图旧点位补充条目（F 系列，仅作保存与检索）
+import { placeF1 } from "./data/F1";
+import { placeF2 } from "./data/F2";
+import { placeF3 } from "./data/F3";
+import { placeF4 } from "./data/F4";
+import { placeF5 } from "./data/F5";
+import { placeF6 } from "./data/F6";
+import { placeF7 } from "./data/F7";
+import { placeF8 } from "./data/F8";
+import { placeF9 } from "./data/F9";
+import { placeF10 } from "./data/F10";
+import { placeF11 } from "./data/F11";
+import { placeF12 } from "./data/F12";
+import { placeF13 } from "./data/F13";
+import { placeF14 } from "./data/F14";
 // 人物资料库（仅作保存与检索）
 import { qixiaPeople } from "./data/people";
 
@@ -151,6 +169,23 @@ export const qixiaKnowledge: QixiaPlaceKnowledge[] = [
   placeE30,
   placeE31,
   placeE32,
+  placeE33,
+  placeE34,
+  placeE35,
+  placeF1,
+  placeF2,
+  placeF3,
+  placeF4,
+  placeF5,
+  placeF6,
+  placeF7,
+  placeF8,
+  placeF9,
+  placeF10,
+  placeF11,
+  placeF12,
+  placeF13,
+  placeF14,
 ];
 
 // 人物资料库（与栖霞山相关的人物），仅供检索，不参与地图点位。

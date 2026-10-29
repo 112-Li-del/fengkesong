@@ -89,5 +89,5 @@ export const placeE1: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "A",
-  note: "无独立知识卡片；据百度百科等公开资料整理。此桥不在栖霞山景区内，作为「长江线」远眺地标收录。",
+  note: "此桥不在栖霞山景区内，作为「长江线」远眺地标收录。",
 };

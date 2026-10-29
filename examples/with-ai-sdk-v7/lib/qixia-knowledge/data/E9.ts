@@ -57,5 +57,4 @@ export const placeE9: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "无独立知识卡片；据官方公众号及扬子晚报等公开资料整理。",
 };

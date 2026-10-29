@@ -8,10 +8,8 @@ export const placeE17: QixiaPlaceKnowledge = {
   kbCardId: null,
   kbTitle: null,
   aliases: [],
-  summary:
-    "位于德云亭、叠浪岩附近的一座桥，与德云庵、德云亭相关，网上暂无独立文字介绍。",
-  history:
-    "德云桥见于官方地图标注，位于德云亭、叠浪岩附近，名称与德云庵、德云亭相关。此桥目前网上暂无独立文字介绍。",
+  summary: "位于德云亭、叠浪岩附近的一座桥，与德云庵、德云亭相关。",
+  history: "德云桥位于德云亭、叠浪岩附近，名称与德云庵、德云亭相关。",
   keyFacts: [
     {
       key: "位置",
@@ -37,5 +35,4 @@ export const placeE17: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；仅见官方地图标注，暂无公开文字介绍，仅作点位保存。",
 };

@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 高奇峰墓园（岭南画派画家墓园，无独立知识卡片，仅作保存）
+// 高奇峰墓园（岭南画派画家墓园）
 export const placeD2: QixiaPlaceKnowledge = {
   referenceCode: "D2",
   referenceName: "高奇峰墓园",
@@ -48,5 +48,4 @@ export const placeD2: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

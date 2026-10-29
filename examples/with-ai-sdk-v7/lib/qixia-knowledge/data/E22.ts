@@ -8,10 +8,9 @@ export const placeE22: QixiaPlaceKnowledge = {
   kbCardId: null,
   kbTitle: null,
   aliases: [],
-  summary:
-    "位于狮子岭上的一处亭，据称可从太虚亭观景台远眺东麓狮子岭上的虚云亭，网上独立介绍较少。",
+  summary: "狮子岭上的一处亭，可从太虚亭观景台远眺东麓狮子岭上的虚云亭。",
   history:
-    "虚云亭位于栖霞山狮子岭上。据网络资料，从太虚亭观景台可远眺东麓狮子岭上的虚云亭。此亭在网上独立介绍较少。",
+    "虚云亭位于栖霞山狮子岭上，从太虚亭观景台可远眺东麓狮子岭上的虚云亭。",
   keyFacts: [
     {
       key: "位置",
@@ -37,5 +36,4 @@ export const placeE22: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据网络游记与官方地图标注整理，仅作保存。",
 };

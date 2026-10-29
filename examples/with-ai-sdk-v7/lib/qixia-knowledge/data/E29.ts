@@ -11,7 +11,7 @@ export const placeE29: QixiaPlaceKnowledge = {
   summary:
     "栖霞古寺内的一处殿宇（一念堂、财神殿），福康堂（原财神殿）旁为景区交通车上车点。",
   history:
-    "财神殿位于栖霞古寺内，与一念堂并列。据网络资料，福康堂（原财神殿）旁是景区交通车的上车点。此殿在公开资料中独立介绍较少。",
+    "财神殿位于栖霞古寺内，与一念堂并列。福康堂（原财神殿）旁是景区交通车的上车点。",
   keyFacts: [
     {
       key: "位置",
@@ -47,5 +47,4 @@ export const placeE29: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据网络游记与官方地图标注整理，仅作保存。",
 };

@@ -133,5 +133,4 @@ export const placeC1: QixiaPlaceKnowledge = {
       },
     ],
   },
-  note: "知识库暂无独立卡片；已据《摄山志》与栖霞山导游词整理位置、匾额与禹王碑关联，待建卡后展示。",
 };

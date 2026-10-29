@@ -10,8 +10,7 @@ export const placeB3: QixiaPlaceKnowledge = {
   aliases: ["钟楼", "鼓楼"],
   summary:
     "鼓楼与钟楼沿栖霞寺中轴线南北对称，北为鼓楼（太平鼓，大鼓约 400 公斤），2000 年前后建成。",
-  history:
-    "钟鼓楼建成于2000年前后。[1][5] 据导游讲，2000年前后是钟鼓楼建成的重要时间节点。[5]",
+  history: "钟鼓楼建成于2000年前后。[1][5]",
   historySources: [
     "[1] 建成年代（A）：https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-miniprogram-2026-10-27.md",
     "[5] 大事记 2000年前后（C）：https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-miniprogram-2026-10-27.md",

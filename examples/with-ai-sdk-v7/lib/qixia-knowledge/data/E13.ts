@@ -11,7 +11,7 @@ export const placeE13: QixiaPlaceKnowledge = {
   summary:
     "位于乾隆御碑、卧云亭一带（乾隆御花园侧）的一座桥，与「幽居庵」（乾隆「栖霞十景」之一）相关。",
   history:
-    "幽居桥位于乾隆御碑、卧云亭一带，属乾隆御花园侧，与「幽居庵」有关。幽居庵是乾隆「栖霞十景」之一，桥名或由此而来。此桥在公开资料中独立介绍较少。",
+    "幽居桥位于乾隆御碑、卧云亭一带，属乾隆御花园侧，与「幽居庵」有关。幽居庵是乾隆「栖霞十景」之一，桥名或由此而来。",
   keyFacts: [
     {
       key: "位置",
@@ -37,5 +37,4 @@ export const placeE13: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据官方地图标注整理，仅作保存。",
 };

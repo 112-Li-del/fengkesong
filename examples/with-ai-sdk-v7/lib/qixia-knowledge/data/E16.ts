@@ -47,5 +47,4 @@ export const placeE16: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "无独立知识卡片；据官方公众号及百度百科等公开资料整理。",
 };

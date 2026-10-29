@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 白乳泉试茶亭（摩崖题刻，无独立知识卡片，仅作保存）
+// 白乳泉试茶亭（摩崖题刻）
 export const placeD7: QixiaPlaceKnowledge = {
   referenceCode: "D7",
   referenceName: "白乳泉试茶亭",
@@ -37,5 +37,4 @@ export const placeD7: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

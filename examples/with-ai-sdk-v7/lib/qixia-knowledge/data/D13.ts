@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 春雨桥（跨中峰涧，行宫外墙边界，无独立知识卡片，仅作保存）
+// 春雨桥（跨中峰涧，行宫外墙边界）
 export const placeD13: QixiaPlaceKnowledge = {
   referenceCode: "D13",
   referenceName: "春雨桥",
@@ -37,5 +37,4 @@ export const placeD13: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "无独立知识卡片；据《栖霞山文化故事资料》整理，仅作保存与检索，未经交叉核实。",
 };

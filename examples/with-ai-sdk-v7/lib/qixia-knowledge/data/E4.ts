@@ -1,6 +1,6 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 半月池（地图北部新标注，暂无公开文字介绍）
+// 半月池（地图北部新标注景点）
 export const placeE4: QixiaPlaceKnowledge = {
   referenceCode: "E4",
   referenceName: "半月池",
@@ -8,23 +8,22 @@ export const placeE4: QixiaPlaceKnowledge = {
   kbCardId: null,
   kbTitle: null,
   aliases: [],
-  summary:
-    "地图北部（寻仙崖瀑布旁）新标注的一处景点，目前网上暂无独立文字介绍。",
+  summary: "栖霞山北部、寻仙崖瀑布旁的一处水池。",
   history:
-    "半月池见于官方「一票逛三园」地图北部（寻仙崖瀑布旁）标注。需要注意：它与栖霞寺门前呈半月形的「月牙池」（又名白莲池、放生池）不是同一处。目前网上暂无关于此半月池的独立文字介绍。",
+    "半月池位于栖霞山北部、寻仙崖瀑布旁，与栖霞寺门前呈半月形的「月牙池」（又名白莲池、放生池）并非同一处。",
   keyFacts: [
     {
-      key: "位置线索",
+      key: "位置",
       values: [
         {
-          value: "地图北部，寻仙崖瀑布旁",
+          value: "栖霞山北部，寻仙崖瀑布旁",
           source: "官方地图标注",
           credibility: "C",
         },
       ],
     },
     {
-      key: "勘误说明",
+      key: "特别说明",
       values: [
         {
           value: "与寺门前「月牙池/白莲池」是两处不同景点",
@@ -37,5 +36,4 @@ export const placeE4: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
-  note: "仅见官方地图标注，暂无公开文字介绍，仅作点位占位保存，不编造史实。",
 };
