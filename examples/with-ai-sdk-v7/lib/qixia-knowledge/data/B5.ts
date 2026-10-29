@@ -36,47 +36,16 @@ export const placeB5: QixiaPlaceKnowledge = {
   keyFacts: [
     {
       key: "位置",
+      group: "location",
       values: [
         {
-          value: "中国江苏省南京市栖霞区栖霞山西麓",
+          value: "南京市栖霞区栖霞山西麓",
           source: "https://zh.wikipedia.org/zh-cn/栖霞寺",
-          credibility: "C",
-        },
-        {
-          value: "南京市栖霞山",
-          source: "https://zh.wikipedia.org/zh-cn/明征君碑",
-          credibility: "C",
-        },
-        {
-          value: "栖霞山主峰——凤翔峰的西麓",
-          source: "https://m.maigoo.com/citiao/113006.html",
-          credibility: "C",
-        },
-        {
-          value: "摄山之南",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaxinzhi-1934.md",
-          credibility: "C",
-        },
-        {
-          value: "南京栖霞山",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiashanzhi-1962.md",
-          credibility: "B",
-        },
-        {
-          value: "南京栖霞山",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiawenshi-2000.md",
-          credibility: "B",
-        },
-        {
-          value: "栖霞山中峰西麓",
-          source: "https://m.nj.bendibao.com/tour/140483.shtm",
           credibility: "C",
         },
       ],
     },
+
     {
       key: "别名",
       values: [
@@ -466,7 +435,8 @@ export const placeB5: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "公交线路",
+      key: "交通",
+      group: "transport",
       values: [
         {
           value: "138路、194路、195路、196路、197路、326路、327路、332路",
@@ -476,7 +446,8 @@ export const placeB5: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "公交站点",
+      key: "交通",
+      group: "transport",
       values: [
         {
           value: "栖霞寺站",
@@ -486,7 +457,8 @@ export const placeB5: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "途经路线",
+      key: "游览路线",
+      group: "route",
       values: [
         {
           value: "精华打卡线",
@@ -496,7 +468,8 @@ export const placeB5: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "入园时间",
+      key: "开放时间",
+      group: "time",
       values: [
         {
           value: "古寺 16:00 停止入园，宜上午前往",
@@ -508,7 +481,8 @@ export const placeB5: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "供应时间",
+      key: "开放时间",
+      group: "time",
       values: [
         {
           value: "上午8点到下午3点半",
@@ -520,7 +494,8 @@ export const placeB5: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "开门时间",
+      key: "开放时间",
+      group: "time",
       values: [
         {
           value: "8点开始",
@@ -532,7 +507,8 @@ export const placeB5: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "营业时间",
+      key: "开放时间",
+      group: "time",
       values: [
         {
           value: "8:00-15:00",
@@ -544,7 +520,8 @@ export const placeB5: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "餐饮",
+      key: "服务设施",
+      group: "service",
       values: [
         {
           value: "素菜馆",
@@ -569,6 +546,7 @@ export const placeB5: QixiaPlaceKnowledge = {
     },
     {
       key: "佛光时间",
+      group: "time",
       values: [
         {
           value: "每年11月22-25日15:15-15:45，持续约半小时",
@@ -579,18 +557,7 @@ export const placeB5: QixiaPlaceKnowledge = {
         },
       ],
     },
-    {
-      key: "地点",
-      values: [
-        {
-          value: "栖霞寺三圣殿内",
-          source:
-            "https://www.xiaohongshu.com/explore/6921bc61000000001e02ae25",
-          credibility: "C",
-          note: "来自小红书，游客个人经验",
-        },
-      ],
-    },
+
     {
       key: "光斑路径",
       values: [
@@ -604,14 +571,13 @@ export const placeB5: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "地址",
+      key: "近代救护",
       values: [
         {
-          value: "南京市栖霞区栖霞街88号",
-          source:
-            "https://www.xiaohongshu.com/explore/6895b6d000000000220205c3",
+          value:
+            "1937 年南京大屠杀期间，栖霞寺设立难民收容所，寂然法师等人参与救护，保护了两万余名难民",
+          source: "《栖霞山文化故事资料》（枫客松参赛阅读）",
           credibility: "C",
-          note: "来自小红书，游客个人经验",
         },
       ],
     },
@@ -765,6 +731,12 @@ export const placeB5: QixiaPlaceKnowledge = {
       date: "南齐永明七年（489年）",
       what: "栖霞寺始建",
       source: "https://m.nj.bendibao.com/tour/140483.shtm",
+    },
+    {
+      date: "1937年12月（南京大屠杀期间）",
+      what: "栖霞寺设难民收容所，寂然法师等人救护两万余名难民",
+      source: "《栖霞山文化故事资料》（枫客松参赛阅读）",
+      credibility: "C",
     },
   ],
   audio: [
@@ -962,4 +934,18 @@ export const placeB5: QixiaPlaceKnowledge = {
     },
   ],
   credibility: "C",
+  gushu: {
+    book: "摄山志（清·陈毅辑，乾隆五十五年刊）",
+    note: "古籍作「栖霞寺」「栖霞精舍」。",
+    records: [
+      {
+        chapter: "卷二/创始",
+        text: "创始\n栖霞寺，居山之阳，为南齐明僧绍舍宅所建。太始中，僧绍尝隐居于此，刋木结茅，二十余年，与法度禅师讲无量寿佛经于是西岩石壁，中夜放光，现无量寿佛及殿宇焜煌之状，将凿岩为像，不果。子仲璋为临沂令，乃同禅师经始，于岩下凿龛，琢石为无量寿佛像，可高四丈，左右琢观音、势至像，各高三丈。大同六年，龛顶复放光。文惠太子、豫章文献王、竟陵文宣王田奂及江夏王宋霍姬等，依岩高下深广，就石为像，共成千尊。梁临川王复加莹饰，金碧焕然。隋文帝时，诏送舎利，天下凡八十三州，分造石塔。蒋州栖霞寺其一也。塔以白石为之，高数丈，凡五级，锥𤥨天然，种种奇绝。前设导引二佛，各高丈许，亦以白石为之。像貌衣缕，谓有顾恺之笔法。唐高祖改为功德寺，增置梵宇四十九所。楼阁延袤，宫室壮丽，与山东灵岩、荆州、玉泉、天台、国清，并称四大丛林。高宗御制明隐君碑，改为隐君栖霞寺，御书寺额于碑阴。武宗会昌中，寻废。宣宗大中五年重建，徐铉书额。又曰妙因寺。宋太平兴国五年，改为普云寺，景德五年，改为栖霞禅寺。元祐八年，改为严因崇报禅院，又为景德栖霞寺，又为虎穴寺。明洪武二十五年，仍敕为栖霞寺。",
+      },
+      {
+        chapter: "卷二/古迹",
+        text: "古迹\n栖霞寺，寺为南齐永明七年，处士明僧绍舍宅延法度禅师居之。唐高祖敕改功德寺，高宗攺隐君栖霞寺。武宗会昌中废。宣宗大中五年重建，改妙因寺。宋太平兴国五年，改普云寺。景德五年，改栖霞禅寺。元祐八年，改赐严因崇报禅院，又改景德栖霞寺。洪武二十五年，仍赐额栖霞寺。国朝于顺治五年，邑绅陈公旻昭、刘公觉岸、邓公元昭等请天界觉浪老人主席，复为修葺。",
+      },
+    ],
+  },
 };

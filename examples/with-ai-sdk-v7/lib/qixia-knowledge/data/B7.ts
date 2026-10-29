@@ -147,43 +147,16 @@ export const placeB7: QixiaPlaceKnowledge = {
     },
     {
       key: "位置",
+      group: "location",
       values: [
         {
-          value: "寺后",
+          value: "栖霞寺东北、纱帽峰山崖上",
           source: "https://zh.wikipedia.org/zh-cn/栖霞寺",
-          credibility: "C",
-        },
-        {
-          value: "中峰",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/shanshanzhi-1790.md",
-          credibility: "C",
-        },
-        {
-          value: "自栖霞寺藏经楼之左侧起，至纱帽峰之东止",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaxinzhi-1934.md",
-          credibility: "C",
-        },
-        {
-          value: "栖霞寺东北纱帽峰的山崖上",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiajianzhi-1999.md",
-          credibility: "B",
-        },
-        {
-          value: "栖霞寺东北纱帽峰的山崖上",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaquzhi-1999.md",
-          credibility: "B",
-        },
-        {
-          value: "凤翔峰西南麓，栖霞寺旁边",
-          source: "https://m.nj.bendibao.com/tour/140483.shtm",
           credibility: "C",
         },
       ],
     },
+
     {
       key: "文物保护级别",
       values: [
@@ -436,7 +409,8 @@ export const placeB7: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "附近卫生间",
+      key: "服务设施",
+      group: "service",
       values: [
         {
           value: "千佛崖卫生间（9:00-17:00）",
@@ -876,4 +850,18 @@ export const placeB7: QixiaPlaceKnowledge = {
     },
   ],
   credibility: "C",
+  gushu: {
+    book: "摄山志（清·陈毅辑，乾隆五十五年刊）",
+    note: "古籍作「千佛岩」「千佛龛」。",
+    records: [
+      {
+        chapter: "卷二/形胜",
+        text: "形胜\n山为钟阜支脉，高百三十丈，周回四十里，多产药草，可以摄生，故名。形团如葢，又曰伞山。左右环拱，远近相望，其闲屹然卓立，逦而南者，谓之中峰。少南为千佛岩，下临峻绝，松桧交荫，诚奇观也。右则层崖起伏如波澜者，曰叠浪岩，下则平阪数亩，两山相抱，旧传为栖霞观故址。左则泉流萦带，隐约旁达者，曰中峰涧。间出一泓，流自石隙，其色正白者曰白乳泉。上有石壁，其直如截者，曰天开岩。又上峭壁嵚岑，中可穴居者，曰虎洞。下为紫盆峰。南为列岫，东为白鹿泉。旧传山中水涸，居民逐白鹿至此得泉。又东有峰突兀，仄径巉岩，仅通杖履。刘长卿有东峰寻明征君诗，即此。又东始陟绝顶，四顾诸山，峰峦耸翠，岩壑窈窕，岭有五色土石，鲜蓄草木有涧道，不甚盈溢，每霖雨，即为洪流，奔入于江。而长江西来，三面环绕，莹如缟练，帆樯缥缈，往来络绎，邱陇薮泽，历历可数，亦东南重镇也。",
+      },
+      {
+        chapter: "卷二/创始",
+        text: "创始\n栖霞寺，居山之阳，为南齐明僧绍舍宅所建。太始中，僧绍尝隐居于此，刋木结茅，二十余年，与法度禅师讲无量寿佛经于是西岩石壁，中夜放光，现无量寿佛及殿宇焜煌之状，将凿岩为像，不果。子仲璋为临沂令，乃同禅师经始，于岩下凿龛，琢石为无量寿佛像，可高四丈，左右琢观音、势至像，各高三丈。大同六年，龛顶复放光。文惠太子、豫章文献王、竟陵文宣王田奂及江夏王宋霍姬等，依岩高下深广，就石为像，共成千尊。梁临川王复加莹饰，金碧焕然。隋文帝时，诏送舎利，天下凡八十三州，分造石塔。蒋州栖霞寺其一也。塔以白石为之，高数丈，凡五级，锥𤥨天然，种种奇绝。前设导引二佛，各高丈许，亦以白石为之。像貌衣缕，谓有顾恺之笔法。唐高祖改为功德寺，增置梵宇四十九所。楼阁延袤，宫室壮丽，与山东灵岩、荆州、玉泉、天台、国清，并称四大丛林。高宗御制明隐君碑，改为隐君栖霞寺，御书寺额于碑阴。武宗会昌中，寻废。宣宗大中五年重建，徐铉书额。又曰妙因寺。宋太平兴国五年，改为普云寺，景德五年，改为栖霞禅寺。元祐八年，改为严因崇报禅院，又为景德栖霞寺，又为虎穴寺。明洪武二十五年，仍敕为栖霞寺。",
+      },
+    ],
+  },
 };

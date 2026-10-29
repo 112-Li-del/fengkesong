@@ -23,7 +23,8 @@ export const placeC7: QixiaPlaceKnowledge = {
   ],
   keyFacts: [
     {
-      key: "游览线路",
+      key: "游览路线",
+      group: "route",
       values: [
         {
           value: "线路B",
@@ -33,7 +34,8 @@ export const placeC7: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "观光车行程",
+      key: "游览路线",
+      group: "route",
       values: [
         {
           value: "碧云亭到始皇临江",
@@ -63,7 +65,8 @@ export const placeC7: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "附近卫生间",
+      key: "服务设施",
+      group: "service",
       values: [
         {
           value: "始皇临江卫生间（9:00-17:00）",
@@ -119,22 +122,20 @@ export const placeC7: QixiaPlaceKnowledge = {
     },
     {
       key: "位置",
+      group: "location",
       values: [
         {
-          value: "栖霞山凤翔峰",
+          value: "栖霞山凤翔峰（中峰）半腰北侧",
           source:
             "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiajianzhi-1999.md",
           credibility: "C",
         },
-        {
-          value: "中峰半腰北侧",
-          source: "https://m.nj.bendibao.com/tour/140483.shtm",
-          credibility: "C",
-        },
       ],
     },
+
     {
-      key: "观赏区域",
+      key: "最佳观赏",
+      group: "view",
       values: [
         {
           value: "始皇临江处",
@@ -184,7 +185,8 @@ export const placeC7: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "路线节点",
+      key: "游览路线",
+      group: "route",
       values: [
         {
           value: "始皇临江处",
@@ -199,7 +201,8 @@ export const placeC7: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "看江位置",
+      key: "最佳观赏",
+      group: "view",
       values: [
         {
           value: "始皇临江处",
@@ -211,7 +214,8 @@ export const placeC7: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "步行",
+      key: "游览路线",
+      group: "route",
       values: [
         {
           value: "40",
@@ -279,4 +283,14 @@ export const placeC7: QixiaPlaceKnowledge = {
     },
   ],
   credibility: "C",
+  gushu: {
+    book: "摄山志（清·陈毅辑，乾隆五十五年刊）",
+    note: "弱关联：古籍卷八考证记「秦始皇所从渡江者」，无此景点专名。",
+    records: [
+      {
+        chapter: "卷八/考证",
+        text: "考证\n江乘浦\n志云：江乘浦在县。西北。又云摄山有水注江乘浦，入摄湖，即秦始皇所从渡江者。岂有两江乘浦哉？考之，在东北为江乘。浦，故县以江乘名；在西南者为江宁浦，故县以江寜名。陈庆之大破齐师，擒萧轨处，即此。",
+      },
+    ],
+  },
 };
