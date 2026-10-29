@@ -200,10 +200,6 @@ export function MapWorkspace() {
       setSelected(place);
       autumnLayer.current?.setSelected(place.id);
       setPanelOpen(true);
-      // 选中景点后，若有知识卡片则直接弹出放大卡片
-      setKnowledgeOpen(
-        getQixiaKnowledgeByCode(place.referenceCode)?.kbCardId != null,
-      );
       setBrowseOpen(true);
       if (reveal)
         selectionFrame.current = requestAnimationFrame(() =>
