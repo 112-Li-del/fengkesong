@@ -1,4 +1,4 @@
-import { clampScenicCenter, scenicOverview } from "@/lib/scenic-view";
+import { clampOverviewCenter, scenicOverview } from "@/lib/scenic-view";
 import type { MapInstance, LngLat } from "./amap-types";
 
 export function scenicNavigation(map: MapInstance, container: HTMLElement) {
@@ -10,10 +10,24 @@ export function scenicNavigation(map: MapInstance, container: HTMLElement) {
     );
   let overview = measure();
   let adjusting = false;
+  let dragEnabled: boolean | undefined;
+  const constrain = (point: LngLat) =>
+    clampOverviewCenter(
+      point,
+      map.getZoom(10),
+      overview,
+      container.clientWidth,
+      container.clientHeight,
+    );
   const restrict = () => {
     if (adjusting) return;
+    const canDrag = map.getZoom(10) > overview.zoom + 1e-5;
+    if (canDrag !== dragEnabled) {
+      dragEnabled = canDrag;
+      map.setStatus({ dragEnable: canDrag });
+    }
     const point = map.getCenter();
-    const next = clampScenicCenter(point);
+    const next = constrain(point);
     if (
       Math.abs(point.lng - next.lng) < 1e-8 &&
       Math.abs(point.lat - next.lat) < 1e-8
@@ -27,6 +41,8 @@ export function scenicNavigation(map: MapInstance, container: HTMLElement) {
   map.setZooms([overview.zoom, 19]);
   map.on("mapmove", restrict);
   map.on("moveend", restrict);
+  map.on("zoomchange", restrict);
+  map.on("zoomend", restrict);
   const fitOverview = (immediately = false) =>
     map.setZoomAndCenter(
       overview.zoom,
@@ -34,6 +50,7 @@ export function scenicNavigation(map: MapInstance, container: HTMLElement) {
       immediately,
     );
   fitOverview(true);
+  restrict();
   return {
     fitOverview,
     reveal(point: LngLat) {
@@ -70,14 +87,16 @@ export function scenicNavigation(map: MapInstance, container: HTMLElement) {
         container.clientWidth / 2 + pixel.x - targetX,
         container.clientHeight / 2 + pixel.y - targetY,
       ]);
-      const next = clampScenicCenter(center);
+      const next = constrain(center);
       map.setCenter([next.lng, next.lat]);
     },
     zoomBy(delta: number) {
-      map.setZoom(Math.max(overview.zoom, Math.min(19, map.getZoom() + delta)));
+      map.setZoom(
+        Math.max(overview.zoom, Math.min(19, map.getZoom(10) + delta)),
+      );
     },
     resize() {
-      const wasOverview = Math.abs(map.getZoom() - overview.zoom) < 0.15;
+      const wasOverview = Math.abs(map.getZoom(10) - overview.zoom) < 0.15;
       overview = measure();
       map.resize();
       map.setZooms([overview.zoom, 19]);
@@ -87,6 +106,8 @@ export function scenicNavigation(map: MapInstance, container: HTMLElement) {
     remove() {
       map.off("mapmove", restrict);
       map.off("moveend", restrict);
+      map.off("zoomchange", restrict);
+      map.off("zoomend", restrict);
     },
   };
 }
