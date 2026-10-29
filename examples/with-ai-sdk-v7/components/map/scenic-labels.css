@@ -42,7 +42,6 @@
   background-size: 200% 200%;
   background-repeat: no-repeat;
 }
-/* 人工绘制的景点插画图标（public/landmarks/*.png，已抠成透明底） */
 .scenic-site-art.is-icon {
   width: 56px;
   height: 56px;
@@ -60,9 +59,6 @@
   transform: translateY(-3px) scale(1.1);
   filter: drop-shadow(0 4px 6px rgb(120 40 20 / 0.4));
 }
-.scenic-site-art[hidden] {
-  display: none;
-}
 .map-place-panel.has-selection .autumn-catalog-intro,
 .map-place-panel.has-selection .map-search,
 .map-place-panel.has-selection .map-category-list,
@@ -71,33 +67,10 @@
 .map-place-panel.has-selection .autumn-unverified {
   display: none;
 }
-.scenic-label-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  overflow: hidden;
-}
-.scenic-label-lines {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-.scenic-label-line {
-  stroke: #996945;
-  stroke-width: 1;
-  opacity: 0.7;
-  fill: none;
-}
-.scenic-label-line.is-selected {
-  stroke: #a82c21;
-  stroke-width: 1.6;
-  opacity: 1;
-}
 .scenic-site-label {
   position: absolute;
+  left: 12px;
+  top: -14px;
   z-index: 1;
   pointer-events: auto;
   width: max-content;
