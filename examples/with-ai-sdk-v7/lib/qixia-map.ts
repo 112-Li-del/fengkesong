@@ -27,7 +27,7 @@ export const unverifiedPlaces = [
   "萌宠乐园",
 ];
 export const scenicCenter: LngLat = { lng: 118.9628, lat: 32.1554 };
-export const scenicViewport = [118.9505, 32.1465, 118.977, 32.1655] as const;
+export const scenicViewport = [118.9505, 32.1454, 118.977, 32.1655] as const;
 
 export function withinScenicView(point: LngLat) {
   return (
