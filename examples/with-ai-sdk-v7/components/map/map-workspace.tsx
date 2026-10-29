@@ -632,8 +632,14 @@ export function MapWorkspace() {
           routeOverlay.current = new api.Polyline({
             map: view,
             path,
-            strokeColor: "#277db1",
-            strokeWeight: 5,
+            strokeColor: "#075dcc",
+            strokeWeight: 7,
+            strokeOpacity: 1,
+            isOutline: true,
+            outlineColor: "#ffffff",
+            borderWeight: 3,
+            showDir: true,
+            zIndex: 80,
             lineJoin: "round",
             lineCap: "round",
           });
@@ -732,7 +738,7 @@ export function MapWorkspace() {
       <div className="autumn-map-caption">
         <span className="autumn-caption-dot" />
         <span>景点实位 · 插画意象</span>
-        <small>细线连接名称与真实位置</small>
+        <small>白色：园内道路 · 蓝色：步行导航</small>
       </div>
       {state !== "ready" && (
         <div className="map-connection-state" role="status">
