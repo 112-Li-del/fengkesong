@@ -72,7 +72,7 @@
 
 ## 三、导入内容
 
-从知识库为每个景点导入了以下数据（结构见 `lib/qixia-knowledge.ts`）：
+从知识库为每个景点导入了以下数据（结构见 `lib/qixia-knowledge/types.ts`）：
 
 - **summary（简介）**：卡片概况
 - **history（历史来历）**：机器整理的「来历」讲解词正文
@@ -99,11 +99,14 @@
 
 ### 新增文件
 
-1. **`lib/qixia-knowledge.ts`**（约 5800 行）
-   静态知识数据模块，含类型定义、24 个景点知识数据，以及三个查询函数：
-   - `getQixiaKnowledgeByCode(code)` — 按地图编号（A1/B6…）取知识
-   - `getQixiaKnowledgeByName(name)` — 按名称取知识
-   - `searchQixiaKnowledge(query)` — 关键词搜索
+1. **`lib/qixia-knowledge/`**（按景点拆分的知识数据模块）
+   - `types.ts` — 类型定义（`QixiaPlaceKnowledge` 等）
+   - `data/<code>.ts` — 每个景点一个文件（如 `B5.ts` 为栖霞古寺），各自导出 `place<code>` 常量
+   - `index.ts` — 聚合所有景点并导出三个查询函数：
+     - `getQixiaKnowledgeByCode(code)` — 按地图编号（A1/B6…）取知识
+     - `getQixiaKnowledgeByName(name)` — 按名称取知识
+     - `searchQixiaKnowledge(query)` — 关键词搜索
+   - **扩充方式**：在 `data/` 下新增 `<code>.ts`（导出 `place<code>`），再在 `index.ts` 的 import 与 `qixiaKnowledge` 数组中各登记一行即可。
 
 2. **`components/map/place-knowledge.tsx`**
    地点详情面板里的「景点知识」组件，展示简介、历史来历、大事记（可展开）、讲解音频、图片（带许可署名）。
@@ -153,5 +156,5 @@
 1. **7 个无独立卡片的景点**（牌坊、话山亭、枫林湖、太虚亭、半馆、百草园、饮马池）：知识库没有对应卡片。若要补齐，需从方志/景区资料另行整理，或在知识库补充卡片后再重新导入。
 2. **数据时效与可信度**：知识库内容多为机器整理草稿（`status=draft`）、可信度以 C 级为主，仅作线索与讲解素材；对外说准确数字时请回出处原文核对。
 3. **内部数据未接入**：商户/住宿名单需在 https://qixia.winnielyu.com/internal/ 邮箱登录后生成口令（`qx_...`）才能取，本次未导入。
-4. **重新导入**：知识库更新后，可重跑生成脚本 `F:/fks-gihub/.workbuddy/tools/generate-qixia-knowledge.js` 覆盖 `lib/qixia-knowledge.ts`（脚本内需把临时数据路径改为本机实际路径）。
+4. **重新导入**：知识库更新后，可重跑生成脚本 `F:/fks-gihub/.workbuddy/tools/generate-qixia-knowledge.js` 覆盖 `lib/qixia-knowledge/` 下的数据文件（脚本内需把临时数据路径改为本机实际路径，并按上述拆分结构输出）。
 5. **数据体积**：知识数据约 200KB，随前端一起打包；如需进一步优化体积，可改为运行时按需请求知识库 API。
