@@ -42,6 +42,24 @@
   background-size: 200% 200%;
   background-repeat: no-repeat;
 }
+/* 人工绘制的景点插画图标（public/landmarks/*.png，已抠成透明底） */
+.scenic-site-art.is-icon {
+  width: 56px;
+  height: 56px;
+  left: -28px;
+  top: -62px;
+  background-image: none;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 2px 3px rgb(80 40 20 / 0.28));
+  transition:
+    transform 160ms ease,
+    filter 160ms ease;
+}
+.scenic-coordinate.is-selected .scenic-site-art.is-icon {
+  transform: translateY(-3px) scale(1.1);
+  filter: drop-shadow(0 4px 6px rgb(120 40 20 / 0.4));
+}
 .scenic-site-art[hidden] {
   display: none;
 }
