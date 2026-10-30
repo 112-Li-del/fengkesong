@@ -56,19 +56,16 @@ export const placeC4: QixiaPlaceKnowledge = {
     },
     {
       key: "位置",
+      group: "location",
       values: [
         {
-          value: "景区入口一直往北到达红叶谷",
+          value: "御花园与凤翔峰西南山腰交界处",
           source: "https://m.maigoo.com/citiao/113006.html",
-          credibility: "C",
-        },
-        {
-          value: "御花园和凤翔峰西南山腰的交界处",
-          source: "https://m.nj.bendibao.com/tour/140483.shtm",
           credibility: "C",
         },
       ],
     },
+
     {
       key: "观江视线",
       values: [
@@ -80,7 +77,8 @@ export const placeC4: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "途经路线",
+      key: "游览路线",
+      group: "route",
       values: [
         {
           value: "原霜红苑——桃花湖——红叶谷——枫林湖——太虚亭——了凡问道——天开岩",
@@ -100,7 +98,18 @@ export const placeC4: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "所在线路",
+      key: "谷内景观",
+      values: [
+        {
+          value: "谷内有「铺翠」「揽红」二池及夕佳亭长廊，观枫也不限于谷内",
+          source: "《栖霞山文化故事资料》（枫客松参赛阅读）",
+          credibility: "C",
+        },
+      ],
+    },
+    {
+      key: "游览路线",
+      group: "route",
       values: [
         {
           value: "精华打卡线",
@@ -115,7 +124,8 @@ export const placeC4: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "线路顺序",
+      key: "游览路线",
+      group: "route",
       values: [
         {
           value: "桃花湖→红叶谷→枫林湖",

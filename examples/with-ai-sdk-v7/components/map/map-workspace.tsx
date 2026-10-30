@@ -947,12 +947,6 @@ export function MapWorkspace() {
                     </button>
                     <span className="map-detail-label">已选择地点</span>
                     <h2>{selected.name}</h2>
-                    {selected.referenceCode && (
-                      <p>
-                        参考图 {selected.referenceCode} ·{" "}
-                        {selected.referenceName}
-                      </p>
-                    )}
                     <p>
                       {typeof selected.address === "string"
                         ? selected.address
