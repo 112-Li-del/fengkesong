@@ -3,7 +3,7 @@ import type { MapAPI, MapInstance, Place } from "./amap-types";
 
 const GLYPH: Readonly<Record<string, string>> = {
   center: "i",
-  info: "?",
+  info: "问",
   ticket: "票",
   shop: "购",
   gate: "门",
@@ -88,9 +88,8 @@ export function facilityMarkers(
     return { facility, root, marker };
   });
 
-  let visible = false;
-  // 可见的大类集合；为空则全部显示。用于按分类开关设施。
-  let visibleCategories: Set<string> | null = null;
+  let visibleIds: ReadonlySet<string> = new Set();
+  let selectedId: string | null = null;
   let clusters: { marker: { setMap(map: MapInstance | null): void } }[] = [];
 
   const clearClusters = () => {
@@ -98,20 +97,23 @@ export function facilityMarkers(
     clusters = [];
   };
 
-  const active = (facility: FacilityPlace) =>
-    visibleCategories === null || visibleCategories.has(facility.category);
-
   const layout = () => {
     clearClusters();
     const clustered = map.getZoom() < CLUSTER_ZOOM;
     for (const entry of entries)
       entry.marker.setMap(
-        visible && !clustered && active(entry.facility) ? map : null,
+        visibleIds.has(entry.facility.id) &&
+          (!clustered || entry.facility.id === selectedId)
+          ? map
+          : null,
       );
-    if (!visible || !clustered) return;
+    if (!visibleIds.size || !clustered) return;
 
     const points = entries
-      .filter((entry) => active(entry.facility))
+      .filter(
+        (entry) =>
+          visibleIds.has(entry.facility.id) && entry.facility.id !== selectedId,
+      )
       .map((entry) => {
         const { lng, lat } = entry.facility.location;
         const pixel = map.lngLatToContainer([lng, lat]);
@@ -199,16 +201,17 @@ export function facilityMarkers(
   map.on("moveend", layout);
 
   return {
-    get visible() {
-      return visible;
-    },
-    setVisible(next: boolean) {
-      visible = next;
+    setVisibleIds(ids: ReadonlySet<string>) {
+      visibleIds = ids;
       layout();
-      return next;
     },
-    setCategories(categories: string[] | null) {
-      visibleCategories = categories === null ? null : new Set(categories);
+    setSelected(id: string | null) {
+      selectedId = id;
+      for (const entry of entries) {
+        const selected = entry.facility.id === id;
+        entry.root.classList.toggle("is-selected", selected);
+        entry.root.setAttribute("aria-pressed", String(selected));
+      }
       layout();
     },
     remove() {

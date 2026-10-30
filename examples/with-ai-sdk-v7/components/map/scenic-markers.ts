@@ -89,6 +89,10 @@ export function scenicMarkers(
   revealMinor();
   map.on("zoomend", revealMinor);
   return {
+    setVisibleIds(ids: ReadonlySet<string>) {
+      for (const entry of entries)
+        entry.marker.setMap(ids.has(entry.place.id) ? map : null);
+    },
     setSelected(id: string | null) {
       for (const entry of entries) {
         const selected = entry.place.id === id;

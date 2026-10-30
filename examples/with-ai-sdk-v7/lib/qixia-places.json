@@ -67,7 +67,6 @@
   {
     "id": "B001912JBJ",
     "name": "钟楼",
-    "referenceCode": "B2",
     "providerName": "栖霞山风景名胜区-钟楼",
     "address": "栖霞山名胜风景区摄山栖霞寺内(西侧)",
     "location": {
@@ -80,7 +79,6 @@
   {
     "id": "B001912JC3",
     "name": "鼓楼",
-    "referenceCode": "B3",
     "providerName": "栖霞山名胜风景区-鼓楼",
     "address": "栖霞街88号栖霞山风景名胜区内(西侧)",
     "location": {
@@ -110,8 +108,8 @@
     "providerName": "栖霞山名胜风景区摄山栖霞寺",
     "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
     "location": {
-      "lng": 118.957983,
-      "lat": 32.151807
+      "lng": 118.957978,
+      "lat": 32.151821
     },
     "art": "temple",
     "tier": 1
@@ -201,8 +199,8 @@
     "providerName": "栖霞山名胜风景区-乾隆御花园",
     "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内",
     "location": {
-      "lng": 118.964293,
-      "lat": 32.156408
+      "lng": 118.964287,
+      "lat": 32.156442
     },
     "art": "temple",
     "tier": 2
@@ -347,8 +345,7 @@
       "lat": 32.15321
     },
     "art": "maple",
-    "tier": 3,
-    "referenceCode": "C4"
+    "tier": 3
   },
   {
     "id": "B0LDD5CW33",
@@ -365,12 +362,12 @@
   },
   {
     "id": "B0FFFFKJRG",
-    "name": "弥勒殿",
+    "name": "弥勒圣境",
     "providerName": "栖霞山名胜风景区-弥勒圣境",
     "address": "栖霞山名胜风景区摄山栖霞寺内(东侧)",
     "location": {
-      "lng": 118.959662,
-      "lat": 32.151247
+      "lng": 118.959654,
+      "lat": 32.151266
     },
     "art": "temple",
     "tier": 3,
@@ -382,8 +379,8 @@
     "providerName": "栖霞山名胜风景区-斋堂",
     "address": "栖霞山名胜风景区摄山栖霞寺内(东侧)",
     "location": {
-      "lng": 118.95927,
-      "lat": 32.15176
+      "lng": 118.959265,
+      "lat": 32.151771
     },
     "art": "temple",
     "tier": 3,
@@ -473,8 +470,8 @@
     "providerName": "栖霞山风景区-受降井",
     "address": "近郊栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
     "location": {
-      "lng": 118.958284,
-      "lat": 32.152156
+      "lng": 118.958282,
+      "lat": 32.152167
     },
     "art": "pavilion",
     "tier": 3,

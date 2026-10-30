@@ -1,7 +1,10 @@
 import roads from "@/lib/qixia-roads.json";
+import paperBoundary from "@/lib/qixia-paper-boundary.json";
 import type { MapAPI, MapInstance, Place, Overlay } from "./amap-types";
 import { facilityMarkers } from "./facility-markers";
 import { scenicMarkers } from "./scenic-markers";
+import { mountainDecorations } from "./mountain-decorations";
+import { lakeDecorations } from "./lake-decorations";
 
 export function addAutumnLayer(
   api: MapAPI,
@@ -11,6 +14,19 @@ export function addAutumnLayer(
 ) {
   const overlays: Overlay[] = [];
   if (signal.aborted) throw new DOMException("Aborted", "AbortError");
+  const paper = new api.Polygon({
+    map,
+    path: paperBoundary.path,
+    fillColor: "#f4f2af",
+    fillOpacity: 1,
+    strokeWeight: 0,
+    strokeOpacity: 0,
+    zIndex: 6,
+    bubble: true,
+    cursor: "grab",
+  });
+  const mountains = mountainDecorations(api, map, signal);
+  const lakes = lakeDecorations(api, map, signal);
   for (const outline of [true, false])
     for (const path of roads.paths)
       overlays.push(
@@ -30,12 +46,25 @@ export function addAutumnLayer(
   const facilities = facilityMarkers(api, map, onSelect);
   return {
     remove() {
+      mountains.remove();
+      lakes.remove();
+      paper.setMap(null);
       markers.remove();
       facilities.remove();
       overlays.forEach((layer) => layer.setMap(null));
     },
-    setSelected: markers.setSelected,
-    setFacilities: facilities.setVisible,
-    setFacilityCategories: facilities.setCategories,
+    setSelected(id: string | null) {
+      markers.setSelected(id);
+      facilities.setSelected(id);
+    },
+    setFilter(ids: ReadonlySet<string>) {
+      markers.setVisibleIds(ids);
+      facilities.setVisibleIds(ids);
+    },
+    setPaperVisible(visible: boolean) {
+      paper.setMap(visible ? map : null);
+      mountains.setVisible(visible);
+      lakes.setVisible(visible);
+    },
   };
 }
