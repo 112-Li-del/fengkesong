@@ -36,7 +36,12 @@ import { KnowledgeModal, PlaceKnowledge } from "./place-knowledge";
 import { getQixiaKnowledgeByCode } from "@/lib/qixia-knowledge";
 import { addAutumnLayer } from "./autumn-layer";
 import { scenicNavigation } from "./scenic-navigation";
-import { scenicCenter, scenicPlaces, withinScenicView } from "@/lib/qixia-map";
+import {
+  scenicCenter,
+  scenicPlaces,
+  facilityPlaces,
+  withinScenicView,
+} from "@/lib/qixia-map";
 import type { MapAPI, MapInstance, LngLat, Overlay, Place } from "./amap-types";
 import "./map.css";
 import "./autumn-map.css";
@@ -564,6 +569,51 @@ export function MapWorkspace() {
       setRouteNote("");
     }
   }
+  // 选中某个设施大类：移动地图到该类设施的中心。
+  function focusFacilityCategory(cat: string) {
+    const view = map.current;
+    if (!view) return;
+    const items = facilityPlaces.filter((f) => f.category === cat);
+    if (!items.length) return;
+    const lng =
+      items.reduce((sum, f) => sum + f.location.lng, 0) / items.length;
+    const lat =
+      items.reduce((sum, f) => sum + f.location.lat, 0) / items.length;
+    view.setZoomAndCenter(17, [lng, lat], false);
+  }
+  // 选中离当前位置最近的点位（景点 + 设施合并）。
+  function focusNearest() {
+    const view = map.current;
+    if (!view || !position) {
+      setLocationNote("请先开启定位，才能找到离你最近的点位。");
+      return;
+    }
+    const all: Place[] = [...scenicPlaces, ...facilityPlaces];
+    let nearest: Place | null = null;
+    let best = Infinity;
+    const rad = Math.PI / 180;
+    for (const place of all) {
+      const term =
+        Math.sin(((place.location.lat - position.point.lat) * rad) / 2) ** 2 +
+        Math.cos(position.point.lat * rad) *
+          Math.cos(place.location.lat * rad) *
+          Math.sin(((place.location.lng - position.point.lng) * rad) / 2) ** 2;
+      const d = 6371000 * 2 * Math.asin(Math.min(1, Math.sqrt(term)));
+      if (d < best) {
+        best = d;
+        nearest = place;
+      }
+    }
+    if (nearest) {
+      updateSearch("", "全部");
+      select(nearest, true);
+      view.setZoomAndCenter(
+        17,
+        [nearest.location.lng, nearest.location.lat],
+        false,
+      );
+    }
+  }
   function submit(event: FormEvent) {
     event.preventDefault();
     setQuery(query.trim());
@@ -710,22 +760,36 @@ export function MapWorkspace() {
                 role="group"
                 aria-label="地点类别"
               >
-                {(["全部", ...placeCategories] as const).map((item) => (
-                  <button
-                    key={item}
-                    aria-pressed={category === item}
-                    data-category={item}
-                    onClick={() => {
-                      setCategory(item);
-                      setSelected(null);
-                      setKnowledgeOpen(false);
-                      autumnLayer.current?.setSelected(null);
-                      clearWalk();
-                    }}
-                  >
-                    {item}
-                  </button>
-                ))}
+                {(["全部", ...placeCategories] as const).map((item) => {
+                  const isFacility = item !== "景点" && item !== "全部";
+                  return (
+                    <button
+                      key={item}
+                      aria-pressed={category === item}
+                      data-category={item}
+                      onClick={() => {
+                        setCategory(item);
+                        setSelected(null);
+                        setKnowledgeOpen(false);
+                        autumnLayer.current?.setSelected(null);
+                        clearWalk();
+                        if (isFacility) focusFacilityCategory(item);
+                        if (item === "景点") navigation.current?.fitOverview();
+                      }}
+                    >
+                      {item}
+                    </button>
+                  );
+                })}
+                <button
+                  type="button"
+                  className="map-category-nearest"
+                  data-category="最近"
+                  disabled={state !== "ready"}
+                  onClick={focusNearest}
+                >
+                  离我最近
+                </button>
               </div>
               <p className="map-search-note" role="status">
                 {places.length
