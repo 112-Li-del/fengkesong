@@ -10,10 +10,11 @@ export const placeC1: QixiaPlaceKnowledge = {
   summary:
     "话山亭在桃花涧上游、御花园右侧，亭匾为当代书法家尉天池所书，是游人谈山论水之处。",
   history:
-    "话山亭为清乾隆栖霞行宫建筑之一，《摄山志》「行宫匾联」列有其名，并存乾隆《话山亭》诗。今亭在桃花涧上游、御花园右侧小径内，周围密林环抱，槛外流水淙淙，环境幽静；亭内匾额「话山亭」三字为尉天池所书。[1] 亭旁沿小路向上数步即禹王碑（岣嵝碑），明万历三十二年由吏部左侍郎杨时乔重刻，碑文 77 字；1998 年 12 月景区在原址修复，碑与亭合一。[1]",
+    "话山亭为清乾隆栖霞行宫建筑之一，《摄山志》「行宫匾联」列有其名，并存乾隆《话山亭》诗。乾隆游栖霞山曾赋诗「山亭凭槛俯层松，千里晴光豁远胸」，写话山亭凭槛远眺长江与金陵城的观景体验。[2] 今亭在桃花涧上游、御花园右侧小径内，周围密林环抱，槛外流水淙淙，环境幽静；亭内匾额「话山亭」三字为当代书法家尉天池所书。[1] 亭旁沿小路向上数步即禹王碑（岣嵝碑），明万历三十二年由吏部左侍郎杨时乔重刻，碑文 77 字；1998 年 12 月景区在原址修复，碑与亭合一。[1]",
   historySources: [
     "https://www.mingyanjiaju.org/fanwen/daoyouci/jiangsudaoyouci/10000467.html",
     "https://qixia.winnielyu.com/internal/shared/gazetteers/text/shanshanzhi-1790.md",
+    "https://www.thepaper.cn/newsDetail_forward_31567392",
   ],
   keyFacts: [
     {
@@ -75,6 +76,16 @@ export const placeC1: QixiaPlaceKnowledge = {
           source:
             "https://www.mingyanjiaju.org/fanwen/daoyouci/jiangsudaoyouci/10000467.html",
           credibility: "C",
+        },
+      ],
+    },
+    {
+      key: "乾隆题咏",
+      values: [
+        {
+          value: "「山亭凭槛俯层松，千里晴光豁远胸」，写凭槛远眺长江与金陵城",
+          source: "https://www.thepaper.cn/newsDetail_forward_31567392",
+          credibility: "B",
         },
       ],
     },
