@@ -1,0 +1,7 @@
+{
+  "id": "north-inner-lake",
+  "asset": "/maps/qixia-lake-ripple-07.png",
+  "bounds": [118.96125, 32.15585, 118.96245, 32.15685],
+  "rotation": 0,
+  "mirror": false
+}

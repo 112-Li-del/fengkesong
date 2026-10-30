@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { getQixiaKnowledgeByCode } from "./qixia-knowledge/catalog";
 import {
   scenicPlaces,
   scenicSearchResults,
@@ -48,12 +49,14 @@ describe("Qixia scenic map search", () => {
     expect(
       scenicPlaces.find((p) => p.name === "玲峰池遗址")?.referenceCode,
     ).toBe("E19");
-    expect(
-      scenicPlaces.find((p) => p.name === "白莲池（月牙池）")?.referenceCode,
-    ).toBeUndefined();
-    expect(
-      scenicPlaces.find((p) => p.name === "紫峰阁")?.referenceCode,
-    ).toBeUndefined();
+    for (const [name, code] of [
+      ["白莲池（月牙池）", "G7"],
+      ["紫峰阁", "G10"],
+    ] as const) {
+      const place = scenicPlaces.find((p) => p.name === name)!;
+      expect(place.referenceCode).toBe(code);
+      expect(getQixiaKnowledgeByCode(place.referenceCode!)?.name).toBe(name);
+    }
   });
   const temple = {
     id: "B00190D2L7",
