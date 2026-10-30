@@ -121,3 +121,70 @@ it("把地图选点转成隐藏上下文，并用定稿口径回答，不再并�
     facts: expect.arrayContaining([{ label: "高度", value: "约 15 米" }]),
   });
 });
+
+it("人物查询保留 main 的资料并明确其尚未交叉核实", async () => {
+  vi.stubEnv("OPENAI_API_KEY", "test-placeholder");
+  vi.stubEnv("OPENAI_BASE_URL", "https://test-model.invalid");
+  vi.stubEnv("OPENAI_MODEL", "test-qixia");
+  let calls = 0;
+  let result: Record<string, unknown> | undefined;
+  vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
+    if (!String(input).startsWith("https://test-model.invalid/"))
+      throw new Error("Unexpected request");
+    const body = JSON.parse(init?.body as string);
+    if (++calls === 1)
+      return stream(
+        {
+          role: "assistant",
+          tool_calls: [
+            {
+              index: 0,
+              id: "person-call",
+              type: "function",
+              function: {
+                name: "get_qixia_knowledge",
+                arguments: '{"query":"李白"}',
+              },
+            },
+          ],
+        },
+        "tool_calls",
+      );
+    result = JSON.parse(
+      body.messages.find((message: { role: string }) => message.role === "tool")
+        .content,
+    );
+    return stream(
+      {
+        role: "assistant",
+        content: "据参赛阅读资料记载，有李白与栖霞山的相关故事。",
+      },
+      "stop",
+    );
+  });
+  const response = await POST(
+    new Request("http://localhost/api/chat", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        messages: [
+          {
+            id: "person-query",
+            role: "user",
+            parts: [{ type: "text", text: "李白和栖霞山有什么关系" }],
+          },
+        ],
+      }),
+    }),
+  );
+  await response.text();
+  expect(calls).toBe(2);
+  expect(result).toMatchObject({
+    matched: true,
+    kind: "person",
+    persons: expect.arrayContaining([
+      expect.objectContaining({ name: "李白" }),
+    ]),
+  });
+  expect(result?.guidance).toContain("尚未交叉核实");
+});

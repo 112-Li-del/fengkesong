@@ -67,7 +67,6 @@
   {
     "id": "B001912JBJ",
     "name": "钟楼",
-    "referenceCode": "B2",
     "providerName": "栖霞山风景名胜区-钟楼",
     "address": "栖霞山名胜风景区摄山栖霞寺内(西侧)",
     "location": {
@@ -80,7 +79,6 @@
   {
     "id": "B001912JC3",
     "name": "鼓楼",
-    "referenceCode": "B3",
     "providerName": "栖霞山名胜风景区-鼓楼",
     "address": "栖霞街88号栖霞山风景名胜区内(西侧)",
     "location": {
@@ -321,7 +319,8 @@
       "lat": 32.158487
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F1"
   },
   {
     "id": "B001912JDN",
@@ -333,7 +332,8 @@
       "lat": 32.156694
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F2"
   },
   {
     "id": "B0FFGHFYWY",
@@ -357,7 +357,8 @@
       "lat": 32.146498
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F10"
   },
   {
     "id": "B0FFFFKJRG",
@@ -369,19 +370,8 @@
       "lat": 32.151266
     },
     "art": "temple",
-    "tier": 3
-  },
-  {
-    "id": "B0FFF0FKGJ",
-    "name": "德云庵",
-    "providerName": "栖霞山名胜风景区-德云庵",
-    "address": "栖霞街88号栖霞山风景名胜区内(西侧)",
-    "location": {
-      "lng": 118.960538,
-      "lat": 32.153709
-    },
-    "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F3"
   },
   {
     "id": "B0FFFF6043",
@@ -393,7 +383,8 @@
       "lat": 32.151771
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F4"
   },
   {
     "id": "B0JDSRSXG7",
@@ -405,7 +396,8 @@
       "lat": 32.156411
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F5"
   },
   {
     "id": "B0M6NHF2DG",
@@ -417,7 +409,8 @@
       "lat": 32.148679
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D8"
   },
   {
     "id": "B0KRK9CH8P",
@@ -429,7 +422,8 @@
       "lat": 32.154661
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F6"
   },
   {
     "id": "B0FFF0FKGI",
@@ -441,7 +435,8 @@
       "lat": 32.153555
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F7"
   },
   {
     "id": "B0MU3UOUOP",
@@ -453,7 +448,8 @@
       "lat": 32.154943
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F11"
   },
   {
     "id": "B0H6X5V9VE",
@@ -465,7 +461,8 @@
       "lat": 32.157848
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F8"
   },
   {
     "id": "B0FFHNLM4E",
@@ -477,7 +474,8 @@
       "lat": 32.152167
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D1"
   },
   {
     "id": "B0FFFF5YUS",
@@ -489,7 +487,8 @@
       "lat": 32.152494
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D11"
   },
   {
     "id": "B0L315VK7T",
@@ -501,7 +500,8 @@
       "lat": 32.158149
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F9"
   },
   {
     "id": "B0K0KHC2MA",
@@ -513,7 +513,8 @@
       "lat": 32.156589
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F12"
   },
   {
     "id": "B0L31HVBHB",
@@ -525,7 +526,8 @@
       "lat": 32.157383
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F13"
   },
   {
     "id": "B0MRFSSJLS",
@@ -537,7 +539,8 @@
       "lat": 32.158534
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "F14"
   },
   {
     "id": "B001912HP8",
@@ -549,6 +552,7 @@
       "lat": 32.153355
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D12"
   }
 ]

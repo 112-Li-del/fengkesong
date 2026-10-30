@@ -44,7 +44,14 @@ describe("buildAnswerView", () => {
   });
 
   it("没有资料的景点标成 none，留给高德补地点信息", () => {
-    const view = buildAnswerView(getQixiaKnowledgeByName("太虚亭")!);
+    const view = buildAnswerView({
+      ...getQixiaKnowledgeByName("太虚亭")!,
+      referenceCode: "empty-fixture",
+      summary: null,
+      history: null,
+      keyFacts: [],
+      timeline: [],
+    });
     expect(view.coverage).toBe("none");
     expect(view.facts).toHaveLength(0);
   });
@@ -58,7 +65,9 @@ describe("buildAnswerView", () => {
   it("知识库卡片名与自然提问也能对上", () => {
     expect(findAnswerView("栖霞寺")?.code).toBe("B5");
     expect(findAnswerView("千佛岩有多少尊佛像")?.code).toBe("B7");
-    expect(findAnswerView("栖霞山有哪些景点")).toBeNull();
+    expect(findAnswerView("栖霞山有哪些景点")?.code).toBe("S0");
+    expect(findAnswerView("太虚亭")?.coverage).not.toBe("none");
+    expect(findAnswerView("受降井")?.code).toBe("D1");
   });
 
   it("没定稿的字段只给一句话结论，不列候选值", () => {
