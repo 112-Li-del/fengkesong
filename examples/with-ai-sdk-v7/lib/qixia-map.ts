@@ -27,7 +27,7 @@ export const unverifiedPlaces = [
   "萌宠乐园",
 ];
 export const scenicCenter: LngLat = { lng: 118.9628, lat: 32.1554 };
-export const scenicViewport = [118.9505, 32.1465, 118.977, 32.1655] as const;
+export const scenicViewport = [118.9505, 32.1454, 118.977, 32.1655] as const;
 
 export function withinScenicView(point: LngLat) {
   return (
@@ -45,7 +45,22 @@ export function scenicSearchResults(places: Place[]) {
     ...new Map(
       places
         .filter((place) => withinScenicView(place.location))
-        .map((place) => [place.id, place]),
+        .map((place) => {
+          const aliases: Record<string, string> = {
+            明镜湖: "彩虹明镜",
+            定照庵石刻: "定照庵碑刻",
+            毘灵宝殿: "毗卢宝殿",
+            毗卢宝殿: "毗卢宝殿",
+          };
+          const name = Object.keys(aliases).find((alias) =>
+            place.name.endsWith(alias),
+          );
+          const canonical = name
+            ? scenicPlaces.find((item) => item.name === aliases[name])
+            : undefined;
+          const result = canonical ?? place;
+          return [result.id, result];
+        }),
     ).values(),
   ];
 }

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>栖霞山底图样式对比</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: #12100e;
+        color: #efe6d8;
+        font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        padding: 16px;
+      }
+      h1 { font-size: 15px; font-weight: 500; margin: 0 0 4px; }
+      p.hint { font-size: 12px; color: #8d8275; margin: 0 0 12px; }
+      .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .cell { border: 1px solid #2e2a25; border-radius: 10px; overflow: hidden; background: #1a1714; }
+      .cap {
+        display: flex; justify-content: space-between; align-items: baseline;
+        padding: 7px 10px; font-size: 12px; border-bottom: 1px solid #2e2a25;
+      }
+      .cap b { font-weight: 500; font-size: 13px; }
+      .cap span { color: #8d8275; font-family: ui-monospace, monospace; font-size: 10.5px; }
+      .map { height: 262px; position: relative; overflow: hidden; }
+      .filter-warm .map canvas { filter: sepia(0.2) saturate(0.86) brightness(1.03); }
+      .filter-paper .map canvas { filter: sepia(0.34) saturate(0.66) brightness(1.06) contrast(0.95); }
+      .filter-paper .vignette {
+        position: absolute; inset: 0; pointer-events: none; z-index: 400;
+        background: radial-gradient(circle at 50% 46%, rgba(255, 240, 210, 0) 40%, rgba(56, 30, 10, 0.45) 100%);
+      }
+      .pin {
+        height: 56px; width: auto; display: block;
+        filter: drop-shadow(0 3px 4px rgba(60, 30, 10, 0.35));
+      }
+      .loading {
+        position: absolute; inset: 0; display: grid; place-items: center;
+        font-size: 12px; color: #8d8275; background: #1a1714; z-index: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>栖霞山底图样式对比</h1>
+    <p class="hint">同一视角（zoom 16）· 同一把 key · 只改 mapStyle / features / CSS 滤镜；红色插画 pin 用的是项目里真实素材</p>
+    <div class="grid" id="grid"></div>
+    <script>
+      const CENTER = [118.96, 32.1518];
+      const ZOOM = 16;
+      const PINS = [
+        ["彩虹明镜", 118.956416, 32.151627],
+        ["舍利塔", 118.959868, 32.151791],
+        ["千佛岩", 118.960159, 32.151673],
+      ];
+      const VARIANTS = [
+        { t: "现状", n: "normal + bg,road", style: "amap://styles/normal", f: ["bg", "road"], cls: "" },
+        { t: "远山黛", n: "whitesmoke + bg,road", style: "amap://styles/whitesmoke", f: ["bg", "road"], cls: "" },
+        { t: "月光银", n: "light + bg,road", style: "amap://styles/light", f: ["bg", "road"], cls: "" },
+        { t: "草色青", n: "fresh + bg,road", style: "amap://styles/fresh", f: ["bg", "road"], cls: "" },
+        { t: "秋纸（推荐）", n: "whitesmoke + sepia34 + 暗角", style: "amap://styles/whitesmoke", f: ["bg", "road"], cls: "filter-paper" },
+        { t: "只留底色", n: "whitesmoke + bg（去高德路网）", style: "amap://styles/whitesmoke", f: ["bg"], cls: "" },
+      ];
+      const grid = document.getElementById("grid");
+      VARIANTS.forEach((v) => {
+        const cell = document.createElement("div");
+        cell.className = "cell " + v.cls;
+        cell.innerHTML =
+          '<div class="cap"><b>' + v.t + "</b><span>" + v.n + "</span></div>" +
+          '<div class="map"><div class="loading">加载中…</div></div>';
+        grid.append(cell);
+      });
+      (async () => {
+        const cfg = await (await fetch("/api/amap/config")).json();
+        if (!cfg.key) throw new Error("未配置 AMAP_JS_API_KEY");
+        window._AMapSecurityConfig = { serviceHost: location.origin + "/_AMapService" };
+        await new Promise((res, rej) => {
+          const s = document.createElement("script");
+          s.src = "https://webapi.amap.com/maps?v=2.0&key=" + encodeURIComponent(cfg.key);
+          s.onload = res;
+          s.onerror = () => rej(new Error("高德脚本加载失败"));
+          document.head.append(s);
+        });
+        const hosts = [...document.querySelectorAll(".map")];
+        hosts.forEach((host, i) => {
+          const v = VARIANTS[i];
+          const map = new AMap.Map(host, {
+            center: CENTER,
+            zoom: ZOOM,
+            mapStyle: v.style,
+            features: v.f,
+            viewMode: "2D",
+            resizeEnable: true,
+            rotateEnable: false,
+            pitchEnable: false,
+          });
+          PINS.forEach(([name, lng, lat]) => {
+            const el = document.createElement("img");
+            el.className = "pin";
+            el.src = "/landmarks/" + encodeURIComponent(name) + ".png";
+            el.alt = name;
+            new AMap.Marker({ map, position: [lng, lat], content: el, anchor: "bottom-center", offset: new AMap.Pixel(0, 4) });
+          });
+          if (v.cls === "filter-paper") {
+            const vig = document.createElement("div");
+            vig.className = "vignette";
+            host.append(vig);
+          }
+          host.querySelector(".loading")?.remove();
+        });
+        window.__mapsReady = true;
+      })().catch((err) => {
+        document.querySelectorAll(".loading").forEach((n) => (n.textContent = String(err)));
+        window.__mapsError = String(err);
+      });
+    </script>
+  </body>
+</html>
