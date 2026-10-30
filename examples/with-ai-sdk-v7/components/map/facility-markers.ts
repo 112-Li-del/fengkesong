@@ -88,7 +88,8 @@ export function facilityMarkers(
     return { facility, root, marker };
   });
 
-  let visible = false;
+  let visibleIds: ReadonlySet<string> = new Set();
+  let selectedId: string | null = null;
   let clusters: { marker: { setMap(map: MapInstance | null): void } }[] = [];
 
   const clearClusters = () => {
@@ -100,14 +101,24 @@ export function facilityMarkers(
     clearClusters();
     const clustered = map.getZoom() < CLUSTER_ZOOM;
     for (const entry of entries)
-      entry.marker.setMap(visible && !clustered ? map : null);
-    if (!visible || !clustered) return;
+      entry.marker.setMap(
+        visibleIds.has(entry.facility.id) &&
+          (!clustered || entry.facility.id === selectedId)
+          ? map
+          : null,
+      );
+    if (!visibleIds.size || !clustered) return;
 
-    const points = entries.map((entry) => {
-      const { lng, lat } = entry.facility.location;
-      const pixel = map.lngLatToContainer([lng, lat]);
-      return { entry, x: pixel.x, y: pixel.y };
-    });
+    const points = entries
+      .filter(
+        (entry) =>
+          visibleIds.has(entry.facility.id) && entry.facility.id !== selectedId,
+      )
+      .map((entry) => {
+        const { lng, lat } = entry.facility.location;
+        const pixel = map.lngLatToContainer([lng, lat]);
+        return { entry, x: pixel.x, y: pixel.y };
+      });
     const used = new Set<number>();
     for (let i = 0; i < points.length; i += 1) {
       if (used.has(i)) continue;
@@ -190,13 +201,18 @@ export function facilityMarkers(
   map.on("moveend", layout);
 
   return {
-    get visible() {
-      return visible;
-    },
-    setVisible(next: boolean) {
-      visible = next;
+    setVisibleIds(ids: ReadonlySet<string>) {
+      visibleIds = ids;
       layout();
-      return next;
+    },
+    setSelected(id: string | null) {
+      selectedId = id;
+      for (const entry of entries) {
+        const selected = entry.facility.id === id;
+        entry.root.classList.toggle("is-selected", selected);
+        entry.root.setAttribute("aria-pressed", String(selected));
+      }
+      layout();
     },
     remove() {
       map.off("zoomend", layout);
