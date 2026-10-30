@@ -100,7 +100,7 @@ export function mountainDecorations(
           position: [(west! + east!) / 2, (south! + north!) / 2],
           anchor: "center",
           offset: new api.Pixel(0, 0),
-          zIndex: isLake ? 10 : 12,
+          zIndex: isLake ? 10 : isTitle ? 12 : 7,
           bubble: true,
         });
         return { root, image, marker, bounds: placement.bounds };

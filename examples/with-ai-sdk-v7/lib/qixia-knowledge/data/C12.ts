@@ -8,12 +8,13 @@ export const placeC12: QixiaPlaceKnowledge = {
   kbCardId: null,
   kbTitle: null,
   summary:
-    "饮马池相传是乾隆驻跸栖霞山时御林军的饮马处，池水因含高岭土而常年清澈。",
+    "饮马池位于栖霞山龙山之巅、紧邻小营盘遗址，相传是乾隆驻跸栖霞行宫时御林军马匹饮水之处，池水常年不干。",
   history:
-    "相传乾隆六下江南、五次驻跸栖霞行宫，保卫行宫的御林军驻扎于小营盘，此处即其饮马之池。[1] 池为土池，池底土质含高岭土，故水清而常年不涸（游客记述，待核）。[2] 池体量不大，秋日多浮叶；2019 年「秋栖霞」登山赛将其列为十处古风打卡点之一。[1]",
+    "饮马池位于栖霞山龙山之巅，紧邻小营盘遗址。[1] 相传乾隆六下江南、五次驻跸栖霞行宫，守卫行宫的御林军驻扎于小营盘，此处即其马匹饮水之池，故称「饮马池」。[1][2] 池水常年不干，据景区介绍，其因在于这一带岩石为易风化的栖霞灰岩，风化后与水混合在池下形成黏土层，构成天然防水层；加之植被覆盖良好、水分蒸发少，故池水得以长存。[1] 池畔道路红叶树种以高大枫香、鸡爪槭为主，深秋猩红一片，是栖霞山观赏红叶的打卡点之一；2019 年「秋栖霞」登山赛将其列为十处古风打卡点之一。[1][3]",
   historySources: [
+    "http://mp.weixin.qq.com/s?__biz=MjM5NTQyMjA5NA==&mid=2650602973&idx=1&sn=a5c0f39c13a9c41566984e6f076851a2",
+    "https://www.toutiao.com/article/6768272248739463694/",
     "https://www.sohu.com/a/356874309_500722",
-    "http://live.16fan.com/info/177496.html",
   ],
   keyFacts: [
     {
@@ -21,9 +22,10 @@ export const placeC12: QixiaPlaceKnowledge = {
       group: "location",
       values: [
         {
-          value: "小营盘遗址下方，御林军驻地之侧",
-          source: "https://www.sohu.com/a/356874309_500722",
-          credibility: "C",
+          value: "栖霞山龙山之巅，紧邻小营盘遗址",
+          source:
+            "http://mp.weixin.qq.com/s?__biz=MjM5NTQyMjA5NA==&mid=2650602973&idx=1&sn=a5c0f39c13a9c41566984e6f076851a2",
+          credibility: "B",
         },
       ],
     },
@@ -31,35 +33,45 @@ export const placeC12: QixiaPlaceKnowledge = {
       key: "来历",
       values: [
         {
-          value: "相传为乾隆驻跸时驻扎小营盘的御林军饮马处",
-          source: "https://www.sohu.com/a/356874309_500722",
-          credibility: "C",
+          value: "相传为乾隆驻跸时驻扎小营盘的御林军马匹饮水处",
+          source:
+            "http://mp.weixin.qq.com/s?__biz=MjM5NTQyMjA5NA==&mid=2650602973&idx=1&sn=a5c0f39c13a9c41566984e6f076851a2",
+          credibility: "B",
+          note: "民间传说，未见方志明文记载",
         },
       ],
     },
     {
-      key: "水质",
+      key: "池水不干的原因",
       values: [
         {
-          value: "土池含高岭土，水色清澈、常年不涸",
-          source: "http://live.16fan.com/info/177496.html",
-          credibility: "C",
-          note: "游客记述，未见方志佐证",
+          value:
+            "岩石为易风化的栖霞灰岩，风化后与水混合形成黏土层（天然防水层），加之植被覆盖好、蒸发少",
+          source:
+            "http://mp.weixin.qq.com/s?__biz=MjM5NTQyMjA5NA==&mid=2650602973&idx=1&sn=a5c0f39c13a9c41566984e6f076851a2",
+          credibility: "B",
         },
       ],
     },
     {
-      key: "现状",
+      key: "观景",
+      group: "view",
       values: [
         {
-          value: "小水塘，水面不大，秋日多浮叶",
-          source: "http://live.16fan.com/info/177496.html",
-          credibility: "C",
+          value: "池畔红叶以高大枫香、鸡爪槭为主，深秋猩红一片",
+          source:
+            "http://mp.weixin.qq.com/s?__biz=MjM5NTQyMjA5NA==&mid=2650602973&idx=1&sn=a5c0f39c13a9c41566984e6f076851a2",
+          credibility: "B",
         },
+      ],
+    },
+    {
+      key: "打卡点",
+      values: [
         {
           value: "2019 年「秋栖霞」登山赛十处古风打卡点之一",
-          source: "https://www.sohu.com/a/356874309_500722",
-          credibility: "C",
+          source: "https://www.toutiao.com/article/6768272248739463694/",
+          credibility: "B",
         },
       ],
     },
@@ -67,19 +79,20 @@ export const placeC12: QixiaPlaceKnowledge = {
   timeline: [
     {
       date: "清乾隆年间",
-      what: "御林军驻扎小营盘，传此池为其饮马处",
-      source: "https://www.sohu.com/a/356874309_500722",
-      credibility: "C",
+      what: "御林军驻扎小营盘，传此池为其马匹饮水处",
+      source:
+        "http://mp.weixin.qq.com/s?__biz=MjM5NTQyMjA5NA==&mid=2650602973&idx=1&sn=a5c0f39c13a9c41566984e6f076851a2",
+      credibility: "B",
     },
     {
       date: "2019年",
       what: "列入「秋栖霞」登山赛十处古风打卡点",
-      source: "https://www.sohu.com/a/356874309_500722",
-      credibility: "C",
+      source: "https://www.toutiao.com/article/6768272248739463694/",
+      credibility: "B",
     },
   ],
   audio: [],
   images: [],
-  credibility: "C",
-  note: "传说成分较多，池水成因此说待核。",
+  credibility: "B",
+  note: "饮马池得名系民间传说，池水不干的原因为栖霞灰岩风化形成黏土防水层（据景区介绍），并非早年所记「含高岭土」。",
 };

@@ -1,6 +1,14 @@
 import type { Place } from "../components/map/amap-types";
 
-export const placeCategories = ["景点", "厕所", "餐饮", "休息"] as const;
+// 标签行分类：景点 + 5 大服务设施类（卫生间/停车交通/门票入口/购物补给/安全医疗）。
+export const placeCategories = [
+  "景点",
+  "卫生间",
+  "停车交通",
+  "门票入口",
+  "购物补给",
+  "安全医疗",
+] as const;
 export type PlaceCategory = (typeof placeCategories)[number];
 export type PlaceFilter = "全部" | PlaceCategory;
 export type PlaceGroups = Record<PlaceCategory, readonly Place[]>;

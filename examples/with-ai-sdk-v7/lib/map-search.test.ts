@@ -23,25 +23,25 @@ describe("map node search", () => {
     expect(searchMapPlaces("不存在的地点", "全部")).toEqual([]);
   });
   it("filters toilets using their node IDs and combines category with keywords", () => {
-    const result = searchMapPlaces("", "厕所");
+    const result = searchMapPlaces("", "卫生间");
     expect(result.map((place) => place.id).sort()).toEqual(
       facilityPlaces
         .filter((place) => place.group === "toilet")
         .map((place) => place.id)
         .sort(),
     );
-    expect(searchMapPlaces("卫生间", "厕所")).toEqual(result);
-    expect(searchMapPlaces("哼哈殿", "厕所").map((place) => place.id)).toEqual([
-      "QXF020",
-    ]);
+    expect(searchMapPlaces("洗手间", "卫生间")).toEqual(result);
+    expect(
+      searchMapPlaces("哼哈殿", "卫生间").map((place) => place.id),
+    ).toEqual(["QXF020"]);
   });
-  it("provides dining and rest categories using existing places", () => {
-    expect(searchMapPlaces("", "餐饮").map((place) => place.name)).toContain(
-      "千佛斋",
-    );
-    expect(searchMapPlaces("", "休息").map((place) => place.name)).toContain(
-      "半馆",
-    );
+  it("provides service categories using facility category fields", () => {
+    expect(
+      searchMapPlaces("", "停车交通").map((place) => place.name),
+    ).toContain("停车场");
+    expect(
+      searchMapPlaces("", "门票入口").map((place) => place.name),
+    ).toContain("游客中心");
     expect(searchMapPlaces("", "景点").map((place) => place.name)).toContain(
       "哼哈殿",
     );

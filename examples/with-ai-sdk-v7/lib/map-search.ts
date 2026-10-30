@@ -1,25 +1,6 @@
 import { scenicPlaces, facilityPlaces } from "./qixia-map";
-import type { CatalogPlace, PlaceFilter } from "./place-catalog";
+import type { CatalogPlace, PlaceCategory, PlaceFilter } from "./place-catalog";
 
-const restNames = new Set([
-  "卧云亭",
-  "太虚亭",
-  "半馆",
-  "五松阁",
-  "夕佳亭",
-  "环翠亭",
-  "秋枫亭",
-  "凝霜亭",
-  "得趣亭",
-  "虚云亭",
-  "德云亭",
-  "畅观亭",
-  "试茶亭",
-  "话山亭",
-  "读枫阁",
-  "碧云亭",
-]);
-const diningNames = new Set(["千佛斋", "陆羽茶庄", "徐十郎茶肆"]);
 const aliases: Record<string, readonly string[]> = {
   彩虹明镜: ["明镜湖"],
   栖霞古寺: ["栖霞寺", "栖霞禅寺"],
@@ -27,15 +8,23 @@ const aliases: Record<string, readonly string[]> = {
   玲峰池遗址: ["玲峰池", "玲珑池遗址"],
   "白莲池（月牙池）": ["白莲池", "月牙池"],
 };
+
+// 服务设施一级大类 → 搜索关键词（便于游客用口语词也能搜到）。
+const facilityKeywords: Record<string, string> = {
+  卫生间: "卫生间 洗手间 厕所 wc restroom toilet",
+  停车交通: "停车场 停车 观光车 游览车 车站",
+  门票入口: "售票 检票 入口 出口 游客中心 问询",
+  购物补给: "购物 文创 商店 补给 能量",
+  安全医疗: "医疗 医务 急救 消防 安全",
+};
+
 export const mapSearchCatalog: CatalogPlace[] = [
+  // 景点：统一归为「景点」类（餐饮、休息等子类并入景点）。
   ...scenicPlaces.map((place) => ({
     ...place,
-    category: diningNames.has(place.name)
-      ? ("餐饮" as const)
-      : restNames.has(place.name)
-        ? ("休息" as const)
-        : ("景点" as const),
+    category: "景点" as const,
   })),
+  // 服务设施：按 category 一级大类归类（卫生间/停车交通/门票入口/购物补给/安全医疗）。
   ...facilityPlaces.map((place) => {
     const nearest = [...scenicPlaces].sort(
       (a, b) =>
@@ -50,8 +39,7 @@ export const mapSearchCatalog: CatalogPlace[] = [
     )[0];
     return {
       ...place,
-      category:
-        place.group === "toilet" ? ("厕所" as const) : ("其他" as const),
+      category: (place.category ?? "其他") as PlaceCategory | "其他",
       address: nearest ? nearest.name + "附近" : "景区内服务设施",
     };
   }),
@@ -70,7 +58,7 @@ export function searchMapPlaces(
       place.referenceName,
       place.category,
       ...(aliases[place.name] ?? []),
-      place.category === "厕所" ? "卫生间 洗手间 wc restroom toilet" : "",
+      facilityKeywords[place.category] ?? "",
     ]
       .join(" ")
       .toLowerCase();
