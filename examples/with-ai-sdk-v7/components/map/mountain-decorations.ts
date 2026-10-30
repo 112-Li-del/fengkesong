@@ -1,4 +1,5 @@
 import layout from "@/lib/qixia-mountain-decorations.json";
+import title from "@/lib/qixia-title-decoration.json";
 import type { MapAPI, MapInstance } from "./amap-types";
 
 export function mountainDecorations(
@@ -8,9 +9,12 @@ export function mountainDecorations(
 ) {
   const entries = signal.aborted
     ? []
-    : layout.placements.map((placement) => {
+    : [...layout.placements, title].map((placement) => {
+        const isTitle = placement.id === "qixia-title";
         const root = document.createElement("div");
-        root.className = "scenic-mountain-decoration";
+        root.className = isTitle
+          ? "scenic-map-title"
+          : "scenic-mountain-decoration";
         root.setAttribute("aria-hidden", "true");
         Object.assign(root.style, {
           width: "0",
@@ -26,8 +30,9 @@ export function mountainDecorations(
           left: "0",
           top: "0",
           maxWidth: "none",
+          objectFit: isTitle ? "contain" : "fill",
           pointerEvents: "none",
-          transform: `translate(-50%, -50%) rotate(${placement.rotation}deg) scale(${placement.mirror ? -0.9 : 0.9}, 0.9)`,
+          transform: `translate(-50%, -50%) rotate(${placement.rotation}deg) scale(${placement.mirror ? -0.9 : isTitle ? 1 : 0.9}, ${isTitle ? 1 : 0.9})`,
         });
         root.append(image);
         const [west, south, east, north] = placement.bounds;
