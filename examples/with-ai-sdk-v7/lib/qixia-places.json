@@ -74,7 +74,8 @@
       "lat": 32.151692
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "B2"
   },
   {
     "id": "B001912JC3",
@@ -86,7 +87,8 @@
       "lat": 32.151691
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "B3"
   },
   {
     "id": "B001912HOX",
@@ -345,7 +347,8 @@
       "lat": 32.15321
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "G14"
   },
   {
     "id": "B0LDD5CW33",
