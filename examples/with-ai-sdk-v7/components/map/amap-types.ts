@@ -75,6 +75,7 @@ export type MapAPI = {
     render(): void;
   }) => { show(): void; hide(): void };
   Polyline: new (options: Record<string, unknown>) => Overlay;
+  Polygon: new (options: Record<string, unknown>) => Overlay;
   Map: new (
     element: HTMLElement,
     options: Record<string, unknown>,
