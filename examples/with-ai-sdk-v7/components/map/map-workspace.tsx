@@ -29,6 +29,7 @@ import {
   placeCategories,
   type PlaceFilter,
   type PlaceGroups,
+  type CatalogPlace,
 } from "@/lib/place-catalog";
 import { locationQuality } from "@/lib/location-quality";
 import {
@@ -45,6 +46,7 @@ import {
   scenicCenter,
   scenicPlaces,
   facilityPlaces,
+  facilityCategories,
   unverifiedPlaces,
   scenicSearchResults,
   withinScenicView,
@@ -137,17 +139,28 @@ export function MapWorkspace() {
   const [searchResults, setSearchResults] = useState<Place[] | null>(null);
   const [loadingCatalog, setLoadingCatalog] = useState(true);
   const [catalogErrors, setCatalogErrors] = useState<string[]>([]);
+  const [showFacilities, setShowFacilities] = useState(false);
+  // 当前选中的设施大类（null = 显示全部设施）；由下方标签行驱动
+  const [facilityCategory, setFacilityCategory] = useState<string | null>(null);
+  const facilitiesWanted = useRef(false);
   const catalog = useMemo(
     () => buildPlaceCatalog(groups, extraPlaces),
     [groups, extraPlaces],
   );
   const places = useMemo(
-    () => filterPlaceCatalog(catalog, category, searchResults),
-    [catalog, category, searchResults],
+    () =>
+      facilityCategory
+        ? facilityPlaces
+            .filter((f) => f.category === facilityCategory)
+            .map((f, index) => ({
+              ...f,
+              category: facilityCategory as CatalogPlace["category"],
+              number: index + 1,
+            }))
+        : filterPlaceCatalog(catalog, category, searchResults),
+    [catalog, category, searchResults, facilityCategory],
   );
   const [selected, setSelected] = useState<Place | null>(null);
-  const [showFacilities, setShowFacilities] = useState(false);
-  const facilitiesWanted = useRef(false);
   const [knowledgeOpen, setKnowledgeOpen] = useState(false);
   const [searching, setSearching] = useState(false);
   const [searchNote, setSearchNote] = useState("");
@@ -216,6 +229,11 @@ export function MapWorkspace() {
     facilitiesWanted.current = showFacilities;
     autumnLayer.current?.setFacilities(showFacilities);
   }, [showFacilities]);
+  useEffect(() => {
+    autumnLayer.current?.setFacilityCategories(
+      showFacilities && facilityCategory ? [facilityCategory] : null,
+    );
+  }, [showFacilities, facilityCategory]);
   const search = useCallback(async (keywords: string) => {
     const api = sdk.current,
       view = map.current,
@@ -245,11 +263,62 @@ export function MapWorkspace() {
   const resetFilter = useCallback(() => {
     searchVersion.current++;
     setCategory("全部");
+    setFacilityCategory(null);
     setQuery("");
     setSearchResults(null);
     setSearchNote("");
     setSearching(false);
   }, []);
+  // 选中某个设施大类：显示该类设施并移动地图到其中心
+  const focusFacilityCategory = useCallback((cat: string) => {
+    const view = map.current;
+    if (!view) return;
+    const items = facilityPlaces.filter((f) => f.category === cat);
+    if (!items.length) return;
+    const lng =
+      items.reduce((sum, f) => sum + f.location.lng, 0) / items.length;
+    const lat =
+      items.reduce((sum, f) => sum + f.location.lat, 0) / items.length;
+    view.setZoomAndCenter(17, [lng, lat], false);
+  }, []);
+  // 计算两点直线距离（米）
+  const distanceMeters = useCallback((a: LngLat, b: LngLat) => {
+    const rad = Math.PI / 180;
+    const term =
+      Math.sin(((b.lat - a.lat) * rad) / 2) ** 2 +
+      Math.cos(a.lat * rad) *
+        Math.cos(b.lat * rad) *
+        Math.sin(((b.lng - a.lng) * rad) / 2) ** 2;
+    return 6371000 * 2 * Math.asin(Math.min(1, Math.sqrt(term)));
+  }, []);
+  // 选中离当前位置最近的点位（景点 + 设施合并）
+  const focusNearest = useCallback(() => {
+    const view = map.current;
+    if (!view || !position) {
+      setLocationNote("请先开启定位，才能找到离你最近的点位。");
+      return;
+    }
+    const all: Place[] = [...scenicPlaces, ...facilityPlaces];
+    let nearest: Place | null = null;
+    let best = Infinity;
+    for (const place of all) {
+      const d = distanceMeters(position.point, place.location);
+      if (d < best) {
+        best = d;
+        nearest = place;
+      }
+    }
+    if (nearest) {
+      resetFilter();
+      setFacilityCategory(null);
+      select(nearest, true);
+      view.setZoomAndCenter(
+        17,
+        [nearest.location.lng, nearest.location.lat],
+        false,
+      );
+    }
+  }, [position, distanceMeters, select, resetFilter]);
   const closePlacePanel = useCallback(() => {
     setPanelOpen(false);
   }, []);
@@ -852,7 +921,7 @@ export function MapWorkspace() {
                   <Search size={16} />
                   <input
                     aria-label="搜索栖霞山附近地点"
-                    placeholder="搜索景点、厕所、餐饮…"
+                    placeholder="搜索景点、卫生间、停车场…"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     maxLength={60}
@@ -865,20 +934,48 @@ export function MapWorkspace() {
                   </button>
                 </form>
                 <div className="map-category-list">
-                  {(["全部", ...placeCategories] as const).map((item) => (
-                    <button
-                      key={item}
-                      aria-pressed={category === item}
-                      data-category={item}
-                      disabled={state !== "ready"}
-                      onClick={() => {
-                        resetFilter();
-                        setCategory(item);
-                      }}
-                    >
-                      {item}
-                    </button>
-                  ))}
+                  {(["全部", "景点", ...facilityCategories] as const).map(
+                    (item) => {
+                      const isFacility = (
+                        facilityCategories as readonly string[]
+                      ).includes(item);
+                      const selected = isFacility
+                        ? facilityCategory === item
+                        : category === item;
+                      return (
+                        <button
+                          key={item}
+                          aria-pressed={selected}
+                          data-category={item}
+                          disabled={state !== "ready"}
+                          onClick={() => {
+                            resetFilter();
+                            if (isFacility) {
+                              setFacilityCategory(item);
+                              setShowFacilities(true);
+                              focusFacilityCategory(item);
+                            } else {
+                              setFacilityCategory(null);
+                              setCategory(item as PlaceFilter);
+                              if (item === "景点")
+                                navigation.current?.fitOverview();
+                            }
+                          }}
+                        >
+                          {item}
+                        </button>
+                      );
+                    },
+                  )}
+                  <button
+                    type="button"
+                    className="map-category-nearest"
+                    data-category="最近"
+                    disabled={state !== "ready"}
+                    onClick={focusNearest}
+                  >
+                    离我最近
+                  </button>
                 </div>
                 <p className="map-search-note" role="status">
                   {searching

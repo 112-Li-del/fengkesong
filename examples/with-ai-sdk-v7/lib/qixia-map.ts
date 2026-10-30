@@ -12,7 +12,19 @@ export type ScenicPlace = Place & {
 export type FacilityPlace = Place & {
   en: string;
   group: string;
+  // 一级大类：卫生间 / 停车交通 / 门票入口 / 购物补给 / 安全医疗
+  category: string;
 };
+
+// 服务设施一级大类（按游客「最常找」归并的少数标签，覆盖全部设施）。
+export const facilityCategories = [
+  "卫生间",
+  "停车交通",
+  "门票入口",
+  "购物补给",
+  "安全医疗",
+] as const;
+export type FacilityCategory = (typeof facilityCategories)[number];
 
 // 前 46 条来自高德 POI（坐标已核验）；其余来自官方导览图配准，误差约 ±20–40 m。
 export const scenicPlaces: ScenicPlace[] = [...catalog, ...extraCatalog];
