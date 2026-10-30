@@ -29,8 +29,8 @@
     "providerName": "碧云亭",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.959331,
-      "lat": 32.156115
+      "lng": 118.958811,
+      "lat": 32.156813
     },
     "art": "pavilion",
     "tier": 3
@@ -53,8 +53,8 @@
     "providerName": "读枫阁",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.960616,
-      "lat": 32.156164
+      "lng": 118.959881,
+      "lat": 32.156464
     },
     "art": "pavilion",
     "tier": 3
@@ -77,8 +77,8 @@
     "providerName": "叠浪岩",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.961392,
-      "lat": 32.155336
+      "lng": 118.959535,
+      "lat": 32.15327
     },
     "art": "maple",
     "tier": 3
@@ -269,8 +269,8 @@
     "providerName": "德云亭",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.960777,
-      "lat": 32.154585
+      "lng": 118.960475,
+      "lat": 32.155223
     },
     "art": "pavilion",
     "tier": 3
@@ -281,8 +281,8 @@
     "providerName": "了凡问道",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.965762,
-      "lat": 32.155096
+      "lng": 118.964702,
+      "lat": 32.154503
     },
     "art": "pagoda",
     "tier": 3
@@ -365,8 +365,8 @@
     "providerName": "凌虚室遗址",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.964731,
-      "lat": 32.153603
+      "lng": 118.964082,
+      "lat": 32.152803
     },
     "art": "pagoda",
     "tier": 3
@@ -401,8 +401,8 @@
     "providerName": "试茶亭",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.964983,
-      "lat": 32.15314
+      "lng": 118.964895,
+      "lat": 32.152264
     },
     "art": "pavilion",
     "tier": 3
@@ -425,8 +425,8 @@
     "providerName": "青锋剑",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.965443,
-      "lat": 32.152988
+      "lng": 118.96625,
+      "lat": 32.153029
     },
     "art": "maple",
     "tier": 3
@@ -521,8 +521,8 @@
     "providerName": "白莲池（月牙池）",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.957985,
-      "lat": 32.151973
+      "lng": 118.958187,
+      "lat": 32.152432
     },
     "art": "water",
     "tier": 3
@@ -533,8 +533,8 @@
     "providerName": "毗卢宝殿",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.958969,
-      "lat": 32.151708
+      "lng": 118.959448,
+      "lat": 32.152132
     },
     "art": "temple",
     "tier": 3
@@ -581,8 +581,8 @@
     "providerName": "江总碑",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.958031,
-      "lat": 32.151746
+      "lng": 118.957943,
+      "lat": 32.151769
     },
     "art": "pagoda",
     "tier": 3
@@ -593,8 +593,8 @@
     "providerName": "春雨桥",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.960929,
-      "lat": 32.151209
+      "lng": 118.961876,
+      "lat": 32.151432
     },
     "art": "pavilion",
     "tier": 3
@@ -605,8 +605,8 @@
     "providerName": "春雨桥瀑布",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.961435,
-      "lat": 32.150921
+      "lng": 118.961954,
+      "lat": 32.151385
     },
     "art": "water",
     "tier": 3
@@ -617,8 +617,8 @@
     "providerName": "紫峰阁",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.959776,
-      "lat": 32.151055
+      "lng": 118.960432,
+      "lat": 32.15128
     },
     "art": "pavilion",
     "tier": 3
@@ -641,8 +641,8 @@
     "providerName": "集云亭",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.966081,
-      "lat": 32.150631
+      "lng": 118.966905,
+      "lat": 32.150734
     },
     "art": "pavilion",
     "tier": 3

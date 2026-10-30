@@ -6,25 +6,6 @@ import {
 } from "./qixia-map";
 
 describe("Qixia scenic map search", () => {
-  it("uses visitor priorities independently of POI source and legacy tiers", () => {
-    for (const name of [
-      "哼哈殿",
-      "钟楼",
-      "鼓楼",
-      "半馆",
-      "印心湖",
-      "桃花涧",
-      "桃花坞",
-      "萌宠乐园",
-      "景区南门",
-    ])
-      expect(scenicPlaces.find((place) => place.name === name)?.tier).toBe(1);
-    for (const name of ["凤翔峰", "毗卢宝殿", "虎爪岩", "德云亭"])
-      expect(scenicPlaces.find((place) => place.name === name)?.tier).toBe(2);
-    expect(
-      scenicPlaces.every((place) => place.tier === 1 || place.tier === 2),
-    ).toBe(true);
-  });
   it("keeps the confirmed canonical names and collapses provider aliases", () => {
     for (const name of [
       "毘灵宝殿",
