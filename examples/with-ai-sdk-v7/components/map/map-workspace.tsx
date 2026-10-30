@@ -226,7 +226,10 @@ export function MapWorkspace() {
     setSearchNote("");
     const result = await findNearby(api, origin, keywords);
     if (version !== searchVersion.current || map.current !== view) return;
-    const found = scenicSearchResults(result.places);
+    const localMatches = keywords.includes("明镜湖")
+      ? scenicPlaces.filter((place) => place.name === "彩虹明镜")
+      : [];
+    const found = scenicSearchResults([...localMatches, ...result.places]);
     setSearching(false);
     setSearchResults(found);
     setExtraPlaces((previous) => [
@@ -674,21 +677,26 @@ export function MapWorkspace() {
   }
   function ask() {
     if (!selected) return;
+    // 气泡里只说人话；坐标、POI 与「不代表当前位置」放在 metadata 里，
+    // 由 app/api/chat/route.ts 注入给模型，不显示在对话里。
     runtime.thread().append({
       role: "user",
-      content: [
-        {
-          type: "text",
-          text:
-            "请介绍栖霞山附近的「" +
-            selected.name +
-            "」。我手动选中的地点为高德GCJ-02坐标：" +
-            selected.location.lng +
-            "," +
-            selected.location.lat +
-            "。这不代表我的当前位置。需要查询事实时请使用高德工具，不要编造开放时间、演出或山路。",
+      content: [{ type: "text", text: `介绍一下${selected.name}` }],
+      metadata: {
+        custom: {
+          qixiaPlace: {
+            name: selected.name,
+            referenceCode: selected.referenceCode,
+            referenceName: selected.referenceName,
+            address:
+              typeof selected.address === "string"
+                ? selected.address
+                : undefined,
+            lng: selected.location.lng,
+            lat: selected.location.lat,
+          },
         },
-      ],
+      },
     });
   }
   function submit(event: FormEvent) {
