@@ -373,8 +373,8 @@
   },
   {
     "id": "QXS032",
-    "name": "玲峰池遗址",
-    "providerName": "玲峰池遗址",
+    "name": "玲峰池",
+    "providerName": "玲峰池",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
       "lng": 118.964223,
@@ -497,8 +497,8 @@
     "providerName": "千佛斋",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.9592,
-      "lat": 32.151909
+      "lng": 118.958508,
+      "lat": 32.152473
     },
     "art": "temple",
     "tier": 3
@@ -541,7 +541,7 @@
   },
   {
     "id": "QXS046",
-    "name": "白鹿泉遗址",
+    "name": "白鹿泉",
     "providerName": "白鹿泉遗址",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
