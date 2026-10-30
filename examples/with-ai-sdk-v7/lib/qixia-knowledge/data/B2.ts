@@ -1,52 +1,114 @@
 import type { QixiaPlaceKnowledge } from "../types";
 
-// 钟楼（钟楼）
+// 钟楼（钟楼，千禧钟）
 export const placeB2: QixiaPlaceKnowledge = {
   referenceCode: "B2",
   referenceName: "钟楼",
   name: "钟楼",
   kbCardId: "place-320113-zhonggulou",
   kbTitle: "钟鼓楼",
-  aliases: ["钟楼", "鼓楼"],
+  aliases: ["千禧钟", "大钟楼"],
   summary:
-    "钟楼与鼓楼沿栖霞寺中轴线南北对称，南为钟楼（千禧钟），2000 年前后建成。",
-  history: "钟鼓楼建成于2000年前后。[1][5]",
+    "钟楼是栖霞寺前「晨钟暮鼓」格局中的钟楼，为迎接 21 世纪千禧年而建，1999 年 12 月竣工，内悬千禧青铜大钟，重 6 吨，元旦除夕敲响 108 响祈福。",
+  history:
+    "钟楼位于明镜湖之后、栖霞寺前，与鼓楼沿中轴线南北对称（南钟北鼓），为迎接 21 世纪「千禧年」而建，由东南大学杨德安教授设计，1999 年 12 月竣工。[1][2] 楼高 16 米，单檐歇山重楼。一楼供奉一尊来自台湾的樟木髹金地藏王菩萨像；二楼悬挂由南京晨光集团铸造的青铜大钟，直径 2.2 米、高 3.2 米、重 6 吨（一说总重 9.6 吨）。[1][2][3] 自 2000 年起，栖霞古寺每年元旦、除夕举办「迎新年」撞钟祈福活动，众人聆听 108 响钟声辞旧迎新。[1][2]",
   historySources: [
-    "[1] 建成年代（A）：https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-miniprogram-2026-10-27.md",
-    "[5] 大事记 2000年前后（C）：https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-miniprogram-2026-10-27.md",
+    "[1] 钟楼沿革与钟制（B）：微信公众号「南京栖霞寺导游词」",
+    "[2] 钟楼沿革（B）：凯风网《金陵第一明秀山 栖霞山探幽》",
+    "[3] 钟重一说（C）：微信公众号「栖霞山风景区导游词 A 线」",
   ],
   keyFacts: [
     {
       key: "建成年代",
       values: [
         {
-          value: "2000年前后",
-          source:
-            "https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-miniprogram-2026-10-27.md",
-          credibility: "A",
+          value: "1999 年 12 月竣工",
+          source: "微信公众号「南京栖霞寺导游词」",
+          credibility: "B",
+        },
+        {
+          value: "为迎接 21 世纪「千禧年」而建",
+          source: "凯风网《金陵第一明秀山 栖霞山探幽》",
+          credibility: "B",
         },
       ],
     },
     {
-      key: "游玩时长",
+      key: "设计者",
       values: [
         {
-          value: "0.5",
-          unit: "小时",
-          source:
-            "https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-miniprogram-2026-10-27.md",
-          credibility: "A",
+          value: "东南大学杨德安教授",
+          source: "微信公众号「南京栖霞寺导游词」",
+          credibility: "B",
         },
       ],
     },
     {
-      key: "叩钟次数",
+      key: "规制",
       values: [
         {
-          value: "一百零八响",
-          source:
-            "https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-miniprogram-2026-10-27.md",
-          credibility: "A",
+          value: "高 16 米，单檐歇山重楼",
+          source: "微信公众号「南京栖霞寺导游词」",
+          credibility: "B",
+        },
+      ],
+    },
+    {
+      key: "青铜大钟",
+      values: [
+        {
+          value: "直径 2.2 米、高 3.2 米、重 6 吨",
+          source: "微信公众号「南京栖霞寺导游词」",
+          credibility: "B",
+        },
+        {
+          value: "总重 9.6 吨",
+          source: "凯风网《金陵第一明秀山 栖霞山探幽》",
+          credibility: "C",
+          note: "一说，与 6 吨并存，待核。",
+        },
+        {
+          value: "由南京晨光集团铸造",
+          source: "微信公众号「南京栖霞寺导游词」",
+          credibility: "B",
+        },
+      ],
+    },
+    {
+      key: "楼内供奉",
+      values: [
+        {
+          value: "一楼供奉来自台湾的樟木髹金地藏王菩萨像",
+          source: "微信公众号「南京栖霞寺导游词」",
+          credibility: "B",
+        },
+      ],
+    },
+    {
+      key: "题额与楹联",
+      values: [
+        {
+          value:
+            "「钟楼」「鼓楼」匾额为清同治年间广东探花宋襄所书；门前楹柱有林散之所书「莫教春秋佳日过，最难风雨故人来」、茗山法师所题「积德虽无人见，存心自有天知」",
+          source: "微信公众号「南京栖霞寺导游词」",
+          credibility: "B",
+        },
+        {
+          value: "「钟楼」二字出自著名书法家林散之之手",
+          source: "凯风网《金陵第一明秀山 栖霞山探幽》",
+          credibility: "C",
+          note: "一说，与宋襄题匾并存，待核。",
+        },
+      ],
+    },
+    {
+      key: "撞钟习俗",
+      values: [
+        {
+          value:
+            "自 2000 年起每年元旦、除夕举办「迎新年」撞钟祈福，聆听 108 响钟声",
+          source: "微信公众号「南京栖霞寺导游词」",
+          credibility: "B",
         },
       ],
     },
@@ -65,23 +127,29 @@ export const placeB2: QixiaPlaceKnowledge = {
   ],
   timeline: [
     {
-      date: "2000年前后",
-      what: "钟鼓楼建成",
-      source:
-        "https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-miniprogram-2026-10-27.md",
-      credibility: "A",
+      date: "1999 年 12 月",
+      what: "钟楼竣工，为迎接 21 世纪千禧年而建",
+      source: "微信公众号「南京栖霞寺导游词」",
+      credibility: "B",
+    },
+    {
+      date: "2000 年起",
+      what: "每年元旦、除夕举办「迎新年」撞钟祈福活动",
+      source: "微信公众号「南京栖霞寺导游词」",
+      credibility: "B",
     },
   ],
   audio: [],
   images: [],
-  credibility: "C",
+  credibility: "B",
+  note: "钟重有两说：6 吨（导游词）与 9.6 吨（凯风网），已并列保留待核；「钟楼」题额有宋襄、林散之二说，亦并列。",
   gushu: {
     book: "摄山志（清·陈毅辑，乾隆五十五年刊）",
-    note: "古籍记寺内「两翼为钟楼」。",
+    note: "古籍记寺内「两翼为钟楼」，为明以前古钟楼之记载，与今千禧钟楼有别。",
     records: [
       {
         chapter: "卷二/建置",
-        text: "建置\n寺由栖霞街东行数百步，经白莲池，始达山门。左右缭以石垣，南跨通津梁，以达飞来。石佛殿中为天王殿三楹。旁列僧含五区，有银杏二本，高数寻，径二丈，繁阴覆地，前代时物也。后为佛殿，三楹，两翼为钟楼，为碑亭，为伽蓝殿，为库。又后为法堂三楹，中贮藏经六百四十函。左为禅堂、法堂、库司、庖湢，共若干楹。后设累级，以达方丈，即鹿野堂者，凡五楹，两翼各五楹。又后为古佛庵，双树扶踈，覆屋三楹，具圜室。山人掘地筑基，得古佛，因以名庵。右为莲社堂，若千楹。更陟一陂，为定慧庵，三楹，郎古宴坐台遗址。后为幽居庵遗址。又后为报慈庵。循岩而西，前为曲流，曰八功德水，引品外泉为之，下注禅堂，以供庖湢。上为千佛龛，龛具小石刻。淳熙中舍钟石佛殿。则当时有殿以覆像可知。南为明月台，又南为翠微庵，址，即古般若堂。傍为黙坐轩，乃就岩为之。岩有达摩石像甚古，少进可达小鹿门。少东为白鹿泉，庵中凿观水池，以窃观澜之义。东为白云庵，疑即白云泉故地也。又东为山巓碧霞元君庙云。乃若跨湖千而引九乡之水者，曰栖霞桥，刻宋淳熙年造。跨长涧而四达者，曰筏济桥，曰彼岸红，曰小虎溪桥，曰问梅桥，曰小石红，又曰石房，在外龙山侧，为当时隐者所居。又曰迎贤石，曰醒石，曰碧鲜亭，具载前贤铭刻。旧称山中虚谷深陇，倚山架壁，各檀其胜。上至中峰顶，下视大江，曳若缟练，幽深隐奥者，忽焉而宏览八荒矣。所领小刹曰衡阳寺，即兹寺下院。",
+        text: "后为佛殿，三楹，两翼为钟楼，为碑亭，为伽蓝殿，为库。",
       },
     ],
   },

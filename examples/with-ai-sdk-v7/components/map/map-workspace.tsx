@@ -33,7 +33,10 @@ import {
 } from "@/lib/proximity";
 import { loadAmap } from "./load-amap";
 import { KnowledgeModal, PlaceKnowledge } from "./place-knowledge";
-import { getQixiaKnowledgeByCode } from "@/lib/qixia-knowledge";
+import {
+  getQixiaKnowledgeByCode,
+  getQixiaKnowledgeByName,
+} from "@/lib/qixia-knowledge";
 import { addAutumnLayer } from "./autumn-layer";
 import { scenicNavigation } from "./scenic-navigation";
 import {
@@ -1051,13 +1054,21 @@ export function MapWorkspace() {
           </div>,
           dockNode,
         )}
-      {selected && knowledgeOpen && (
-        <KnowledgeModal
-          knowledge={getQixiaKnowledgeByCode(selected.referenceCode)!}
-          place={selected}
-          onClose={() => setKnowledgeOpen(false)}
-        />
-      )}
+      {selected &&
+        knowledgeOpen &&
+        (() => {
+          const knowledge =
+            getQixiaKnowledgeByCode(selected.referenceCode) ??
+            getQixiaKnowledgeByName(selected.referenceName ?? selected.name);
+          if (!knowledge) return null;
+          return (
+            <KnowledgeModal
+              knowledge={knowledge}
+              place={selected}
+              onClose={() => setKnowledgeOpen(false)}
+            />
+          );
+        })()}
     </section>
   );
 }
