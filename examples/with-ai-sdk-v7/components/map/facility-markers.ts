@@ -3,7 +3,7 @@ import type { MapAPI, MapInstance, Place } from "./amap-types";
 
 const GLYPH: Readonly<Record<string, string>> = {
   center: "i",
-  info: "?",
+  info: "问",
   ticket: "票",
   shop: "购",
   gate: "门",

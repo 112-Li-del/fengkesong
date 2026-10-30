@@ -25,8 +25,8 @@
     "en": "Tourist Center",
     "group": "center",
     "location": {
-      "lng": 118.955454,
-      "lat": 32.150221
+      "lng": 118.954694,
+      "lat": 32.150247
     }
   },
   {
@@ -35,18 +35,18 @@
     "en": "Inquiry",
     "group": "info",
     "location": {
-      "lng": 118.955301,
-      "lat": 32.150319
+      "lng": 118.954557,
+      "lat": 32.15028
     }
   },
   {
     "id": "QXF005",
-    "name": "问询处",
-    "en": "Inquiry",
-    "group": "info",
+    "name": "停车场",
+    "en": "Parking",
+    "group": "parking",
     "location": {
-      "lng": 118.95547,
-      "lat": 32.150308
+      "lng": 118.964722,
+      "lat": 32.158397
     }
   },
   {
@@ -55,8 +55,8 @@
     "en": "Inquiry",
     "group": "info",
     "location": {
-      "lng": 118.966827,
-      "lat": 32.147252
+      "lng": 118.965389,
+      "lat": 32.146238
     }
   },
   {
@@ -71,12 +71,12 @@
   },
   {
     "id": "QXF008",
-    "name": "检票处",
-    "en": "Ticket Check",
-    "group": "check",
+    "name": "停车场",
+    "en": "Parking",
+    "group": "parking",
     "location": {
-      "lng": 118.959895,
-      "lat": 32.15216
+      "lng": 118.959205,
+      "lat": 32.152607
     }
   },
   {
@@ -85,8 +85,8 @@
     "en": "Ticket Check",
     "group": "check",
     "location": {
-      "lng": 118.966787,
-      "lat": 32.147871
+      "lng": 118.965573,
+      "lat": 32.14655
     }
   },
   {
@@ -95,8 +95,8 @@
     "en": "Ticket Office",
     "group": "ticket",
     "location": {
-      "lng": 118.955657,
-      "lat": 32.150296
+      "lng": 118.954552,
+      "lat": 32.150245
     }
   },
   {
@@ -105,8 +105,8 @@
     "en": "Ticket Office",
     "group": "ticket",
     "location": {
-      "lng": 118.967058,
-      "lat": 32.147256
+      "lng": 118.96558,
+      "lat": 32.146257
     }
   },
   {
@@ -115,8 +115,8 @@
     "en": "Clinic",
     "group": "medical",
     "location": {
-      "lng": 118.955362,
-      "lat": 32.150142
+      "lng": 118.954568,
+      "lat": 32.150172
     }
   },
   {
@@ -125,8 +125,8 @@
     "en": "Clinic",
     "group": "medical",
     "location": {
-      "lng": 118.967487,
-      "lat": 32.147265
+      "lng": 118.96522,
+      "lat": 32.14644
     }
   },
   {
@@ -135,8 +135,8 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.967405,
-      "lat": 32.158869
+      "lng": 118.954697,
+      "lat": 32.150212
     }
   },
   {
@@ -145,8 +145,8 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.963424,
-      "lat": 32.158921
+      "lng": 118.963922,
+      "lat": 32.158699
     }
   },
   {
@@ -185,8 +185,8 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.960161,
-      "lat": 32.150936
+      "lng": 118.960579,
+      "lat": 32.151218
     }
   },
   {
@@ -205,8 +205,8 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.966597,
-      "lat": 32.15001
+      "lng": 118.96763,
+      "lat": 32.149575
     }
   },
   {
@@ -219,16 +219,7 @@
       "lat": 32.149343
     }
   },
-  {
-    "id": "QXF023",
-    "name": "卫生间",
-    "en": "Toilet",
-    "group": "toilet",
-    "location": {
-      "lng": 118.955549,
-      "lat": 32.15013
-    }
-  },
+
   {
     "id": "QXF024",
     "name": "停车场",
@@ -265,22 +256,12 @@
     "en": "Parking",
     "group": "parking",
     "location": {
-      "lng": 118.966199,
-      "lat": 32.14789
+      "lng": 118.964518,
+      "lat": 32.146071
     }
   },
   {
     "id": "QXF028",
-    "name": "停车场",
-    "en": "Parking",
-    "group": "parking",
-    "location": {
-      "lng": 118.965569,
-      "lat": 32.146204
-    }
-  },
-  {
-    "id": "QXF029",
     "name": "游览车停靠站",
     "en": "Sightseeing Bus Stop",
     "group": "bus",
@@ -290,7 +271,7 @@
     }
   },
   {
-    "id": "QXF030",
+    "id": "QXF029",
     "name": "游览车停靠站",
     "en": "Sightseeing Bus Stop",
     "group": "bus",
@@ -300,7 +281,7 @@
     }
   },
   {
-    "id": "QXF031",
+    "id": "QXF030",
     "name": "游览车停靠站",
     "en": "Sightseeing Bus Stop",
     "group": "bus",
@@ -310,7 +291,7 @@
     }
   },
   {
-    "id": "QXF032",
+    "id": "QXF031",
     "name": "游览车停靠站",
     "en": "Sightseeing Bus Stop",
     "group": "bus",
@@ -320,7 +301,7 @@
     }
   },
   {
-    "id": "QXF033",
+    "id": "QXF032",
     "name": "游览车停靠站",
     "en": "Sightseeing Bus Stop",
     "group": "bus",
@@ -330,17 +311,17 @@
     }
   },
   {
-    "id": "QXF034",
+    "id": "QXF033",
     "name": "游览车停靠站",
     "en": "Sightseeing Bus Stop",
     "group": "bus",
     "location": {
-      "lng": 118.966702,
-      "lat": 32.148183
+      "lng": 118.966002,
+      "lat": 32.146586
     }
   },
   {
-    "id": "QXF035",
+    "id": "QXF034",
     "name": "游览车停靠站",
     "en": "Sightseeing Bus Stop",
     "group": "bus",
@@ -350,17 +331,17 @@
     }
   },
   {
-    "id": "QXF036",
+    "id": "QXF035",
     "name": "自助能量补给站",
     "en": "Self-service Supply Station",
     "group": "supply",
     "location": {
-      "lng": 118.963141,
-      "lat": 32.158231
+      "lng": 118.963283,
+      "lat": 32.157988
     }
   },
   {
-    "id": "QXF037",
+    "id": "QXF036",
     "name": "自助能量补给站",
     "en": "Self-service Supply Station",
     "group": "supply",
@@ -370,7 +351,7 @@
     }
   },
   {
-    "id": "QXF038",
+    "id": "QXF037",
     "name": "消防器材室",
     "en": "Fire Equipment Room",
     "group": "fire",
@@ -380,7 +361,7 @@
     }
   },
   {
-    "id": "QXF039",
+    "id": "QXF038",
     "name": "消防器材室",
     "en": "Fire Equipment Room",
     "group": "fire",
@@ -390,7 +371,7 @@
     }
   },
   {
-    "id": "QXF040",
+    "id": "QXF039",
     "name": "消防器材室",
     "en": "Fire Equipment Room",
     "group": "fire",
@@ -400,43 +381,153 @@
     }
   },
   {
+    "id": "QXF040",
+    "name": "消防器材室",
+    "en": "Fire Equipment Room",
+    "group": "fire",
+    "location": {
+      "lng": 118.957121,
+      "lat": 32.149007
+    }
+  },
+  {
     "id": "QXF041",
     "name": "消防器材室",
     "en": "Fire Equipment Room",
     "group": "fire",
     "location": {
-      "lng": 118.957025,
-      "lat": 32.14995
+      "lng": 118.965144,
+      "lat": 32.146384
     }
   },
   {
     "id": "QXF042",
-    "name": "消防器材室",
-    "en": "Fire Equipment Room",
-    "group": "fire",
-    "location": {
-      "lng": 118.967818,
-      "lat": 32.147276
-    }
-  },
-  {
-    "id": "QXF043",
     "name": "森林消防半专业队",
     "en": "Forest Fire Squad",
     "group": "squad",
     "location": {
-      "lng": 118.965506,
-      "lat": 32.147591
+      "lng": 118.9651,
+      "lat": 32.146851
     }
   },
   {
-    "id": "QXF044",
+    "id": "QXF043",
     "name": "旅游文创馆",
     "en": "Cultural & Creative Shop",
     "group": "shop",
     "location": {
       "lng": 118.955384,
       "lat": 32.151
+    }
+  },
+  {
+    "id": "QXF044",
+    "name": "停车场",
+    "en": "Parking",
+    "group": "parking",
+    "location": {
+      "lng": 118.954984,
+      "lat": 32.15107
+    }
+  },
+  {
+    "id": "QXF045",
+    "name": "停车场",
+    "en": "Parking",
+    "group": "parking",
+    "location": {
+      "lng": 118.954903,
+      "lat": 32.15102
+    }
+  },
+  {
+    "id": "QXF046",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.955107,
+      "lat": 32.151292
+    }
+  },
+  {
+    "id": "QXF047",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.956675,
+      "lat": 32.152159
+    }
+  },
+  {
+    "id": "QXF048",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.967942,
+      "lat": 32.15929
+    }
+  },
+  {
+    "id": "QXF049",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.963902,
+      "lat": 32.158458
+    }
+  },
+  {
+    "id": "QXF050",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.959766,
+      "lat": 32.15589
+    }
+  },
+  {
+    "id": "QXF051",
+    "name": "游览车停靠站",
+    "en": "Sightseeing Bus Stop",
+    "group": "bus",
+    "location": {
+      "lng": 118.967239,
+      "lat": 32.15246
+    }
+  },
+  {
+    "id": "QXF052",
+    "name": "游览车停靠站",
+    "en": "Sightseeing Bus Stop",
+    "group": "bus",
+    "location": {
+      "lng": 118.966276,
+      "lat": 32.153315
+    }
+  },
+  {
+    "id": "QXF053",
+    "name": "游览车停靠站",
+    "en": "Sightseeing Bus Stop",
+    "group": "bus",
+    "location": {
+      "lng": 118.958461,
+      "lat": 32.152598
+    }
+  },
+  {
+    "id": "QXF054",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "location": {
+      "lng": 118.960281,
+      "lat": 32.152011
     }
   }
 ]
