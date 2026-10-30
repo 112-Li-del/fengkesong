@@ -10,7 +10,7 @@ export const placeA4: QixiaPlaceKnowledge = {
   aliases: ["彩虹明镜"],
   summary: "明镜湖是栖霞山景点中的自然奇观之一。",
   history:
-    "明镜湖一说于1757年由两江总督尹继善开凿而成，用以迎接乾隆皇帝第三次南巡。[13][18][22][25] 据导游讲，此湖是进入栖霞寺的第一景，为栖霞十景之一。[12][14][24][25] 其名一说因四周树木倒映湖中如镜而得名，一说为乾隆皇帝赐名。[11][20][24]",
+    "明镜湖一说于1757年由两江总督尹继善开凿而成，用以迎接乾隆皇帝第三次南巡。[13][18][22][25] 此湖是进入栖霞寺的第一景，为栖霞十景之一。[12][14][24][25] 其名一说因四周树木倒映湖中如镜而得名，一说为乾隆皇帝赐名。[11][20][24]",
   historySources: [
     "[5] 湖中景观（C）：https://m.maigoo.com/citiao/113006.html",
     "[6] 湖心建筑（C）：https://m.maigoo.com/citiao/113006.html",
@@ -182,44 +182,17 @@ export const placeA4: QixiaPlaceKnowledge = {
     },
     {
       key: "位置",
+      group: "location",
       values: [
         {
-          value: "进入栖霞寺的第一景",
+          value: "栖霞寺山门前（虎山与龙山之间）",
           source:
             "https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-guided-tour-2026-10.md",
           credibility: "C",
         },
-        {
-          value: "寺门右",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaxinzhi-1934.md",
-          credibility: "C",
-        },
-        {
-          value: "中峰北麓，西峰南麓两水之水",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiashanzhi-1962.md",
-          credibility: "C",
-        },
-        {
-          value: "栖霞寺前虎山和龙山之间",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiajianzhi-1999.md",
-          credibility: "C",
-        },
-        {
-          value: "寺前虎山和龙山之间",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaquzhi-1999.md",
-          credibility: "C",
-        },
-        {
-          value: "栖霞寺大门西面",
-          source: "https://m.nj.bendibao.com/tour/140483.shtm",
-          credibility: "C",
-        },
       ],
     },
+
     {
       key: "开凿者",
       values: [
@@ -363,7 +336,8 @@ export const placeA4: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "观赏效果",
+      key: "最佳观赏",
+      group: "view",
       values: [
         {
           value: "最佳",
@@ -373,7 +347,8 @@ export const placeA4: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "观赏区域",
+      key: "最佳观赏",
+      group: "view",
       values: [
         {
           value: "彩虹明镜",
@@ -383,7 +358,8 @@ export const placeA4: QixiaPlaceKnowledge = {
       ],
     },
     {
-      key: "打卡线路",
+      key: "游览路线",
+      group: "route",
       values: [
         {
           value: "精华打卡线",
@@ -508,4 +484,18 @@ export const placeA4: QixiaPlaceKnowledge = {
     },
   ],
   credibility: "C",
+  gushu: {
+    book: "摄山志（清·陈毅辑，乾隆五十五年刊）",
+    note: "古籍同名「彩虹明镜」，乾隆二十七年赐名。",
+    records: [
+      {
+        chapter: "卷一/图序/彩虹明镜",
+        text: "彩虹明镜\n彩虹明镜\n在三会殿之西，向有流泉，散漫无归，二十二年始凿为池，水从桃花涧下，直喷池内，浩瀚弥漫，一望无际。其间怪石林立，错落崎嵚，中筑坝桥，扶栏以度，则依山结。屋就水为亭，仿佛明圣湖边风景。二十七年，翠华临幸，肇锡嘉名焉。",
+      },
+      {
+        chapter: "卷首/天章/诗",
+        text: "右彩虹明镜\n伞山迥绝尘，幽居幽之最。然逢济胜流，何碍蹊成兑。往者尹与沈，清遨并肩背。憩息长松下，甘棠拟勿拜。倡酬因有诗，兴托清凉界。邮笺曾和韵，又逾两年外。",
+      },
+    ],
+  },
 };

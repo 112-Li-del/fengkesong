@@ -1,0 +1,325 @@
+.landing {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  background: transparent;
+  color: #fdf6ec;
+  isolation: isolate;
+  font-family:
+    "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", -apple-system,
+    "Segoe UI", sans-serif;
+}
+
+/* 落地页场景层：承载所有可视内容（含深色底），烧屏开叶时整体淡出露出地图 */
+.landing-scene {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  background: #2a1008;
+}
+
+/* 点击进入后：场景随伞面从中心向外揭开，露出背后的地图 */
+.landing.is-burning {
+  pointer-events: none;
+}
+.landing.is-burning .landing-scene {
+  animation: scene-reveal 2.2s cubic-bezier(0.4, 0.04, 0.6, 0.96) forwards;
+}
+@keyframes scene-reveal {
+  from {
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 0vmax, #000 0.01vmax);
+    mask-image: radial-gradient(circle at 50% 50%, transparent 0vmax, #000 0.01vmax);
+  }
+  to {
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 120vmax, #000 120.01vmax);
+    mask-image: radial-gradient(circle at 50% 50%, transparent 120vmax, #000 120.01vmax);
+  }
+}
+
+/* 背景主视觉图 */
+.landing-bg {
+  position: absolute;
+  inset: -2%;
+  z-index: -2;
+  background-image: url("/home/qixia-hero.png");
+  background-size: cover;
+  background-position: center 38%;
+  filter: saturate(1.05);
+}
+
+/* 遮罩：顶部与底部压暗，突出中部主体与文字可读性，右下角深色渐变压住水印 */
+.landing-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(42, 16, 8, 0.34) 0%,
+      rgba(42, 16, 8, 0.06) 32%,
+      rgba(42, 16, 8, 0.05) 58%,
+      rgba(46, 13, 5, 0.6) 100%
+    ),
+    radial-gradient(
+      130% 90% at 50% 42%,
+      transparent 52%,
+      rgba(30, 10, 4, 0.42) 100%
+    );
+}
+
+/* 顶部品牌 */
+.landing-brand {
+  position: absolute;
+  top: 26px;
+  left: 30px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(60, 22, 10, 0.38);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 214, 168, 0.28);
+  color: #fbe8d4;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.landing-brand svg {
+  color: #e8a05c;
+}
+
+/* 主体 */
+.landing-hero {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 28px 12vh;
+}
+
+.landing-eyebrow {
+  margin: 0 0 18px;
+  font-size: clamp(13px, 2vw, 16px);
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: #f6d3a8;
+  text-shadow: 0 2px 12px rgba(60, 18, 6, 0.65);
+}
+
+.landing-title {
+  margin: 0;
+  font-size: clamp(4rem, 15vw, 9rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: 0.08em;
+  text-indent: 0.08em;
+  background: linear-gradient(180deg, #fff6e8 8%, #fbe0b4 46%, #e8a05c 78%, #d4573c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 4px 22px rgba(92, 26, 8, 0.55));
+}
+
+.landing-subtitle {
+  margin: 20px 0 0;
+  font-size: clamp(1.1rem, 3.4vw, 1.7rem);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
+  color: #fdf0dd;
+  text-shadow: 0 2px 14px rgba(70, 20, 6, 0.7);
+}
+
+.landing-desc {
+  margin: 22px auto 0;
+  max-width: 34em;
+  font-size: clamp(0.95rem, 2.2vw, 1.12rem);
+  line-height: 1.9;
+  color: rgba(253, 240, 221, 0.92);
+  text-shadow: 0 1px 10px rgba(50, 14, 4, 0.6);
+}
+
+/* 进入按钮 */
+.landing-enter {
+  position: relative;
+  margin-top: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 17px 40px;
+  border: 1px solid rgba(255, 226, 186, 0.5);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e05a3a 0%, #c7442b 55%, #a8301f 100%);
+  color: #fff7ee;
+  font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-indent: 0.16em;
+  cursor: pointer;
+  box-shadow:
+    0 10px 30px rgba(140, 34, 14, 0.45),
+    0 2px 6px rgba(80, 16, 6, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms ease,
+    filter 220ms ease;
+}
+.landing-enter svg {
+  color: #ffe0b0;
+  transition: transform 260ms ease;
+}
+.landing-enter .landing-enter-arrow {
+  font-size: 1.1em;
+  line-height: 1;
+  transition: transform 260ms ease;
+}
+.landing-enter:hover {
+  transform: translateY(-3px) scale(1.03);
+  filter: brightness(1.06);
+  box-shadow:
+    0 16px 42px rgba(140, 34, 14, 0.55),
+    0 3px 8px rgba(80, 16, 6, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+.landing-enter:hover svg {
+  transform: rotate(-24deg) scale(1.12);
+}
+.landing-enter:hover .landing-enter-arrow {
+  transform: translateX(5px);
+}
+.landing-enter:active {
+  transform: translateY(0) scale(0.99);
+}
+.landing-enter:focus-visible {
+  outline: 3px solid rgba(255, 214, 168, 0.8);
+  outline-offset: 3px;
+}
+
+/* 景点标签 */
+.landing-spots {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 640px;
+}
+.landing-spot {
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(58, 20, 8, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 214, 168, 0.24);
+  color: #fbe8d4;
+  font-size: 13.5px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  transition:
+    background 200ms ease,
+    transform 200ms ease,
+    border-color 200ms ease;
+}
+.landing-spot:hover {
+  background: rgba(110, 42, 18, 0.5);
+  border-color: rgba(255, 214, 168, 0.5);
+  transform: translateY(-2px);
+}
+
+/* 右下角脚注（同时遮挡 AI 水印） */
+.landing-footer {
+  position: absolute;
+  right: 28px;
+  bottom: 24px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(46, 15, 6, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 214, 168, 0.18);
+  color: rgba(253, 240, 221, 0.88);
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+}
+.landing-footer-sep {
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-enter,
+  .landing-enter svg,
+  .landing-enter .landing-enter-arrow {
+    transition: none;
+  }
+  .landing.is-burning .landing-scene {
+    animation: none;
+  }
+  .landing-gate,
+  .gate-umbrella {
+    animation: none !important;
+  }
+}
+
+/* ===================== 多伞齐开转场特效 ===================== */
+
+/* 门层：盖在场景之上，不随场景淡出 */
+.landing-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 单把转场伞：6 把同时重合在屏幕中心（left/top 均为 50%），重叠堆叠后旋转飞出屏幕。
+   所有伞飞行时长一致（2.3s），同起同落「同时散开」；层次由大小/方向/自转圈数差异带来。 */
+.gate-umbrella {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+  will-change: transform, opacity;
+  animation: gate-open 2.3s cubic-bezier(0.4, 0.04, 0.6, 0.96) both;
+  filter: drop-shadow(0 10px 28px rgba(120, 30, 10, 0.55));
+}
+.gate-umbrella svg {
+  display: block;
+}
+@keyframes gate-open {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(var(--rot0, 0deg));
+    opacity: 0;
+  }
+  16% {
+    transform: translate(-50%, -50%) scale(1.05) rotate(var(--rot0, 0deg));
+    opacity: 1;
+  }
+  26% {
+    transform: translate(-50%, -50%) scale(1) rotate(var(--rot0, 0deg));
+    opacity: 1;
+  }
+  72% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+        calc(-50% + var(--flyx, 0px)),
+        calc(-50% + var(--flyy, 0px))
+      )
+      scale(1.6) rotate(calc(var(--rot0, 0deg) + var(--spin, 720deg)));
+    opacity: 0;
+  }
+}
