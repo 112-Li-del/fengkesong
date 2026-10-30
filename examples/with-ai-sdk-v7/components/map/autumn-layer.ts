@@ -16,7 +16,7 @@ export function addAutumnLayer(
   if (signal.aborted) throw new DOMException("Aborted", "AbortError");
   const paper = new api.Polygon({
     map,
-    path: paperBoundary.path,
+    path: [paperBoundary.path, ...paperBoundary.holes],
     fillColor: "#f4f2af",
     fillOpacity: 1,
     strokeWeight: 0,
