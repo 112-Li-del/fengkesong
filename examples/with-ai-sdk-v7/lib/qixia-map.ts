@@ -1,7 +1,24 @@
 import catalog from "./qixia-places.json";
 import extraCatalog from "./qixia-places-extra.json";
 import facilityCatalog from "./qixia-facilities.json";
+import { referenceScenicPlaces } from "./scenic-places";
 import type { LngLat, Place } from "../components/map/amap-types";
+
+// 把硬编码的参考景点的 referenceCode / referenceName 合并进地图点位，
+// 否则钟楼、鼓楼等点位在 JSON 里没有 referenceCode，
+// 点击知识卡片弹窗时 getQixiaKnowledgeByCode 取不到卡片（undefined → 非空断言崩溃）。
+const referenceByPlaceId = new Map(
+  referenceScenicPlaces.map((place) => [place.id, place]),
+);
+function withReference<T extends { id: string }>(place: T): T {
+  const reference = referenceByPlaceId.get(place.id);
+  if (!reference) return place;
+  return {
+    ...place,
+    referenceCode: reference.referenceCode,
+    referenceName: reference.referenceName,
+  };
+}
 
 export type ScenicPlace = Place & {
   providerName: string;
@@ -12,10 +29,25 @@ export type ScenicPlace = Place & {
 export type FacilityPlace = Place & {
   en: string;
   group: string;
+  // 一级大类：卫生间 / 停车交通 / 门票入口 / 购物补给 / 安全医疗
+  category: string;
 };
 
+// 服务设施一级大类（按游客「最常找」归并的少数标签，覆盖全部设施）。
+export const facilityCategories = [
+  "卫生间",
+  "停车交通",
+  "门票入口",
+  "购物补给",
+  "安全医疗",
+] as const;
+export type FacilityCategory = (typeof facilityCategories)[number];
+
 // 前 46 条来自高德 POI（坐标已核验）；其余来自官方导览图配准，误差约 ±20–40 m。
-export const scenicPlaces: ScenicPlace[] = [...catalog, ...extraCatalog];
+export const scenicPlaces: ScenicPlace[] = [
+  ...catalog.map(withReference),
+  ...extraCatalog.map(withReference),
+];
 
 // 导览图上的服务设施（卫生间、停车场、观光车站等），默认隐藏，可在地图面板开关。
 export const facilityPlaces: FacilityPlace[] = facilityCatalog;
