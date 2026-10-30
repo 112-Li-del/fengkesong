@@ -89,6 +89,8 @@ export function facilityMarkers(
   });
 
   let visible = false;
+  // 可见的大类集合；为空则全部显示。用于按分类开关设施。
+  let visibleCategories: Set<string> | null = null;
   let clusters: { marker: { setMap(map: MapInstance | null): void } }[] = [];
 
   const clearClusters = () => {
@@ -96,18 +98,25 @@ export function facilityMarkers(
     clusters = [];
   };
 
+  const active = (facility: FacilityPlace) =>
+    visibleCategories === null || visibleCategories.has(facility.category);
+
   const layout = () => {
     clearClusters();
     const clustered = map.getZoom() < CLUSTER_ZOOM;
     for (const entry of entries)
-      entry.marker.setMap(visible && !clustered ? map : null);
+      entry.marker.setMap(
+        visible && !clustered && active(entry.facility) ? map : null,
+      );
     if (!visible || !clustered) return;
 
-    const points = entries.map((entry) => {
-      const { lng, lat } = entry.facility.location;
-      const pixel = map.lngLatToContainer([lng, lat]);
-      return { entry, x: pixel.x, y: pixel.y };
-    });
+    const points = entries
+      .filter((entry) => active(entry.facility))
+      .map((entry) => {
+        const { lng, lat } = entry.facility.location;
+        const pixel = map.lngLatToContainer([lng, lat]);
+        return { entry, x: pixel.x, y: pixel.y };
+      });
     const used = new Set<number>();
     for (let i = 0; i < points.length; i += 1) {
       if (used.has(i)) continue;
@@ -197,6 +206,10 @@ export function facilityMarkers(
       visible = next;
       layout();
       return next;
+    },
+    setCategories(categories: string[] | null) {
+      visibleCategories = categories === null ? null : new Set(categories);
+      layout();
     },
     remove() {
       map.off("zoomend", layout);

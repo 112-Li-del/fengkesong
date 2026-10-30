@@ -36,5 +36,6 @@ export function addAutumnLayer(
     },
     setSelected: markers.setSelected,
     setFacilities: facilities.setVisible,
+    setFacilityCategories: facilities.setCategories,
   };
 }
