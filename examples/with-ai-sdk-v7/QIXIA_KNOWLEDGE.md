@@ -93,24 +93,26 @@
 | 图片 | 46 张 |
 | 含历史「来历」讲解的景点 | 14 个 |
 
+这一层是**素材**：同一字段的多来源说法全部保留（如舍利塔高度 15 米 / 18.74 米）。对话回答不直接用它，而是用第五节描述的定稿口径。
+
 ---
 
 ## 四、代码改动清单
 
 ### 新增文件
 
-1. **`lib/qixia-knowledge/`**（按景点拆分的知识数据模块）
-   - `types.ts` — 类型定义（`QixiaPlaceKnowledge` 等）
-   - `data/<code>.ts` — 每个景点一个文件（如 `B5.ts` 为栖霞古寺），各自导出 `place<code>` 常量
-   - `index.ts` — 聚合所有景点并导出三个查询函数：
-     - `getQixiaKnowledgeByCode(code)` — 按地图编号（A1/B6…）取知识
-     - `getQixiaKnowledgeByName(name)` — 按名称取知识
-     - `searchQixiaKnowledge(query)` — 关键词搜索
-   - **扩充方式**：在 `data/` 下新增 `<code>.ts`（导出 `place<code>`），再在 `index.ts` 的 import 与 `qixiaKnowledge` 数组中各登记一行即可。
+1. **`lib/qixia-knowledge/`**（按景点拆分的知识模块，分「素材」与「定稿」两层）
+   - `types.ts` — 类型定义（`QixiaPlaceKnowledge`、`QixiaAnswerView` 等）
+   - `data/<code>.ts` — 每个景点一个文件（如 `B5.ts` 为栖霞古寺），各自导出 `place<code>` 常量，多来源并列保留
+   - `catalog.ts` — 聚合所有景点并导出 `getQixiaKnowledgeByCode`、`getQixiaKnowledgeByName`、`searchQixiaKnowledge`
+   - `editorial.ts` — **定稿层**：一句话简介、已拍板的事实（附 `basis` 依据）、应隐藏的字段、未定稿字段、定稿大事记
+   - `answer-view.ts` — 把素材收敛成对话口径：同字段只留一个说法、冲突且未定稿的字段进 `openIssues`、来源换成「景区导览资料」这类可读名字
+   - `index.ts` — 统一出口（`catalog` + `answer-view` + 类型）
+   - **扩充方式**：在 `data/` 下新增 `<code>.ts`（导出 `place<code>`），在 `catalog.ts` 的 import 与 `qixiaKnowledge` 数组各登记一行；需要定稿口径时在 `editorial.ts` 补一条。
 
 2. **`components/map/place-knowledge.tsx`**
    地点详情面板里的「景点知识」组件，展示简介、历史来历、大事记（可展开）、讲解音频、图片（带许可署名）。
-   - 详情面板内为**精简预览**，含「查看完整知识卡片」按钮。
+   - 详情面板内为**精简预览**，含「查看完整知识卡片」按钮；简介用定稿层的一句话介绍，不再显示模板化的 summary。
    - 点击按钮（或直接选中景点）会弹出**全屏知识卡片**，完整展示：简介、来历（含出处）、全部关键史实（多来源并列 + A/B/C 可信度徽章 + 出处链接）、全部大事记、全部讲解音频、大图图库（含作者与许可署名）。
    - 卡片采用**红枫主题**：外层全屏背景为**枫叶红渐变**（深红 → 枫红 → 暖橙），四角有大枫叶装饰、背景中十余片金色/暖橙枫叶轻盈漂浮；卡片本体为**白色实底**（金色顶饰条 + 红枫渐变头部），在红底上清晰突出。
    - 支持 Esc 键、点遮罩、点关闭按钮三种方式退出；选中景点后若有资料会**自动弹出**卡片（无需再点小按钮）。
@@ -126,12 +128,37 @@
    - 新增全屏知识卡片样式（红枫主题）：`.knowledge-modal-*`（卡片已加宽至 1040px + 金色顶饰条）、`.knowledge-maple-corner`（四角大枫叶）、`.knowledge-maple-fall`（漂浮枫叶 + `maple-float` 动效）、`.knowledge-facts`（双列史实卡）、`.knowledge-timeline`（时间轴）、`.knowledge-gallery`（三列大图）、`.knowledge-cred`（可信度徽章），含移动端响应式与动效
 
 5. **`app/api/chat/route.ts`**
-   - 新增工具 `get_qixia_knowledge`：聊天助手可查询导入的景点知识来回答栖霞山问题
-   - 系统提示词新增规则：回答栖霞山景点介绍/历史/年代/数字前先查知识库，附出处、C 级按「一说」表述、多说法并列、查不到不编造
+   - 工具 `get_qixia_knowledge` 改为返回**定稿口径**：`overview`、`facts`（每项一个说法）、`timeline`、`openIssues`、`sourceNote`、`coverage`；不再返回原始多来源数组、出处网址与可信度
+   - `coverage=none` 时明确告知模型知识库没有该景点，改用高德确认地点，不编造历史
+   - 系统提示词拆到 `lib/qixia-chat-prompt.ts`：知识库使用规则 + 回答风格（先结论、3–5 条要点、不列网址/可信度/坐标、冲突只给一句话）
+   - `convertToModelMessages` 前调用 `injectPlaceContext`，把地图选点补成模型可见、界面不显示的上下文
+
+6. **`lib/place-context.ts`** — 地图选点的隐藏上下文：从消息 `metadata.custom.qixiaPlace` 读取名称、编号、地址、坐标，注入成一段说明；字段不全就不注入
+
+7. **`lib/qixia-chat-prompt.ts`** — 回答口径文案：`QIXIA_KNOWLEDGE_RULE`、`QIXIA_ANSWER_STYLE`、`formatPlaceContext`
 
 ---
 
-## 五、图片与许可说明
+## 五、对话口径与定稿层
+
+知识库导入的是**素材**：同一字段常有多个来源、多个数字（例如舍利塔高度同时有 15 米和 18.74 米）。并列展示只适合知识卡片；直接丢给对话，就会出现「一条说 15 米、另一条说 18.74 米」这种没法用的回答。
+
+对话改走定稿层（`editorial.ts` + `answer-view.ts`）：
+
+- **一句话简介**：`editorial.ts` 的 `intro` 覆盖模板化 summary（如「××是栖霞山的景点之一」），按景点写成人话。
+- **一个字段一个说法**：先按写法去重，再按「来源等级 + 多源一致」收敛。舍利塔高度两个来源记 15 米，单一商业网站记 18.74 米，回答采用约 15 米，18.74 米不进回答。
+- **没定稿就不给数字**：收敛不了、又属于游客会追问的字段（年代、高度、面积、数量、位置等）进 `openIssues`。模型只能说「资料说法不一，以现场说明牌为准」，不能挑一个，也不能把候选项并列。
+- **重复与琐碎字段**：`hide` 去掉重复项（如把 `重建年代`、`建成时间` 合成一个「年代」）和批次、编号这类行政字段；开放时间、门票、场次一律不回答，只写「以景区当日公告为准」。
+- **大事记**：有定稿时整段替换，避免「1919 年复建」和「2001 年建成」同时出现在一条回答里。
+- **来源写法**：正文不出现网址与 A/B/C，结尾固定一行「资料：栖霞知识库」（工具直接返回 `sourceNote`，不让模型自己拼）；具体出处留给知识卡片。
+
+维护时：新结论写进 `editorial.ts` 的 `facts`，把依据写进 `basis`；判断不了就写进 `open`，不要为了「信息全」把冲突值放出去。`answer-view.test.ts` 会检查回答口径里没有网址、可信度字母、具体钟点和已收敛的冲突数字。
+
+地图选点进入对话同理：气泡里只说「介绍一下哼哈殿」，参考图编号、坐标、POI 与「不代表当前位置」放在消息 `metadata.custom.qixiaPlace` 里，由 `injectPlaceContext` 在服务端补成模型上下文。
+
+---
+
+## 六、图片与许可说明
 
 - 图片来自**维基共享资源（Wikimedia Commons）**开放许可，由栖霞知识库镜像存储，国内访问更快。
 - 每张图均保留 `author`（作者）、`license`（许可）、`license_url`、`source`（原图页）。
@@ -141,20 +168,22 @@
 
 ---
 
-## 六、验证结果
+## 七、验证结果
 
 | 检查 | 结果 |
 |---|---|
 | TypeScript 类型检查（`tsc --noEmit`） | ✅ 通过 |
 | 代码规范（`oxlint`，106 规则） | ✅ 0 警告 0 错误 |
+| 新增单测（`vitest run lib/qixia-knowledge lib/place-context.test.ts app/api/chat`） | ✅ 12 passed |
+| 端到端（页面 → `/api/chat` → 定稿回答） | ✅ 哼哈殿回答无网址、无坐标、未出现 1919，来源只留一句 |
 | `next build` | ⚠️ 未跑完（本地沙箱的「安全删除」拦截了 `.next` 目录清理，非代码问题） |
 
 ---
 
-## 七、待办与注意事项
+## 八、待办与注意事项
 
 1. **7 个无独立卡片的景点**（牌坊、话山亭、枫林湖、太虚亭、半馆、百草园、饮马池）：知识库没有对应卡片。若要补齐，需从方志/景区资料另行整理，或在知识库补充卡片后再重新导入。
-2. **数据时效与可信度**：知识库内容多为机器整理草稿（`status=draft`）、可信度以 C 级为主，仅作线索与讲解素材；对外说准确数字时请回出处原文核对。
+2. **数据时效与可信度**：知识库内容多为机器整理草稿（`status=draft`），可信度以 C 级为主。素材层仍保留全部说法，对外回答只走 `editorial.ts` 的定稿结论；新增结论时请回出处原文核对，拿不准就写进 `open`。
 3. **内部数据未接入**：商户/住宿名单需在 https://qixia.winnielyu.com/internal/ 邮箱登录后生成口令（`qx_...`）才能取，本次未导入。
-4. **重新导入**：知识库更新后，可重跑生成脚本 `F:/fks-gihub/.workbuddy/tools/generate-qixia-knowledge.js` 覆盖 `lib/qixia-knowledge/` 下的数据文件（脚本内需把临时数据路径改为本机实际路径，并按上述拆分结构输出）。
+4. **重新导入**：知识库更新后，可重跑生成脚本 `F:/fks-gihub/.workbuddy/tools/generate-qixia-knowledge.js` 覆盖 `lib/qixia-knowledge/` 下的数据文件（脚本内需把临时数据路径改为本机实际路径，并按上述拆分结构输出）。重跑只覆盖 `data/`，`editorial.ts` 里的定稿结论要人工复核：数据变了，拍板的话也要跟着改。
 5. **数据体积**：知识数据约 200KB，随前端一起打包；如需进一步优化体积，可改为运行时按需请求知识库 API。
