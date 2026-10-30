@@ -128,6 +128,9 @@ export function MapWorkspace() {
   const [state, setState] = useState<"loading" | "missing" | "ready" | "error">(
     "loading",
   );
+  useEffect(() => {
+    autumnLayer.current?.setPaperVisible(illustrated);
+  }, [illustrated, state]);
   const [retry, setRetry] = useState(0);
   const [mcp, setMcp] = useState(false);
   const [query, setQuery] = useState("");
