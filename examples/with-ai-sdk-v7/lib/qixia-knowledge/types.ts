@@ -61,3 +61,30 @@ export type QixiaPlaceKnowledge = {
   credibility?: Credibility | null;
   note?: string;
 };
+
+/** 定稿后的说法：对话只按这一层回答，不再并列多来源。 */
+export type QixiaAnswerFact = {
+  label: string;
+  value: string;
+  /** 定稿依据，只给维护者与测试看，不进入对话。 */
+  basis?: string;
+};
+
+/** 知识库里还没有定论的字段，只说明「说法不一」，不给候选数字。 */
+export type QixiaAnswerOpenIssue = {
+  field: string;
+  note: string;
+};
+
+export type QixiaAnswerView = {
+  code: string;
+  name: string;
+  aliases: string[];
+  overview: string;
+  facts: QixiaAnswerFact[];
+  timeline: { date: string; what: string }[];
+  openIssues: QixiaAnswerOpenIssue[];
+  /** 资料口径，一句话，例如「景区导览资料、景区小程序」。 */
+  sourceNote: string;
+  coverage: "full" | "summary" | "none";
+};

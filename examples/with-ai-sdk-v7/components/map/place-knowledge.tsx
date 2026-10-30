@@ -11,7 +11,10 @@ import {
   Volume2,
   X,
 } from "lucide-react";
-import { getQixiaKnowledgeByCode } from "@/lib/qixia-knowledge";
+import {
+  buildAnswerView,
+  getQixiaKnowledgeByCode,
+} from "@/lib/qixia-knowledge";
 import type { QixiaPlaceKnowledge } from "@/lib/qixia-knowledge";
 import type { Place } from "./amap-types";
 
@@ -246,6 +249,7 @@ function KnowledgeModal({
   const facts = knowledge.keyFacts ?? [];
   const aliases = knowledge.aliases ?? [];
   const historySources = knowledge.historySources ?? [];
+  const overview = buildAnswerView(knowledge).overview;
 
   return createPortal(
     <div
@@ -328,12 +332,14 @@ function KnowledgeModal({
             </div>
           )}
 
-          {knowledge.summary && (
+          {(overview || knowledge.summary) && (
             <section className="knowledge-section">
               <h3>
                 <MapleLeaf size={13} /> 简介
               </h3>
-              <p className="knowledge-summary-text">{knowledge.summary}</p>
+              <p className="knowledge-summary-text">
+                {overview || knowledge.summary}
+              </p>
             </section>
           )}
 
@@ -511,6 +517,7 @@ export function PlaceKnowledge({
   const timeline = knowledge.timeline ?? [];
   const images = knowledge.images ?? [];
   const audio = knowledge.audio ?? [];
+  const overview = buildAnswerView(knowledge).overview;
 
   return (
     <div className="place-knowledge">
@@ -521,9 +528,7 @@ export function PlaceKnowledge({
 
       {knowledge.kbCardId ? (
         <>
-          {knowledge.summary && (
-            <p className="place-knowledge-summary">{knowledge.summary}</p>
-          )}
+          {overview && <p className="place-knowledge-summary">{overview}</p>}
 
           <button
             type="button"

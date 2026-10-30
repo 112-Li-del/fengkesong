@@ -360,18 +360,6 @@
     "tier": 3
   },
   {
-    "id": "B0FFFFAB2W",
-    "name": "毘灵宝殿",
-    "providerName": "栖霞山名胜风景区-毗卢宝殿",
-    "address": "栖霞街88号栖霞山风景名胜区栖霞古寺内",
-    "location": {
-      "lng": 118.95945,
-      "lat": 32.152115
-    },
-    "art": "temple",
-    "tier": 3
-  },
-  {
     "id": "B0FFFFKJRG",
     "name": "弥勒殿",
     "providerName": "栖霞山名胜风景区-弥勒圣境",
@@ -453,18 +441,6 @@
       "lat": 32.153555
     },
     "art": "temple",
-    "tier": 3
-  },
-  {
-    "id": "B0MBFS3D1J",
-    "name": "定照庵石刻",
-    "providerName": "栖霞山定照庵石刻",
-    "address": "栖霞街88号栖霞山风景名胜区内(东侧)",
-    "location": {
-      "lng": 118.971714,
-      "lat": 32.154234
-    },
-    "art": "pagoda",
     "tier": 3
   },
   {

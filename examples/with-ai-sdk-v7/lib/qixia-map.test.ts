@@ -19,11 +19,43 @@ describe("Qixia scenic map search", () => {
       "景区南门",
     ])
       expect(scenicPlaces.find((place) => place.name === name)?.tier).toBe(1);
-    for (const name of ["凤翔峰", "毘灵宝殿", "虎爪岩", "德云亭"])
+    for (const name of ["凤翔峰", "毗卢宝殿", "虎爪岩", "德云亭"])
       expect(scenicPlaces.find((place) => place.name === name)?.tier).toBe(2);
     expect(
       scenicPlaces.every((place) => place.tier === 1 || place.tier === 2),
     ).toBe(true);
+  });
+  it("keeps the confirmed canonical names and collapses provider aliases", () => {
+    for (const name of [
+      "毘灵宝殿",
+      "定照庵石刻",
+      "玲珑池遗址",
+      "白莲池（用牙池）",
+    ])
+      expect(scenicPlaces.some((place) => place.name === name)).toBe(false);
+    for (const name of [
+      "毗卢宝殿",
+      "定照庵碑刻",
+      "玲峰池遗址",
+      "白莲池（月牙池）",
+    ])
+      expect(scenicPlaces.filter((place) => place.name === name)).toHaveLength(
+        1,
+      );
+    const mirror = scenicPlaces.find((place) => place.name === "彩虹明镜")!;
+    expect(
+      scenicSearchResults([
+        mirror,
+        { ...mirror, id: "provider-mirror", name: "栖霞禅寺-明镜湖" },
+      ]),
+    ).toEqual([mirror]);
+    const stone = scenicPlaces.find((place) => place.name === "定照庵碑刻")!;
+    expect(
+      scenicSearchResults([
+        { ...stone, id: "old-stone", name: "栖霞山定照庵石刻" },
+        stone,
+      ]),
+    ).toEqual([stone]);
   });
   const temple = {
     id: "B00190D2L7",
