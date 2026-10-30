@@ -19,7 +19,10 @@ import {
   Volume2,
   X,
 } from "lucide-react";
-import { getQixiaKnowledgeByCode } from "@/lib/qixia-knowledge";
+import {
+  buildAnswerView,
+  getQixiaKnowledgeByCode,
+} from "@/lib/qixia-knowledge";
 import type {
   QixiaFact,
   QixiaPlaceKnowledge,
@@ -127,7 +130,7 @@ function groupVisitorFacts(facts: QixiaFact[]) {
 
 /** 一句话定位：取简介第一句。 */
 function getLead(knowledge: QixiaPlaceKnowledge) {
-  const s = knowledge.summary ?? "";
+  const s = buildAnswerView(knowledge).overview || knowledge.summary || "";
   if (!s) return "";
   const m = s.match(/^[^。！？!?\n]+/);
   return (m ? m[0] : s.slice(0, 40)).trim();
@@ -597,7 +600,9 @@ function KnowledgeModal({
                 <MapleLeaf size={13} /> 简介
               </h3>
               <p className="knowledge-summary-text">
-                {stripCitations(knowledge.summary)}
+                {stripCitations(
+                  buildAnswerView(knowledge).overview || knowledge.summary,
+                )}
               </p>
             </section>
           )}
@@ -758,7 +763,9 @@ export function PlaceKnowledge({
         <>
           {knowledge.summary && (
             <p className="place-knowledge-summary">
-              {stripCitations(knowledge.summary)}
+              {stripCitations(
+                buildAnswerView(knowledge).overview || knowledge.summary,
+              )}
             </p>
           )}
 
