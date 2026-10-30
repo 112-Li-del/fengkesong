@@ -34,7 +34,13 @@ export function addAutumnLayer(
       facilities.remove();
       overlays.forEach((layer) => layer.setMap(null));
     },
-    setSelected: markers.setSelected,
-    setFacilities: facilities.setVisible,
+    setSelected(id: string | null) {
+      markers.setSelected(id);
+      facilities.setSelected(id);
+    },
+    setFilter(ids: ReadonlySet<string>) {
+      markers.setVisibleIds(ids);
+      facilities.setVisibleIds(ids);
+    },
   };
 }

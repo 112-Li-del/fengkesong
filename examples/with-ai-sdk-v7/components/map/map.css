@@ -414,7 +414,11 @@
   padding: 20px;
   overflow: hidden;
   background:
-    radial-gradient(130% 90% at 12% 0%, rgba(255, 205, 150, 0.16), transparent 52%),
+    radial-gradient(
+      130% 90% at 12% 0%,
+      rgba(255, 205, 150, 0.16),
+      transparent 52%
+    ),
     linear-gradient(150deg, rgba(76, 18, 10, 0.5), rgba(116, 32, 20, 0.44));
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
@@ -456,8 +460,8 @@
   background: #f6dcc5;
   color: #2e1d17;
   font-family:
-    "KaiTi", "STKaiti", "Kaiti SC", "KaiTi_GB2312", "华文楷体", "楷体", "SimKai",
-    "Times New Roman", serif;
+    "KaiTi", "STKaiti", "Kaiti SC", "KaiTi_GB2312", "华文楷体", "楷体",
+    "SimKai", "Times New Roman", serif;
   border: 1px solid #f5c9b6;
   border-radius: 20px;
   box-shadow:
@@ -475,7 +479,13 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #d98a3d, #f2c07e 40%, #f7e0b8 55%, #e8a54b);
+  background: linear-gradient(
+    90deg,
+    #d98a3d,
+    #f2c07e 40%,
+    #f7e0b8 55%,
+    #e8a54b
+  );
   z-index: 3;
 }
 .knowledge-modal-head {
@@ -1664,4 +1674,79 @@
     width: auto;
     max-height: calc(100dvh - 145px);
   }
+}
+
+.map-search-results {
+  max-height: min(480px, calc(100dvh - 260px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  margin-top: 0;
+  padding-top: 6px;
+}
+.map-search-results > button {
+  flex: none;
+}
+.map-search-results small {
+  overflow-wrap: anywhere;
+}
+.map-selection-card {
+  position: absolute;
+  z-index: 6;
+  left: 20px;
+  bottom: 24px;
+  width: 300px;
+  max-width: calc(100% - 40px);
+  max-height: min(500px, 65%);
+  margin: 0;
+  padding: 16px;
+  overflow-y: auto;
+  background: #fcfdf9;
+  border: 1px solid #dce2d5;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px #1d2c191a;
+}
+.map-selection-card .map-detail-close {
+  right: 12px;
+}
+.map-selection-card .place-knowledge {
+  padding: 10px;
+  font-size: 12px;
+}
+.facility-pin.is-selected {
+  outline: 3px solid #a54430;
+  outline-offset: 3px;
+}
+@media (max-width: 720px) {
+  .map-selection-card {
+    left: 12px;
+    bottom: 78px;
+    width: calc(100% - 24px);
+    max-width: none;
+    max-height: 42dvh;
+  }
+}
+
+.history-header
+  .map-place-dock.map-search-panel:not(.is-collapsed)
+  .map-panel-body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.history-header .map-place-dock.map-search-panel .map-search,
+.history-header .map-place-dock.map-search-panel .map-category-list,
+.history-header .map-place-dock.map-search-panel .map-search-note {
+  flex-shrink: 0;
+}
+.history-header
+  .map-place-dock.map-search-panel
+  .map-panel-body
+  > .map-search-results {
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.history-header .map-place-dock.map-search-panel:not(.is-collapsed) {
+  z-index: 30;
 }
