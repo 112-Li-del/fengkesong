@@ -1,6 +1,5 @@
 import { landmarkIcon } from "@/lib/landmark-icons";
 import { scenicPlaces } from "@/lib/qixia-map";
-import { scenicOverview } from "@/lib/scenic-view";
 import type { MapAPI, MapInstance, Place } from "./amap-types";
 
 export function scenicMarkers(
@@ -8,11 +7,13 @@ export function scenicMarkers(
   map: MapInstance,
   onSelect: (place: Place) => void,
 ) {
+  // 导览图配准得来的细部点位（id 以 QXS 开头）：远景只留圆点，放大后才展开插画与名称，
+  // 否则 100 多个标签会在山门一带糊成一片。
   const minorRoots: HTMLElement[] = [];
   const entries = scenicPlaces.map((place) => {
     const root = document.createElement("div");
     root.className = "scenic-coordinate";
-    const minor = place.tier === 2;
+    const minor = place.id.startsWith("QXS");
     if (minor) {
       root.classList.add("is-minor");
       minorRoots.push(root);
@@ -80,20 +81,13 @@ export function scenicMarkers(
       label.addEventListener(name, (event) => event.stopPropagation());
     return { place, root, dot, marker, label };
   });
+  const MINOR_REVEAL_ZOOM = 16.6;
   const revealMinor = () => {
-    const container = map.getContainer();
-    const overview = scenicOverview(
-      container.clientWidth,
-      container.clientHeight,
-      window.matchMedia("(max-width:720px), (max-height:500px)").matches,
-    );
-    const reveal = map.getZoom(10) >= overview.zoom + 1 - 1e-5;
+    const reveal = map.getZoom() >= MINOR_REVEAL_ZOOM;
     for (const root of minorRoots) root.classList.toggle("is-revealed", reveal);
   };
   revealMinor();
-  map.on("zoomchange", revealMinor);
   map.on("zoomend", revealMinor);
-  map.on("resize", revealMinor);
   return {
     setSelected(id: string | null) {
       for (const entry of entries) {
@@ -106,9 +100,7 @@ export function scenicMarkers(
       }
     },
     remove() {
-      map.off("zoomchange", revealMinor);
       map.off("zoomend", revealMinor);
-      map.off("resize", revealMinor);
       entries.forEach((entry) => entry.marker.setMap(null));
     },
   };

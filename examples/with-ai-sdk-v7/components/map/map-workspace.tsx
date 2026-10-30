@@ -496,7 +496,6 @@ export function MapWorkspace() {
             }
             const fixQuality = locationQuality(fix.coords.accuracy, captured);
             const approximate = fixQuality !== "usable";
-            const outsideScenic = !withinScenicView(point);
             positionOverlays.current.forEach((item) => item.setMap(null));
             positionOverlays.current = [
               new api.Circle({
@@ -544,11 +543,9 @@ export function MapWorkspace() {
                 entered: "发现附近景点",
               };
               setAutoNote(
-                outsideScenic
-                  ? "你当前在栖霞山景区外，进入景区后会恢复附近景点自动提示"
-                  : targets.current.length
-                    ? (notes[result.reason] ?? "持续检测附近景点中")
-                    : "景点数据尚未载入，请切换到景点分类重试",
+                targets.current.length
+                  ? (notes[result.reason] ?? "持续检测附近景点中")
+                  : "景点数据尚未载入，请切换到景点分类重试",
               );
               const match = targets.current.find(
                 (place) => place.id === result.placeId,
@@ -567,8 +564,14 @@ export function MapWorkspace() {
             setClock(Date.now());
             setLocationNote("");
             setLocationFailure(null);
-            // 定位不再限制在景区范围内：人在景区外时也把地图移到当前位置。
-            if (first || (!centeredUsable && fixQuality === "usable")) {
+            if (!withinScenicView(point))
+              setLocationNote(
+                "你的位置在栖霞山浏览范围外，地图仍保持景区视角。",
+              );
+            if (
+              withinScenicView(point) &&
+              (first || (!centeredUsable && fixQuality === "usable"))
+            ) {
               const span = Math.max(
                 120,
                 Math.min(
@@ -579,7 +582,7 @@ export function MapWorkspace() {
               const scale =
                 156543.03392 * Math.cos((point.lat * Math.PI) / 180);
               const zoom = Math.max(
-                12,
+                15,
                 Math.min(
                   16,
                   Math.floor(
@@ -590,10 +593,6 @@ export function MapWorkspace() {
               view.setZoomAndCenter(zoom, point);
               first = false;
               if (fixQuality === "usable") centeredUsable = true;
-              if (outsideScenic)
-                setLocationNote(
-                  "你在栖霞山景区外，地图已定位到你的位置；点「回到栖霞山」可返回景区。",
-                );
             }
           },
         );
