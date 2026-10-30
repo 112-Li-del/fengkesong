@@ -65,6 +65,9 @@ export const landmarkIcons: Readonly<Record<string, string>> = {
 
 // 个别景点共用一张图（示例：钟楼、鼓楼合画成“钟鼓楼”）
 export const landmarkIconAliases: Readonly<Record<string, string>> = {
+  定照庵碑刻: "定照庵石刻",
+  毗卢宝殿: "毘灵宝殿",
+  明镜湖: "彩虹明镜",
   钟楼: "钟鼓楼",
   鼓楼: "钟鼓楼",
 };

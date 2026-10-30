@@ -1,0 +1,83 @@
+{
+  "source": "Eleven user-marked circles across two screenshots dated 2026-10-30; registered using Qixia Ancient Town and Butterfly Valley markers",
+  "purpose": "Decorative illustrations, not surveyed mountain peaks or terrain",
+  "placements": [
+    {
+      "id": "northwest",
+      "asset": "/maps/line-art-v1/ridge-01.png",
+      "bounds": [118.9588388, 32.1572303, 118.9622869, 32.1583289],
+      "rotation": -3,
+      "mirror": false
+    },
+    {
+      "id": "northeast",
+      "asset": "/maps/line-art-v1/mountain-03.png",
+      "bounds": [118.9673913, 32.156804, 118.9705876, 32.1581649],
+      "rotation": 3,
+      "mirror": false
+    },
+    {
+      "id": "west",
+      "asset": "/maps/line-art-v1/mountain-02.png",
+      "bounds": [118.9560203, 32.1533524, 118.9590229, 32.1546314],
+      "rotation": -5,
+      "mirror": false
+    },
+    {
+      "id": "middle",
+      "asset": "/maps/line-art-v1/mountain-01.png",
+      "bounds": [118.9650764, 32.1536639, 118.9677884, 32.1548118],
+      "rotation": 0,
+      "mirror": false
+    },
+    {
+      "id": "east",
+      "asset": "/maps/line-art-v1/ridge-02.png",
+      "bounds": [118.9688248, 32.1539017, 118.9726022, 32.1550987],
+      "rotation": 4,
+      "mirror": true
+    },
+    {
+      "id": "southwest",
+      "asset": "/maps/line-art-v1/mountain-02.png",
+      "bounds": [118.9586839, 32.1492611, 118.9623644, 32.150819],
+      "rotation": 4,
+      "mirror": true
+    },
+    {
+      "id": "southeast",
+      "asset": "/maps/line-art-v1/mountain-01.png",
+      "bounds": [118.9679821, 32.1498515, 118.9716627, 32.1514093],
+      "rotation": -5,
+      "mirror": true
+    },
+    {
+      "id": "south",
+      "asset": "/maps/line-art-v1/ridge-03.png",
+      "bounds": [118.9611537, 32.1467276, 118.9655123, 32.1481051],
+      "rotation": -2,
+      "mirror": false
+    },
+    {
+      "id": "northwest-upper",
+      "asset": "/maps/line-art-v1/mountain-03.png",
+      "bounds": [118.9623954, 32.1590787, 118.9653918, 32.1605434],
+      "rotation": -6,
+      "mirror": true
+    },
+    {
+      "id": "northeast-upper",
+      "asset": "/maps/line-art-v1/mountain-02.png",
+      "bounds": [118.9697896, 32.1593066, 118.9732693, 32.1610967],
+      "rotation": 7,
+      "mirror": false
+    },
+    {
+      "id": "southwest-lower",
+      "asset": "/maps/line-art-v1/mountain-01.png",
+      "bounds": [118.9561514, 32.1478571, 118.9585678, 32.148915],
+      "rotation": -3,
+      "mirror": true
+    }
+  ]
+}

@@ -1,7 +1,60 @@
 import { describe, expect, it } from "vitest";
-import { scenicSearchResults, withinScenicView } from "./qixia-map";
+import {
+  scenicPlaces,
+  scenicSearchResults,
+  withinScenicView,
+} from "./qixia-map";
 
 describe("Qixia scenic map search", () => {
+  it("keeps the confirmed canonical names and collapses provider aliases", () => {
+    for (const name of [
+      "毘灵宝殿",
+      "定照庵石刻",
+      "玲珑池遗址",
+      "白莲池（用牙池）",
+    ])
+      expect(scenicPlaces.some((place) => place.name === name)).toBe(false);
+    for (const name of [
+      "毗卢宝殿",
+      "定照庵碑刻",
+      "玲峰池遗址",
+      "白莲池（月牙池）",
+    ])
+      expect(scenicPlaces.filter((place) => place.name === name)).toHaveLength(
+        1,
+      );
+    const mirror = scenicPlaces.find((place) => place.name === "彩虹明镜")!;
+    expect(
+      scenicSearchResults([
+        mirror,
+        { ...mirror, id: "provider-mirror", name: "栖霞禅寺-明镜湖" },
+      ]),
+    ).toEqual([mirror]);
+    const stone = scenicPlaces.find((place) => place.name === "定照庵碑刻")!;
+    expect(
+      scenicSearchResults([
+        { ...stone, id: "old-stone", name: "栖霞山定照庵石刻" },
+        stone,
+      ]),
+    ).toEqual([stone]);
+  });
+  it("links expanded knowledge cards without substituting a nearby landmark", () => {
+    expect(scenicPlaces.find((p) => p.name === "受降井")?.referenceCode).toBe(
+      "D1",
+    );
+    expect(
+      scenicPlaces.find((p) => p.name === "定照庵碑刻")?.referenceCode,
+    ).toBe("E20");
+    expect(
+      scenicPlaces.find((p) => p.name === "玲峰池遗址")?.referenceCode,
+    ).toBe("E19");
+    expect(
+      scenicPlaces.find((p) => p.name === "白莲池（月牙池）")?.referenceCode,
+    ).toBeUndefined();
+    expect(
+      scenicPlaces.find((p) => p.name === "紫峰阁")?.referenceCode,
+    ).toBeUndefined();
+  });
   const temple = {
     id: "B00190D2L7",
     name: "栖霞山名胜风景区摄山栖霞寺",
