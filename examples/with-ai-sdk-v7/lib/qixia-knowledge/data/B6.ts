@@ -50,6 +50,40 @@ export const placeB6: QixiaPlaceKnowledge = {
   ],
   keyFacts: [
     {
+      key: "抢救维修",
+      values: [
+        {
+          value:
+            "1993 年 11 月抢救维修竣工，中国文物研究所蔡润主持，将风化雷击坠落的 8 块石构件粘回原断口，为历次维修中规模最大、技术最高的一次",
+          source:
+            "https://www.yantian.gov.cn/ytdayszxxw/lsjt/content/post_11734560.html",
+          credibility: "B",
+        },
+      ],
+    },
+    {
+      key: "数字化测绘",
+      values: [
+        {
+          value: "2021 年 5 月东南大学建筑学院举办「栖霞寺舍利塔 BIM 测绘展」",
+          source: "https://arch.seu.edu.cn/2021/0531/c9122a373305/page.htm",
+          credibility: "B",
+        },
+      ],
+    },
+    {
+      key: "塔基舍利",
+      values: [
+        {
+          value: "传塔基藏有数十颗舍利，为镇塔之宝",
+          source:
+            "https://www.yantian.gov.cn/ytdayszxxw/lsjt/content/post_11734560.html",
+          credibility: "C",
+        },
+      ],
+    },
+
+    {
       key: "始建年代",
       values: [
         {
@@ -193,48 +227,16 @@ export const placeB6: QixiaPlaceKnowledge = {
     },
     {
       key: "位置",
+      group: "location",
       values: [
         {
-          value: "寺内",
+          value: "栖霞寺内（藏经楼南侧）",
           source: "https://zh.wikipedia.org/zh-cn/栖霞寺",
-          credibility: "C",
-        },
-        {
-          value: "江苏省南京市栖霞区栖霞街道的栖霞寺内",
-          source: "https://zh.wikipedia.org/zh-cn/栖霞寺舍利塔",
-          credibility: "C",
-        },
-        {
-          value: "蒋州栖霞寺",
-          source:
-            "https://github.com/Dalaoyuan2020/wenlv-kb/blob/main/sources/field/qixia-guided-tour-2026-10.md",
-          credibility: "C",
-        },
-        {
-          value: "栖霞寺藏经楼之南",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaxinzhi-1934.md",
-          credibility: "C",
-        },
-        {
-          value: "栖霞寺藏经楼南侧",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiajianzhi-1999.md",
-          credibility: "B",
-        },
-        {
-          value: "栖霞寺藏经楼南侧",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaquzhi-1999.md",
-          credibility: "B",
-        },
-        {
-          value: "栖霞寺东",
-          source: "https://m.nj.bendibao.com/tour/140483.shtm",
           credibility: "C",
         },
       ],
     },
+
     {
       key: "重建年代",
       values: [
@@ -494,6 +496,20 @@ export const placeB6: QixiaPlaceKnowledge = {
     },
   ],
   timeline: [
+    {
+      date: "1993-11-13",
+      what: "舍利塔抢救维修工程竣工",
+      source:
+        "https://www.yantian.gov.cn/ytdayszxxw/lsjt/content/post_11734560.html",
+      credibility: "B",
+    },
+    {
+      date: "2021-05-31",
+      what: "舍利塔 BIM 测绘展开幕",
+      source: "https://arch.seu.edu.cn/2021/0531/c9122a373305/page.htm",
+      credibility: "B",
+    },
+
     {
       date: "隋代隋文帝时期",
       what: "建栖霞寺舍利塔，为八角五层石塔",
@@ -855,4 +871,18 @@ export const placeB6: QixiaPlaceKnowledge = {
     },
   ],
   credibility: "C",
+  gushu: {
+    book: "摄山志（清·陈毅辑，乾隆五十五年刊）",
+    note: "古籍作「舍利塔」「千佛舍利塔」。",
+    records: [
+      {
+        chapter: "卷二/创始",
+        text: "创始\n栖霞寺，居山之阳，为南齐明僧绍舍宅所建。太始中，僧绍尝隐居于此，刋木结茅，二十余年，与法度禅师讲无量寿佛经于是西岩石壁，中夜放光，现无量寿佛及殿宇焜煌之状，将凿岩为像，不果。子仲璋为临沂令，乃同禅师经始，于岩下凿龛，琢石为无量寿佛像，可高四丈，左右琢观音、势至像，各高三丈。大同六年，龛顶复放光。文惠太子、豫章文献王、竟陵文宣王田奂及江夏王宋霍姬等，依岩高下深广，就石为像，共成千尊。梁临川王复加莹饰，金碧焕然。隋文帝时，诏送舎利，天下凡八十三州，分造石塔。蒋州栖霞寺其一也。塔以白石为之，高数丈，凡五级，锥𤥨天然，种种奇绝。前设导引二佛，各高丈许，亦以白石为之。像貌衣缕，谓有顾恺之笔法。唐高祖改为功德寺，增置梵宇四十九所。楼阁延袤，宫室壮丽，与山东灵岩、荆州、玉泉、天台、国清，并称四大丛林。高宗御制明隐君碑，改为隐君栖霞寺，御书寺额于碑阴。武宗会昌中，寻废。宣宗大中五年重建，徐铉书额。又曰妙因寺。宋太平兴国五年，改为普云寺，景德五年，改为栖霞禅寺。元祐八年，改为严因崇报禅院，又为景德栖霞寺，又为虎穴寺。明洪武二十五年，仍敕为栖霞寺。",
+      },
+      {
+        chapter: "卷二/古迹",
+        text: "六朝松相传为梁武手植，黛色苍皮，亭亭如盖，虬干擎张，悬空飞翠。康熙辛未七月廿三，午后，雷雨大作，烈风震荡，屋瓦倾摇。晚霁视之，则折其二干矣。今惟一枝东向，如鲁灵光归然独存。壬子岁，楚师曾有诗云：只恐终龙化，风雷起混茫。适符其谶。银杏树二株，在大殿前，可六七抱，高可十余丈，苍蔚奇古，六朝时物。其一结乳下垂，形如石笋，长数尺余。村民相传，食其子，多长寿。大石佛千佛舍利塔，隋文帝造，高数丈五级，镌琢极工。法钟大始中自呜。嘉靖辛酉十月十八日夜，自鸣。",
+      },
+    ],
+  },
 };

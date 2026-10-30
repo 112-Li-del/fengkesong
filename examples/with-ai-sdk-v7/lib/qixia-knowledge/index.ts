@@ -14,6 +14,10 @@ export {
 // 重新导出类型，保持原有导入路径 `@/lib/qixia-knowledge` 的签名不变
 export type {
   Credibility,
+  VisitorGroup,
+  QixiaGushu,
+  QixiaGushuRecord,
+  QixiaPerson,
   QixiaAnswerFact,
   QixiaAnswerOpenIssue,
   QixiaAnswerView,
@@ -23,3 +27,5 @@ export type {
   QixiaImage,
   QixiaPlaceKnowledge,
 } from "./types";
+
+export { qixiaPeople, searchQixiaPeople } from "./catalog";

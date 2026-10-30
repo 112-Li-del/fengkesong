@@ -14,48 +14,16 @@ export const placeC2: QixiaPlaceKnowledge = {
   keyFacts: [
     {
       key: "位置",
+      group: "location",
       values: [
         {
-          value: "栖霞山",
+          value: "栖霞山中峰之右、西峰之侧",
           source: "https://zh.wikipedia.org/zh-cn/栖霞山",
-          credibility: "C",
-        },
-        {
-          value: "中峰之右",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/shanshanzhi-1790.md",
-          credibility: "C",
-        },
-        {
-          value: "西峰之侧",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaxinzhi-1934.md",
-          credibility: "B",
-        },
-        {
-          value: "西峰之侧",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiashanzhi-1962.md",
-          credibility: "B",
-        },
-        {
-          value: "栖霞山西峰之侧",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaquzhi-1999.md",
-          credibility: "C",
-        },
-        {
-          value: "了凡问道→天开岩→桃花湖",
-          source: "https://news.qq.com/rain/a/20251127A06UPY00",
-          credibility: "C",
-        },
-        {
-          value: "小营盘→天开岩→乾隆御花园",
-          source: "https://news.qq.com/rain/a/20251127A06UPY00",
           credibility: "C",
         },
       ],
     },
+
     {
       key: "类别",
       values: [
@@ -258,4 +226,14 @@ export const placeC2: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
+  gushu: {
+    book: "摄山志（清·陈毅辑，乾隆五十五年刊）",
+    note: "古籍同名「天开岩」，袁了凡曾在此参云谷禅师。",
+    records: [
+      {
+        chapter: "卷一/图序/天开岩",
+        text: "天开岩\n天开岩\n在中峰之右，石壁奇峭如截，中通一线，仄境森沈，若天开然。下有大石，刻六朝人所书醒石二字。后为迎宾石，禹碑在其阴。明少宰杨时乔摹㑹稽石刻于此，徐铉、徐锴、张稚圭等题名。",
+      },
+    ],
+  },
 };

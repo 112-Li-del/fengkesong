@@ -9,7 +9,8 @@
       "lat": 32.151451
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E32"
   },
   {
     "id": "QXS002",
@@ -21,7 +22,8 @@
       "lat": 32.158539
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E1"
   },
   {
     "id": "QXS003",
@@ -33,7 +35,8 @@
       "lat": 32.156813
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E33"
   },
   {
     "id": "QXS004",
@@ -45,7 +48,8 @@
       "lat": 32.156856
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E12"
   },
   {
     "id": "QXS005",
@@ -57,7 +61,8 @@
       "lat": 32.156464
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E2"
   },
   {
     "id": "QXS006",
@@ -69,7 +74,8 @@
       "lat": 32.155937
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E3"
   },
   {
     "id": "QXS007",
@@ -81,7 +87,8 @@
       "lat": 32.15327
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D15"
   },
   {
     "id": "QXS008",
@@ -93,7 +100,8 @@
       "lat": 32.159426
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E4"
   },
   {
     "id": "QXS009",
@@ -105,7 +113,8 @@
       "lat": 32.159106
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E5"
   },
   {
     "id": "QXS010",
@@ -117,7 +126,8 @@
       "lat": 32.158979
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E6"
   },
   {
     "id": "QXS011",
@@ -129,7 +139,8 @@
       "lat": 32.158698
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E7"
   },
   {
     "id": "QXS012",
@@ -141,7 +152,8 @@
       "lat": 32.158372
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E8"
   },
   {
     "id": "QXS013",
@@ -153,7 +165,8 @@
       "lat": 32.158503
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E9"
   },
   {
     "id": "QXS014",
@@ -177,7 +190,8 @@
       "lat": 32.157331
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E10"
   },
   {
     "id": "QXS016",
@@ -201,7 +215,8 @@
       "lat": 32.156617
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E11"
   },
   {
     "id": "QXS018",
@@ -213,7 +228,8 @@
       "lat": 32.156468
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E35"
   },
   {
     "id": "QXS019",
@@ -225,7 +241,8 @@
       "lat": 32.155458
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D5"
   },
   {
     "id": "QXS020",
@@ -237,7 +254,8 @@
       "lat": 32.155697
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E18"
   },
   {
     "id": "QXS021",
@@ -261,7 +279,8 @@
       "lat": 32.155549
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E13"
   },
   {
     "id": "QXS023",
@@ -273,7 +292,8 @@
       "lat": 32.155223
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E14"
   },
   {
     "id": "QXS024",
@@ -297,7 +317,8 @@
       "lat": 32.154259
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E15"
   },
   {
     "id": "QXS026",
@@ -321,7 +342,8 @@
       "lat": 32.153774
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E16"
   },
   {
     "id": "QXS028",
@@ -333,7 +355,8 @@
       "lat": 32.153426
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D2"
   },
   {
     "id": "QXS029",
@@ -345,7 +368,8 @@
       "lat": 32.152918
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E17"
   },
   {
     "id": "QXS030",
@@ -381,7 +405,8 @@
       "lat": 32.153266
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E19"
   },
   {
     "id": "QXS033",
@@ -393,7 +418,8 @@
       "lat": 32.153546
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E20"
   },
   {
     "id": "QXS034",
@@ -405,7 +431,8 @@
       "lat": 32.152264
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D7"
   },
   {
     "id": "QXS035",
@@ -429,7 +456,8 @@
       "lat": 32.153029
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D14"
   },
   {
     "id": "QXS037",
@@ -453,7 +481,8 @@
       "lat": 32.152954
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E21"
   },
   {
     "id": "QXS039",
@@ -465,7 +494,8 @@
       "lat": 32.152902
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E22"
   },
   {
     "id": "QXS040",
@@ -477,7 +507,8 @@
       "lat": 32.151873
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E23"
   },
   {
     "id": "QXS041",
@@ -501,7 +532,8 @@
       "lat": 32.151909
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E24"
   },
   {
     "id": "QXS043",
@@ -513,7 +545,8 @@
       "lat": 32.152091
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E25"
   },
   {
     "id": "QXS044",
@@ -549,7 +582,8 @@
       "lat": 32.151484
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D6"
   },
   {
     "id": "QXS047",
@@ -561,7 +595,8 @@
       "lat": 32.151503
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D4"
   },
   {
     "id": "QXS048",
@@ -585,7 +620,8 @@
       "lat": 32.151769
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E26"
   },
   {
     "id": "QXS050",
@@ -597,7 +633,8 @@
       "lat": 32.151432
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "D13"
   },
   {
     "id": "QXS051",
@@ -609,7 +646,8 @@
       "lat": 32.151385
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E27"
   },
   {
     "id": "QXS052",
@@ -645,7 +683,8 @@
       "lat": 32.150734
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E28"
   },
   {
     "id": "QXS055",
@@ -669,7 +708,8 @@
       "lat": 32.149086
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E30"
   },
   {
     "id": "QXS057",
@@ -681,7 +721,8 @@
       "lat": 32.148639
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E31"
   },
   {
     "id": "QXS058",
@@ -693,7 +734,8 @@
       "lat": 32.152019
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "referenceCode": "E29"
   },
   {
     "id": "QXS059",

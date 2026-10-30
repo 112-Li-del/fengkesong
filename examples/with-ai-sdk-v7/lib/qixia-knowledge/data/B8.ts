@@ -21,39 +21,29 @@ export const placeB8: QixiaPlaceKnowledge = {
   ],
   keyFacts: [
     {
+      key: "玲峰池御碑",
+      values: [
+        {
+          value:
+            "2015 年 11 月玲峰池附近出土完整乾隆御碑，长 65、宽 60、厚 15 厘米，碑文 100 余字《玲峰池》诗，落款「壬午暮春御题」（1762），钤「乾隆宸翰」「惟精惟一」；池旁岩壁三处方形凹槽深约 15 厘米，原嵌御碑",
+          source: "https://www.chinanews.com.cn/m/cul/2015/11-05/7606804.shtml",
+          credibility: "B",
+        },
+      ],
+    },
+
+    {
       key: "位置",
+      group: "location",
       values: [
         {
           value: "千佛岩之巅",
           source: "https://m.maigoo.com/citiao/113006.html",
           credibility: "C",
         },
-        {
-          value: "栖霞山",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/shanshanzhi-1790.md",
-          credibility: "C",
-        },
-        {
-          value: "千佛岩的前面",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiaxinzhi-1934.md",
-          credibility: "C",
-        },
-        {
-          value: "千佛岩前",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiashanzhi-1962.md",
-          credibility: "C",
-        },
-        {
-          value: "栖霞寺东北千佛崖的山崖上",
-          source:
-            "https://qixia.winnielyu.com/internal/shared/gazetteers/text/qixiajianzhi-1999.md",
-          credibility: "C",
-        },
       ],
     },
+
     {
       key: "别名",
       values: [
@@ -224,6 +214,13 @@ export const placeB8: QixiaPlaceKnowledge = {
   ],
   timeline: [
     {
+      date: "2015-11",
+      what: "玲峰池附近出土完整乾隆御碑",
+      source: "https://www.chinanews.com.cn/m/cul/2015/11-05/7606804.shtml",
+      credibility: "B",
+    },
+
+    {
       date: "乾隆南巡",
       what: "到纱帽峰，嫌名俗，赐名玉冠峰",
       source: "https://m.maigoo.com/citiao/113006.html",
@@ -278,4 +275,18 @@ export const placeB8: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "C",
+  gushu: {
+    book: "摄山志（清·陈毅辑，乾隆五十五年刊）",
+    note: "古籍原名「纱帽峰」，乾隆嫌俚，改名「玉冠峰」。",
+    records: [
+      {
+        chapter: "卷首/天章/诗",
+        text: "玉冠峰\n旧名纱帽峰嫌其近俚适和沈德潜诗得句云久闻摄山名秀如玉而冠即以易之。宇宙以来便有此，秀拔江南鲜伦比。六朝近始著称物，持以名之岂其理。彭泽不折五斗腰，科头散发常逍遥。假使贲然白驹赋，夏收殷冔或可招。回峦沓嶂叠陵嶒我欲易。名难揣称。赓诗老沈得奇句，神传机辏真。绝胜僧绍有知应黙肯，崔琰何人敢尔能。",
+      },
+      {
+        chapter: "卷四/塔铭",
+        text: "纱帽峰旧有黙坐轩在其下\n二峰突兀，居众峰先。髙能受月，冷欲藏烟。谁审厥象，其名以传。此选佛场而宰官缘。昔有老僧，傍岩黙坐，顶茆一把，蒲团一个。不留姓字，不立功课。纱帽俳场，被伊覰破。",
+      },
+    ],
+  },
 };

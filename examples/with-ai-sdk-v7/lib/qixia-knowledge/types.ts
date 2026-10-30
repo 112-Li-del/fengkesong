@@ -5,8 +5,18 @@
 
 export type Credibility = "A" | "B" | "C";
 
+// 游玩信息维度：用于把碎片化的史实归并为清晰的游客体验分组。
+export type VisitorGroup =
+  | "time"
+  | "location"
+  | "transport"
+  | "route"
+  | "view"
+  | "service";
+
 export type QixiaFact = {
   key: string;
+  group?: VisitorGroup;
   values: {
     value: string;
     unit?: string;
@@ -44,6 +54,18 @@ export type QixiaImage = {
   historic?: boolean;
 };
 
+// 古籍（《摄山志》等）原文摘录，用于补充景点的历史记载与典故出处。
+export type QixiaGushuRecord = {
+  chapter: string;
+  text: string;
+};
+
+export type QixiaGushu = {
+  book: string;
+  note?: string;
+  records: QixiaGushuRecord[];
+};
+
 export type QixiaPlaceKnowledge = {
   referenceCode: string;
   referenceName: string;
@@ -60,6 +82,28 @@ export type QixiaPlaceKnowledge = {
   images?: QixiaImage[];
   credibility?: Credibility | null;
   note?: string;
+  gushu?: QixiaGushu;
+  // 速览区亮点徽章（从「地位/称号/文物保护级别/始建年代」等重量级字段提取的短语）
+  highlights?: string[];
+};
+
+// 人物条目：与栖霞山相关的人物（隐士、诗人、画家、科学家、艺人等）。
+// 仅作知识库检索与保存，不单独出现在地图点位或景点卡片上。
+export type QixiaPerson = {
+  name: string;
+  // 时代 / 朝代，如「唐代」「明代」「近代」
+  dynasty?: string;
+  // 字号、别称等
+  aliases?: string[];
+  // 与栖霞的关系（一句话概述）
+  connection: string;
+  // 补充线索（更详细的记载）
+  details?: string;
+  // 关联景点（referenceName 或地名）
+  relatedPlaces?: string[];
+  // 出处
+  source: string;
+  credibility: Credibility;
 };
 
 /** 定稿后的说法：对话只按这一层回答，不再并列多来源。 */

@@ -38,6 +38,23 @@ describe("Qixia scenic map search", () => {
       ]),
     ).toEqual([stone]);
   });
+  it("links expanded knowledge cards without substituting a nearby landmark", () => {
+    expect(scenicPlaces.find((p) => p.name === "受降井")?.referenceCode).toBe(
+      "D1",
+    );
+    expect(
+      scenicPlaces.find((p) => p.name === "定照庵碑刻")?.referenceCode,
+    ).toBe("E20");
+    expect(
+      scenicPlaces.find((p) => p.name === "玲峰池遗址")?.referenceCode,
+    ).toBe("E19");
+    expect(
+      scenicPlaces.find((p) => p.name === "白莲池（月牙池）")?.referenceCode,
+    ).toBeUndefined();
+    expect(
+      scenicPlaces.find((p) => p.name === "紫峰阁")?.referenceCode,
+    ).toBeUndefined();
+  });
   const temple = {
     id: "B00190D2L7",
     name: "栖霞山名胜风景区摄山栖霞寺",
