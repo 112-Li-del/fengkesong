@@ -4,7 +4,6 @@ import type { MapAPI, MapInstance, Place, Overlay } from "./amap-types";
 import { facilityMarkers } from "./facility-markers";
 import { scenicMarkers } from "./scenic-markers";
 import { mountainDecorations } from "./mountain-decorations";
-import { lakeDecorations } from "./lake-decorations";
 
 export function addAutumnLayer(
   api: MapAPI,
@@ -16,7 +15,7 @@ export function addAutumnLayer(
   if (signal.aborted) throw new DOMException("Aborted", "AbortError");
   const paper = new api.Polygon({
     map,
-    path: paperBoundary.path,
+    path: [paperBoundary.path, ...paperBoundary.holes],
     fillColor: "#f4f2af",
     fillOpacity: 1,
     strokeWeight: 0,
@@ -26,7 +25,6 @@ export function addAutumnLayer(
     cursor: "grab",
   });
   const mountains = mountainDecorations(api, map, signal);
-  const lakes = lakeDecorations(api, map, signal);
   for (const outline of [true, false])
     for (const path of roads.paths)
       overlays.push(
@@ -47,7 +45,6 @@ export function addAutumnLayer(
   return {
     remove() {
       mountains.remove();
-      lakes.remove();
       paper.setMap(null);
       markers.remove();
       facilities.remove();
@@ -64,7 +61,6 @@ export function addAutumnLayer(
     setPaperVisible(visible: boolean) {
       paper.setMap(visible ? map : null);
       mountains.setVisible(visible);
-      lakes.setVisible(visible);
     },
   };
 }
