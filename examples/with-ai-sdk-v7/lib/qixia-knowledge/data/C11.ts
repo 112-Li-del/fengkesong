@@ -8,12 +8,13 @@ export const placeC11: QixiaPlaceKnowledge = {
   kbCardId: null,
   kbTitle: null,
   summary:
-    "百草园是栖霞山半山腰的中草药种植基地与科普园，栽有紫绒鼠尾草、麦冬、山茱萸等多种药用植物。",
+    "百草园位于栖霞山小营盘区域「半馆」院落内，是景区 2011 年规划打造的中草药植物基地，栽有 100 多种药用植物。",
   history:
-    "百草园位于栖霞山半山腰、半馆一带，是景区的中草药种植基地与科普园，园内可见紫绒鼠尾草、麦冬、山茱萸、胡颓子、栀子、乌梅、折耳根等药用植物。[1] 2024 年 12 月，栖霞区龙潭街道兴隆村社区教育学校组织青少年到此开展「山风草木香，药理寻味长」中草药科普活动：先上山识别草药，再在半馆与百草园观察药用植物、制作中草药浮游瓶。[1][2]",
+    "栖霞山自古盛产中草药，因可以「摄养滋生」又名「摄山」，明代李时珍曾到栖霞山采集中药标本以补充《本草纲目》。[1] 百草园位于景区小营盘区域「半馆」院落内，是景区 2011 年初开始规划、打造的中草药植物基地，2011 年 4 月随「首届南京摄山养生文化节」启动而正式免费对外开放，凭景区大门票即可进入，无需另购小门票。[1][2] 园内现有 100 多种中草药植物，既有两面针、草珊瑚、柴胡、鱼腥草（折耳根）等常见药材，也有黄精、玉竹、杜蘅等较珍稀种类；景区制作展板配图文与实物，供游客认知中草药习性功效。[2] 栖霞山共有 600 余种植物，中草药占了近半，其中野生草珊瑚等曾在南京近乎绝迹的种类近年再度被发现。[1] 2024 年 12 月，栖霞区龙潭街道兴隆村社区教育学校组织青少年到此开展「山风草木香，药理寻味长」中草药科普活动。[3]",
   historySources: [
+    "http://mp.weixin.qq.com/s?__biz=MzA3NjUzNjIwOQ==&mid=200822994&idx=3&sn=0b9b961941bce50399431f5d98e57e48",
+    "http://m.dongcheya.com/menpiao-2374",
     "https://www.njzj.net/xwdt/sjxx/cms/post-537246",
-    "https://www.china-torch.cn/txyd/jicengjujiao/2025-01-14/257635.html",
   ],
   keyFacts: [
     {
@@ -21,8 +22,9 @@ export const placeC11: QixiaPlaceKnowledge = {
       group: "location",
       values: [
         {
-          value: "栖霞山半山腰、半馆一带",
-          source: "https://www.njzj.net/xwdt/sjxx/cms/post-537246",
+          value: "景区小营盘区域、「半馆」院落内",
+          source:
+            "http://mp.weixin.qq.com/s?__biz=MzA3NjUzNjIwOQ==&mid=200822994&idx=3&sn=0b9b961941bce50399431f5d98e57e48",
           credibility: "B",
         },
       ],
@@ -31,8 +33,20 @@ export const placeC11: QixiaPlaceKnowledge = {
       key: "性质",
       values: [
         {
-          value: "中草药种植基地与科普园",
-          source: "https://www.njzj.net/xwdt/sjxx/cms/post-537246",
+          value: "中草药植物基地、科普园",
+          source:
+            "http://mp.weixin.qq.com/s?__biz=MzA3NjUzNjIwOQ==&mid=200822994&idx=3&sn=0b9b961941bce50399431f5d98e57e48",
+          credibility: "B",
+        },
+      ],
+    },
+    {
+      key: "开放时间",
+      values: [
+        {
+          value: "2011 年 4 月随首届摄山养生文化节首次免费开放",
+          source:
+            "http://mp.weixin.qq.com/s?__biz=MzA3NjUzNjIwOQ==&mid=200822994&idx=3&sn=0b9b961941bce50399431f5d98e57e48",
           credibility: "B",
         },
       ],
@@ -41,41 +55,49 @@ export const placeC11: QixiaPlaceKnowledge = {
       key: "主要植物",
       values: [
         {
-          value: "紫绒鼠尾草、麦冬、山茱萸、胡颓子、栀子、乌梅、折耳根等",
-          source: "https://www.njzj.net/xwdt/sjxx/cms/post-537246",
+          value: "两面针、草珊瑚、柴胡、鱼腥草、黄精、玉竹、杜蘅等 100 多种",
+          source: "http://m.dongcheya.com/menpiao-2374",
           credibility: "B",
         },
       ],
     },
     {
-      key: "活动",
+      key: "背景",
       values: [
         {
-          value: "2024 年 12 月「山风草木香，药理寻味长」中草药科普活动",
-          source: "https://www.njzj.net/xwdt/sjxx/cms/post-537246",
-          credibility: "B",
-        },
-        {
-          value: "青少年在林间采草药，并制作中草药浮游瓶",
+          value: "栖霞山有 600 余种植物，中草药近半，为「药山」",
           source:
-            "https://www.china-torch.cn/txyd/jicengjujiao/2025-01-14/257635.html",
+            "http://mp.weixin.qq.com/s?__biz=MzA3NjUzNjIwOQ==&mid=200822994&idx=3&sn=0b9b961941bce50399431f5d98e57e48",
+          credibility: "B",
+        },
+        {
+          value: "明代李时珍曾来采药补充《本草纲目》",
+          source:
+            "http://mp.weixin.qq.com/s?__biz=MzA3NjUzNjIwOQ==&mid=200822994&idx=3&sn=0b9b961941bce50399431f5d98e57e48",
           credibility: "B",
         },
       ],
     },
     {
-      key: "关联",
+      key: "科普活动",
       values: [
         {
-          value: "紧邻半馆与「半馆中草药文化园」",
+          value:
+            "2024 年 12 月兴隆村社区教育学校开展「山风草木香，药理寻味长」中草药科普活动",
           source: "https://www.njzj.net/xwdt/sjxx/cms/post-537246",
-          credibility: "C",
-          note: "两者是否同一园区，待核",
+          credibility: "B",
         },
       ],
     },
   ],
   timeline: [
+    {
+      date: "2011年",
+      what: "景区规划打造百草园，4 月随首届摄山养生文化节首次免费开放",
+      source:
+        "http://mp.weixin.qq.com/s?__biz=MzA3NjUzNjIwOQ==&mid=200822994&idx=3&sn=0b9b961941bce50399431f5d98e57e48",
+      credibility: "B",
+    },
     {
       date: "2024年12月",
       what: "兴隆村社区教育学校在百草园开展中草药科普活动",
@@ -86,5 +108,5 @@ export const placeC11: QixiaPlaceKnowledge = {
   audio: [],
   images: [],
   credibility: "B",
-  note: "百草园与「半馆中草药文化园」的关系待核。",
+  note: "百草园与「半馆中草药文化园」为关联但不同的概念：百草园 2011 年已开放，位于半馆院落内；中草药文化园为 2023 年启动的扩建项目，位于龙山西麓。",
 };

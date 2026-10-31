@@ -20,6 +20,7 @@ import {
   displayAliases,
   getQixiaKnowledgeByCode,
   sourceLabel,
+  getQixiaKnowledgeByName,
 } from "@/lib/qixia-knowledge";
 import type {
   QixiaAnswerFact,
@@ -632,7 +633,9 @@ export function PlaceKnowledge({
   place: Place;
   onExpand: () => void;
 }) {
-  const knowledge = getQixiaKnowledgeByCode(place.referenceCode);
+  const knowledge =
+    getQixiaKnowledgeByCode(place.referenceCode) ??
+    getQixiaKnowledgeByName(place.referenceName ?? place.name);
   if (!knowledge) return null;
 
   const view = buildAnswerView(knowledge);

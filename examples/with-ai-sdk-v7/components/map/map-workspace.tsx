@@ -43,10 +43,18 @@ import {
 } from "@/lib/proximity";
 import { loadAmap } from "./load-amap";
 import { KnowledgeModal, PlaceKnowledge } from "./place-knowledge";
-import { getQixiaKnowledgeByCode } from "@/lib/qixia-knowledge";
+import {
+  getQixiaKnowledgeByCode,
+  getQixiaKnowledgeByName,
+} from "@/lib/qixia-knowledge";
 import { addAutumnLayer } from "./autumn-layer";
 import { scenicNavigation } from "./scenic-navigation";
-import { scenicCenter, scenicPlaces, withinScenicView } from "@/lib/qixia-map";
+import {
+  scenicCenter,
+  scenicPlaces,
+  facilityPlaces,
+  withinScenicView,
+} from "@/lib/qixia-map";
 import type { MapAPI, MapInstance, LngLat, Overlay, Place } from "./amap-types";
 import "./map.css";
 import "./autumn-map.css";
@@ -605,6 +613,58 @@ export function MapWorkspace() {
     const match = exact ?? (places.length === 1 ? places[0] : undefined);
     if (match) select(match, true);
   }
+  // 选中某个设施大类：移动地图到该类设施的中心。
+  function focusFacilityCategory(cat: string) {
+    const view = map.current;
+    if (!view) return;
+    const items = facilityPlaces.filter((f) => f.category === cat);
+    if (!items.length) return;
+    const lng =
+      items.reduce((sum, f) => sum + f.location.lng, 0) / items.length;
+    const lat =
+      items.reduce((sum, f) => sum + f.location.lat, 0) / items.length;
+    view.setZoomAndCenter(17, [lng, lat], false);
+  }
+  // 选中离当前位置最近的点位（景点 + 设施合并）。
+  function focusNearest() {
+    const view = map.current;
+    if (
+      !view ||
+      !tracking ||
+      !position ||
+      locationQuality(position.accuracy, position.timestamp) !== "usable"
+    ) {
+      setLocationNote("请先开启定位并等待准确位置，再查找附近点位。");
+      return;
+    }
+    const all: Place[] = [...scenicPlaces, ...facilityPlaces];
+    let nearest: Place | null = null;
+    let best = Infinity;
+    const rad = Math.PI / 180;
+    for (const place of all) {
+      const term =
+        Math.sin(((place.location.lat - position.point.lat) * rad) / 2) ** 2 +
+        Math.cos(position.point.lat * rad) *
+          Math.cos(place.location.lat * rad) *
+          Math.sin(((place.location.lng - position.point.lng) * rad) / 2) ** 2;
+      const d = 6371000 * 2 * Math.asin(Math.min(1, Math.sqrt(term)));
+      if (d < best) {
+        best = d;
+        nearest = place;
+      }
+    }
+    if (nearest) {
+      setQuery("");
+      setCategory("全部");
+      resetSuggestion();
+      select(nearest, true);
+      view.setZoomAndCenter(
+        17,
+        [nearest.location.lng, nearest.location.lat],
+        false,
+      );
+    }
+  }
   /** 关键词或类别一变，候选回到第一条并重新展开 */
   function resetSuggestion() {
     setActiveIndex(0);
@@ -880,6 +940,9 @@ export function MapWorkspace() {
                       data-category={item}
                       onClick={() => {
                         setCategory(item);
+                        if (item !== "景点" && item !== "全部")
+                          focusFacilityCategory(item);
+                        if (item === "景点") navigation.current?.fitOverview();
                         resetSuggestion();
                         setSelected(null);
                         setKnowledgeOpen(false);
@@ -890,6 +953,15 @@ export function MapWorkspace() {
                       {item}
                     </button>
                   ))}
+                  <button
+                    type="button"
+                    className="map-category-nearest"
+                    data-category="最近"
+                    disabled={state !== "ready"}
+                    onClick={focusNearest}
+                  >
+                    离我最近
+                  </button>
                 </div>
               )}
               {!showSuggest && (
@@ -1171,13 +1243,21 @@ export function MapWorkspace() {
           </div>,
           dockNode,
         )}
-      {selected && knowledgeOpen && (
-        <KnowledgeModal
-          knowledge={getQixiaKnowledgeByCode(selected.referenceCode)!}
-          place={selected}
-          onClose={() => setKnowledgeOpen(false)}
-        />
-      )}
+      {selected &&
+        knowledgeOpen &&
+        (() => {
+          const knowledge =
+            getQixiaKnowledgeByCode(selected.referenceCode) ??
+            getQixiaKnowledgeByName(selected.referenceName ?? selected.name);
+          if (!knowledge) return null;
+          return (
+            <KnowledgeModal
+              knowledge={knowledge}
+              place={selected}
+              onClose={() => setKnowledgeOpen(false)}
+            />
+          );
+        })()}
     </section>
   );
 }

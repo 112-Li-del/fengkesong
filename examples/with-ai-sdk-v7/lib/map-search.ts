@@ -16,6 +16,15 @@ const aliases: Record<string, readonly string[]> = {
   玲峰池遗址: ["玲峰池", "玲珑池遗址"],
   "白莲池（月牙池）": ["白莲池", "月牙池"],
 };
+const facilityKeywords: Record<string, string> = {
+  休息: "休息 歇脚 咖啡 餐饮 餐馆 吃饭 cafe coffee restaurant",
+  卫生间: "卫生间 洗手间 厕所 wc restroom toilet",
+  停车交通: "停车场 停车 观光车 游览车 车站",
+  门票入口: "售票 检票 入口 出口 游客中心 问询",
+  购物补给: "购物 文创 商店 补给 能量",
+  安全医疗: "医疗 医务 急救 消防 安全",
+};
+
 export const mapSearchCatalog: MapSearchPlace[] = [
   ...scenicPlaces.map((place) => ({ ...place, category: "景点" as const })),
   ...facilityPlaces.map((place) => {
@@ -116,9 +125,7 @@ function matchByText(raw: string, category: MapSearchFilter): MapSearchPlace[] {
       place.referenceName,
       place.category,
       ...(aliases[place.name] ?? []),
-      place.category === "卫生间"
-        ? "厕所 卫生间 洗手间 wc restroom toilet"
-        : "",
+      facilityKeywords[place.category] ?? "",
     ]
       .join(" ")
       .toLowerCase();

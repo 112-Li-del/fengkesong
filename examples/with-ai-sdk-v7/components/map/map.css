@@ -118,20 +118,31 @@
 }
 .map-category-list {
   display: flex;
+  flex-wrap: wrap;
   gap: 7px;
   margin-top: 11px;
 }
 .map-category-list button {
-  flex: 1;
+  flex: 1 1 auto;
   font-size: 11px;
   padding: 6px 8px;
   border-radius: 7px;
   border: 1px solid #e1e6da;
+  white-space: nowrap;
 }
 .map-category-list button[aria-pressed="true"] {
   background: #e7eddc;
   border-color: #bdcda7;
   color: #42552d;
+}
+.map-category-list .map-category-nearest {
+  flex: 0 0 auto;
+  background: #fff6e8;
+  border-color: #e6c99a;
+  color: #8a622d;
+}
+.map-category-list .map-category-nearest:hover {
+  background: #fdeeda;
 }
 .map-search-note {
   color: var(--map-muted);

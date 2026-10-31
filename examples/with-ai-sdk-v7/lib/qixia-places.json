@@ -92,7 +92,8 @@
     "tier": 3,
     "providerId": "B001912JBJ",
     "coordinateSource": "amap-verified",
-    "coordinateCheckedAt": "2026-10-30"
+    "coordinateCheckedAt": "2026-10-30",
+    "referenceCode": "B2"
   },
   {
     "id": "B001912JC3",
@@ -107,7 +108,8 @@
     "tier": 3,
     "providerId": "B001912JC3",
     "coordinateSource": "amap-verified",
-    "coordinateCheckedAt": "2026-10-30"
+    "coordinateCheckedAt": "2026-10-30",
+    "referenceCode": "B3"
   },
   {
     "id": "B001912HOX",
@@ -426,7 +428,8 @@
     "tier": 3,
     "providerId": "B0FFGHFYWY",
     "coordinateSource": "amap-verified",
-    "coordinateCheckedAt": "2026-10-31"
+    "coordinateCheckedAt": "2026-10-31",
+    "referenceCode": "G14"
   },
   {
     "id": "B0LDD5CW33",

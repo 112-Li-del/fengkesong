@@ -1,7 +1,24 @@
 import catalog from "./qixia-places.json";
 import extraCatalog from "./qixia-places-extra.json";
 import facilityCatalog from "./qixia-facilities.json";
+import { referenceScenicPlaces } from "./scenic-places";
 import type { LngLat, Place } from "../components/map/amap-types";
+
+// 把硬编码的参考景点的 referenceCode / referenceName 合并进地图点位，
+// 否则钟楼、鼓楼等点位在 JSON 里没有 referenceCode，
+// 点击知识卡片弹窗时 getQixiaKnowledgeByCode 取不到卡片（undefined → 非空断言崩溃）。
+const referenceByPlaceId = new Map(
+  referenceScenicPlaces.map((place) => [place.id, place]),
+);
+function withReference<T extends { id: string }>(place: T): T {
+  const reference = referenceByPlaceId.get(place.id);
+  if (!reference) return place;
+  return {
+    ...place,
+    referenceCode: reference.referenceCode,
+    referenceName: reference.referenceName,
+  };
+}
 
 export type ScenicPlace = Place & {
   providerName: string;
@@ -26,7 +43,10 @@ export type FacilityPlace = Place & {
 };
 
 // 坐标来源与复核日期逐点记录；导览图估算点不等于实测位置，校准记录见 qixia-coordinate-audit.json。
-export const scenicPlaces: ScenicPlace[] = [...catalog, ...extraCatalog];
+export const scenicPlaces: ScenicPlace[] = [
+  ...catalog.map(withReference),
+  ...extraCatalog.map(withReference),
+];
 
 export const facilityPlaces: FacilityPlace[] = facilityCatalog.map((place) => {
   const category = facilityCategories.find((item) => item === place.category);

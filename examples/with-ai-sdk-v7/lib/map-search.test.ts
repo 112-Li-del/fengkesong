@@ -37,6 +37,19 @@ describe("map node search", () => {
         .sort(),
     );
     expect(searchMapPlaces("卫生间", "卫生间")).toEqual(result);
+    expect(searchMapPlaces("洗手间", "卫生间")).toEqual(result);
+  });
+  it("provides service categories using facility category fields", () => {
+    expect(
+      searchMapPlaces("", "停车交通").map((place) => place.name),
+    ).toContain("停车场");
+    expect(
+      searchMapPlaces("", "门票入口").map((place) => place.name),
+    ).toContain("游客中心");
+    expect(searchMapPlaces("", "景点").map((place) => place.name)).toContain(
+      "哼哈殿",
+    );
+    expect(searchMapPlaces("", "全部")).toHaveLength(mapSearchCatalog.length);
   });
   it("有关键词时忽略类别，一律全局搜索", () => {
     // 类别停在「卫生间」，搜「哼哈殿」也要能搜到景点本体和它附近的厕所
