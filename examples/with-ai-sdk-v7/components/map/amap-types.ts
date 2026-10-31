@@ -12,6 +12,11 @@ export type Place = {
   location: LngLat;
 };
 export type Overlay = { setMap(map: MapInstance | null): void };
+export type LineOverlay = Overlay & {
+  setPath(path: [number, number][]): void;
+  setOptions(options: Record<string, unknown>): void;
+  getPath(): [number, number][];
+};
 export type MapInstance = {
   destroy(): void;
   setFeatures(features: string[]): void;
@@ -79,7 +84,7 @@ export type MapAPI = {
     init(gl: WebGLRenderingContext | WebGL2RenderingContext): void;
     render(): void;
   }) => { show(): void; hide(): void };
-  Polyline: new (options: Record<string, unknown>) => Overlay;
+  Polyline: new (options: Record<string, unknown>) => LineOverlay;
   Polygon: new (options: Record<string, unknown>) => Overlay;
   Map: new (
     element: HTMLElement,

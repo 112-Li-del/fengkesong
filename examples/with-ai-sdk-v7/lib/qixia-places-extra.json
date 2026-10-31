@@ -194,7 +194,8 @@
     "art": "water",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "F16"
   },
   {
     "id": "QXS015",
@@ -223,7 +224,8 @@
     "art": "water",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "F15"
   },
   {
     "id": "QXS017",
@@ -297,7 +299,8 @@
     "art": "pagoda",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "G1"
   },
   {
     "id": "QXS022",
@@ -343,7 +346,8 @@
     "tier": 3,
     "providerId": "B0FFF0ANIL",
     "coordinateSource": "amap-verified",
-    "coordinateCheckedAt": "2026-10-31"
+    "coordinateCheckedAt": "2026-10-31",
+    "referenceCode": "G2"
   },
   {
     "id": "QXS025",
@@ -372,7 +376,8 @@
     "art": "pavilion",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "G3"
   },
   {
     "id": "QXS027",
@@ -431,7 +436,8 @@
     "art": "water",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "E34"
   },
   {
     "id": "QXS031",
@@ -447,7 +453,8 @@
     "coordinateSource": "amap-verified",
     "coordinateCalibratedAt": "2026-10-31",
     "providerId": "B0FFF0FKGX",
-    "coordinateCheckedAt": "2026-10-31"
+    "coordinateCheckedAt": "2026-10-31",
+    "referenceCode": "G4"
   },
   {
     "id": "QXS032",
@@ -507,7 +514,8 @@
     "art": "water",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "G15"
   },
   {
     "id": "QXS036",
@@ -537,7 +545,8 @@
     "art": "pagoda",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "G5"
   },
   {
     "id": "QXS038",
@@ -596,7 +605,8 @@
     "art": "pagoda",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "G6"
   },
   {
     "id": "QXS042",
@@ -641,7 +651,8 @@
     "tier": 3,
     "providerId": "B001912JCZ",
     "coordinateSource": "amap-verified",
-    "coordinateCheckedAt": "2026-10-30"
+    "coordinateCheckedAt": "2026-10-30",
+    "referenceCode": "G7"
   },
   {
     "id": "QXS045",
@@ -656,7 +667,8 @@
     "tier": 3,
     "providerId": "B0FFFFAB2W",
     "coordinateSource": "amap-verified",
-    "coordinateCheckedAt": "2026-10-31"
+    "coordinateCheckedAt": "2026-10-31",
+    "referenceCode": "G8"
   },
   {
     "id": "QXS046",
@@ -700,7 +712,8 @@
     "art": "water",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "G9"
   },
   {
     "id": "QXS049",
@@ -761,7 +774,8 @@
     "tier": 3,
     "providerId": "B0FFFFAF7Z",
     "coordinateSource": "amap-verified",
-    "coordinateCheckedAt": "2026-10-31"
+    "coordinateCheckedAt": "2026-10-31",
+    "referenceCode": "G10"
   },
   {
     "id": "QXS053",
@@ -776,7 +790,8 @@
     "tier": 3,
     "providerId": "B0FFFF3O5H",
     "coordinateSource": "amap-verified",
-    "coordinateCheckedAt": "2026-10-30"
+    "coordinateCheckedAt": "2026-10-30",
+    "referenceCode": "G11"
   },
   {
     "id": "QXS054",
@@ -806,7 +821,8 @@
     "art": "maple",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "G12"
   },
   {
     "id": "QXS056",
@@ -865,7 +881,8 @@
     "art": "pavilion",
     "tier": 3,
     "coordinateSource": "guide-map-estimate",
-    "coordinateCalibratedAt": "2026-10-31"
+    "coordinateCalibratedAt": "2026-10-31",
+    "referenceCode": "G13"
   },
   {
     "id": "B0FFFFAFM4",
