@@ -6,7 +6,9 @@ import {
   AssistantRuntimeProvider,
   useRemoteThreadListRuntime,
 } from "@assistant-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { createZionChatTransport } from "@/lib/zion-chat-transport";
+import { FKS_STATIC, zionChatConfigured } from "@/lib/zion-config";
 import { HistoryWorkspace } from "./workspace";
 import "./history.css";
 
@@ -54,9 +56,18 @@ export function HistoryChat() {
       },
     }),
   );
+  // 静态部署下没有 /api/chat，改用 Zion 的 AI 智能体做流式对话。
+  const zionTransport = useMemo(
+    () =>
+      FKS_STATIC && zionChatConfigured()
+        ? createZionChatTransport()
+        : undefined,
+    [],
+  );
   const runtime = useRemoteThreadListRuntime({
     runtimeHook: useChatRuntime,
     adapter,
+    ...(zionTransport ? { transport: zionTransport } : {}),
   });
   return (
     <AssistantRuntimeProvider runtime={runtime}>
