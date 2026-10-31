@@ -1642,20 +1642,20 @@
   padding: 6px;
   min-width: 0;
 }
-.scenic-place-marker[data-category="厕所"],
-.map-results button > span:first-child[data-category="厕所"] {
+.scenic-place-marker[data-category="卫生间"],
+.map-results button > span:first-child[data-category="卫生间"] {
   background: #edf4fa;
   border-color: #86a6bc;
   color: #416782;
 }
-.scenic-place-marker[data-category="餐饮"],
-.map-results button > span:first-child[data-category="餐饮"] {
+.scenic-place-marker[data-category="购物补给"],
+.map-results button > span:first-child[data-category="购物补给"] {
   background: #fff5e8;
   border-color: #cba66d;
   color: #8c622d;
 }
-.scenic-place-marker[data-category="休息"],
-.map-results button > span:first-child[data-category="休息"] {
+.scenic-place-marker[data-category="停车交通"],
+.map-results button > span:first-child[data-category="停车交通"] {
   background: #f1eff7;
   border-color: #a59ab7;
   color: #6c6081;
@@ -1749,4 +1749,188 @@
 
 .history-header .map-place-dock.map-search-panel:not(.is-collapsed) {
   z-index: 30;
+}
+
+.map-category-list {
+  flex-wrap: wrap;
+}
+.map-category-list button {
+  flex: 0 1 auto;
+  white-space: nowrap;
+  min-height: 32px;
+  padding: 6px 10px;
+}
+.map-results button > span:first-child[data-category="安全医疗"] {
+  background: #fcece9;
+  border-color: #d3978c;
+  color: #a33b30;
+}
+.map-results button > span:first-child[data-category="门票入口"] {
+  background: #f5efdf;
+  border-color: #d0ba88;
+  color: #7d5c26;
+}
+@keyframes map-card-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.map-selection-card,
+.map-nearby-card,
+.knowledge-modal,
+.map-weather-panel[open] .weather-panel-body,
+.history-header .map-place-dock:not(.is-collapsed) .map-panel-body,
+.history-header .map-location-dock.is-open .map-location-body {
+  animation: map-card-pop 220ms cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+.map-weather-panel:not([open]) .weather-panel-body {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-selection-card,
+  .map-nearby-card,
+  .knowledge-modal,
+  .map-weather-panel[open] .weather-panel-body,
+  .history-header .map-place-dock:not(.is-collapsed) .map-panel-body,
+  .history-header .map-location-dock.is-open .map-location-body {
+    animation: none;
+  }
+}
+
+/* 搜索候选：输入法组字阶段即时预测（拼音/中文均可） */
+.map-search-suggest {
+  flex-shrink: 0;
+  margin-top: 9px;
+  border: 1px solid #e4dccb;
+  border-radius: 9px;
+  background: #fbf7ee;
+  overflow: hidden;
+}
+.map-suggest-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 6px 9px;
+  font-size: 9.5px;
+  line-height: 1.5;
+  color: var(--map-muted);
+  background: #f4ecdb;
+  border-bottom: 1px solid #ece0c9;
+}
+.map-suggest-hint > span {
+  font-weight: 600;
+  color: #8a5b3f;
+  flex-shrink: 0;
+}
+.map-suggest-hint > b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+  color: #a54430;
+}
+.map-suggest-hint > em {
+  margin-left: auto;
+  font-style: normal;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+.map-search-suggest ul {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  max-height: min(300px, calc(100dvh - 320px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.map-search-suggest li {
+  margin: 0;
+}
+.map-search-suggest li > button {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  width: 100%;
+  padding: 8px 6px;
+  text-align: left;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+.map-search-suggest li > button > span:first-child {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  font-size: 10px;
+  color: #986044;
+  background: #f5e9d4;
+  border: 1px solid #dccfb5;
+  border-radius: 50%;
+}
+.map-search-suggest li > button > span:last-child {
+  min-width: 0;
+}
+.map-search-suggest strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: #4a3a2c;
+}
+.map-search-suggest small {
+  display: block;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--map-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.map-search-suggest li > button:hover,
+.map-search-suggest li > button.is-active {
+  background: #f3e3cb;
+}
+.map-suggest-all {
+  display: block;
+  width: 100%;
+  padding: 7px 9px;
+  font-size: 10px;
+  text-align: center;
+  color: #8a5b3f;
+  background: #f7f0e2;
+  border-top: 1px solid #ece0c9;
+  cursor: pointer;
+}
+.map-suggest-all:hover {
+  background: #f2e6d2;
+}
+
+.scenic-native-background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.scenic-map-canvas.has-native-paper,
+.scenic-map-canvas.has-native-paper .amap-maps,
+.scenic-map-canvas.has-native-paper .amap-layers {
+  background: transparent !important;
+}
+.scenic-native-paper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }

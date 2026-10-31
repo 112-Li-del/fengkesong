@@ -10,33 +10,25 @@
     },
     "art": "maple",
     "tier": 3,
-    "referenceCode": "E32"
-  },
-  {
-    "id": "QXS002",
-    "name": "栖霞山大桥",
-    "providerName": "栖霞山大桥",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
-    "location": {
-      "lng": 118.959688,
-      "lat": 32.158539
-    },
-    "art": "pavilion",
-    "tier": 3,
-    "referenceCode": "E1"
+    "referenceCode": "E32",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS003",
     "name": "碧云亭",
-    "providerName": "碧云亭",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "providerName": "栖霞山风景名胜区-碧云亭",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
     "location": {
-      "lng": 118.958811,
-      "lat": 32.156813
+      "lng": 118.95882,
+      "lat": 32.156795
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E33"
+    "referenceCode": "E33",
+    "providerId": "B0MAB6S5BK",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS004",
@@ -49,20 +41,25 @@
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "E12"
+    "referenceCode": "E12",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS005",
     "name": "读枫阁",
-    "providerName": "读枫阁",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "providerName": "栖霞山名胜风景区-读枫",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
     "location": {
-      "lng": 118.959881,
-      "lat": 32.156464
+      "lng": 118.959886,
+      "lat": 32.156452
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E2"
+    "referenceCode": "E2",
+    "providerId": "B001912JA8",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS006",
@@ -75,20 +72,25 @@
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "E3"
+    "referenceCode": "E3",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS007",
     "name": "叠浪岩",
-    "providerName": "叠浪岩",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "providerName": "栖霞山名胜风景区-叠浪岩",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
     "location": {
-      "lng": 118.959535,
-      "lat": 32.15327
+      "lng": 118.959544,
+      "lat": 32.153237
     },
     "art": "maple",
     "tier": 3,
-    "referenceCode": "D15"
+    "referenceCode": "D15",
+    "providerId": "B001912JNK",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS008",
@@ -101,7 +103,9 @@
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "E4"
+    "referenceCode": "E4",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS009",
@@ -114,7 +118,9 @@
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "E5"
+    "referenceCode": "E5",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS010",
@@ -127,7 +133,9 @@
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "E6"
+    "referenceCode": "E6",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS011",
@@ -140,7 +148,9 @@
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E7"
+    "referenceCode": "E7",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS012",
@@ -153,7 +163,9 @@
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "E8"
+    "referenceCode": "E8",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS013",
@@ -166,7 +178,9 @@
     },
     "art": "temple",
     "tier": 3,
-    "referenceCode": "E9"
+    "referenceCode": "E9",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS014",
@@ -178,7 +192,9 @@
       "lat": 32.158252
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS015",
@@ -191,7 +207,9 @@
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E10"
+    "referenceCode": "E10",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS016",
@@ -203,7 +221,9 @@
       "lat": 32.157752
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS017",
@@ -211,12 +231,14 @@
     "providerName": "春·赏花点",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.965348,
-      "lat": 32.156617
+      "lng": 118.9653482,
+      "lat": 32.1566161
     },
     "art": "maple",
     "tier": 3,
-    "referenceCode": "E11"
+    "referenceCode": "E11",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS018",
@@ -224,12 +246,14 @@
     "providerName": "乾隆御碑",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.96393,
-      "lat": 32.156468
+      "lng": 118.9639349,
+      "lat": 32.1564405
     },
     "art": "pagoda",
     "tier": 3,
-    "referenceCode": "E35"
+    "referenceCode": "E35",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS019",
@@ -242,7 +266,9 @@
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "D5"
+    "referenceCode": "D5",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS020",
@@ -250,12 +276,14 @@
     "providerName": "高僧塔林",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.964946,
-      "lat": 32.155697
+      "lng": 118.9649461,
+      "lat": 32.1556965
     },
     "art": "pagoda",
     "tier": 3,
-    "referenceCode": "E18"
+    "referenceCode": "E18",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS021",
@@ -267,7 +295,9 @@
       "lat": 32.155581
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS022",
@@ -276,36 +306,44 @@
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
       "lng": 118.963907,
-      "lat": 32.155549
+      "lat": 32.1555488
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E13"
+    "referenceCode": "E13",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS023",
     "name": "德云亭",
     "providerName": "德云亭",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
     "location": {
-      "lng": 118.960475,
-      "lat": 32.155223
+      "lng": 118.960474,
+      "lat": 32.155214
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E14"
+    "referenceCode": "E14",
+    "providerId": "B0FFFEVMY2",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS024",
     "name": "了凡问道",
-    "providerName": "了凡问道",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "providerName": "栖霞山名胜风景区-了凡问道",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内",
     "location": {
-      "lng": 118.964702,
-      "lat": 32.154503
+      "lng": 118.964711,
+      "lat": 32.154484
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B0FFF0ANIL",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS025",
@@ -313,12 +351,14 @@
     "providerName": "读枫文化美食园",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.959454,
-      "lat": 32.154259
+      "lng": 118.9594541,
+      "lat": 32.1542588
     },
     "art": "temple",
     "tier": 3,
-    "referenceCode": "E15"
+    "referenceCode": "E15",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS026",
@@ -330,7 +370,9 @@
       "lat": 32.154199
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS027",
@@ -338,12 +380,14 @@
     "providerName": "桃花坞",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.960277,
-      "lat": 32.153774
+      "lng": 118.9602778,
+      "lat": 32.1537711
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E16"
+    "referenceCode": "E16",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS028",
@@ -351,12 +395,14 @@
     "providerName": "高奇峰墓园",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.960098,
-      "lat": 32.153426
+      "lng": 118.9601025,
+      "lat": 32.1534094
     },
     "art": "pagoda",
     "tier": 3,
-    "referenceCode": "D2"
+    "referenceCode": "D2",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS029",
@@ -364,12 +410,14 @@
     "providerName": "德云桥",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.9603,
-      "lat": 32.152918
+      "lng": 118.9603014,
+      "lat": 32.152913
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E17"
+    "referenceCode": "E17",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS030",
@@ -377,23 +425,29 @@
     "providerName": "桃花涧",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.959545,
-      "lat": 32.152876
+      "lng": 118.9595509,
+      "lat": 32.1528537
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS031",
     "name": "凌虚室遗址",
-    "providerName": "凌虚室遗址",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "providerName": "栖霞山名胜风景区-凌虚室",
+    "address": "栖霞街88号栖霞山风景名胜区",
     "location": {
-      "lng": 118.964082,
-      "lat": 32.152803
+      "lng": 118.964084,
+      "lat": 32.152755
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "amap-verified",
+    "coordinateCalibratedAt": "2026-10-31",
+    "providerId": "B0FFF0FKGX",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS032",
@@ -401,12 +455,14 @@
     "providerName": "玲峰池遗址",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.964223,
-      "lat": 32.153266
+      "lng": 118.9642234,
+      "lat": 32.1532421
     },
     "art": "pagoda",
     "tier": 3,
-    "referenceCode": "E19"
+    "referenceCode": "E19",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS033",
@@ -419,20 +475,25 @@
     },
     "art": "pagoda",
     "tier": 3,
-    "referenceCode": "E20"
+    "referenceCode": "E20",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS034",
     "name": "试茶亭",
-    "providerName": "试茶亭",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "providerName": "栖霞山风景名胜区-试茶亭",
+    "address": "栖霞街88号栖霞山风景名胜区",
     "location": {
-      "lng": 118.964895,
-      "lat": 32.152264
+      "lng": 118.964922,
+      "lat": 32.152182
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "D7"
+    "referenceCode": "D7",
+    "providerId": "B0FFFF662S",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS035",
@@ -440,24 +501,29 @@
     "providerName": "白乳泉",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.965042,
-      "lat": 32.152954
+      "lng": 118.9650473,
+      "lat": 32.1529349
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS036",
     "name": "青锋剑",
-    "providerName": "青锋剑",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "providerName": "栖霞山名胜风景区-青锋剑",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内",
     "location": {
-      "lng": 118.96625,
-      "lat": 32.153029
+      "lng": 118.966263,
+      "lat": 32.152974
     },
     "art": "maple",
     "tier": 3,
-    "referenceCode": "D14"
+    "referenceCode": "D14",
+    "providerId": "B0FFF0FKH2",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS037",
@@ -465,11 +531,13 @@
     "providerName": "「太古」摩崖石刻",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.961675,
-      "lat": 32.152142
+      "lng": 118.9616755,
+      "lat": 32.1521406
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS038",
@@ -477,12 +545,14 @@
     "providerName": "萌宠乐园",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.967181,
-      "lat": 32.152954
+      "lng": 118.9671813,
+      "lat": 32.1529526
     },
     "art": "maple",
     "tier": 3,
-    "referenceCode": "E21"
+    "referenceCode": "E21",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS039",
@@ -495,7 +565,9 @@
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E22"
+    "referenceCode": "E22",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS040",
@@ -503,12 +575,14 @@
     "providerName": "得趣亭",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.962608,
-      "lat": 32.151873
+      "lng": 118.9626086,
+      "lat": 32.1518712
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E23"
+    "referenceCode": "E23",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS041",
@@ -516,11 +590,13 @@
     "providerName": "栖霞飞天",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.960097,
-      "lat": 32.151903
+      "lng": 118.9600973,
+      "lat": 32.1519019
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS042",
@@ -528,12 +604,14 @@
     "providerName": "千佛斋",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.958508,
-      "lat": 32.152473
+      "lng": 118.9585093,
+      "lat": 32.1524692
     },
     "art": "temple",
     "tier": 3,
-    "referenceCode": "E24"
+    "referenceCode": "E24",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS043",
@@ -541,12 +619,14 @@
     "providerName": "青峰涧",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.963731,
-      "lat": 32.152091
+      "lng": 118.9637312,
+      "lat": 32.1520853
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "E25"
+    "referenceCode": "E25",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS044",
@@ -554,23 +634,29 @@
     "providerName": "白莲池（月牙池）",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.958187,
-      "lat": 32.152432
+      "lng": 118.958193,
+      "lat": 32.152418
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B001912JCZ",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "QXS045",
     "name": "毗卢宝殿",
-    "providerName": "毗卢宝殿",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "providerName": "栖霞山名胜风景区-毗卢宝殿",
+    "address": "栖霞街88号栖霞山风景名胜区栖霞古寺内",
     "location": {
-      "lng": 118.959448,
-      "lat": 32.152132
+      "lng": 118.95945,
+      "lat": 32.152115
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B0FFFFAB2W",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS046",
@@ -578,12 +664,14 @@
     "providerName": "白鹿泉遗址",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.962788,
-      "lat": 32.151484
+      "lng": 118.9627888,
+      "lat": 32.1514818
     },
     "art": "pagoda",
     "tier": 3,
-    "referenceCode": "D6"
+    "referenceCode": "D6",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS047",
@@ -591,12 +679,14 @@
     "providerName": "品外泉",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.961095,
-      "lat": 32.151503
+      "lng": 118.9610969,
+      "lat": 32.151498
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "D4"
+    "referenceCode": "D4",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS048",
@@ -604,11 +694,13 @@
     "providerName": "中峰涧",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.964724,
-      "lat": 32.152147
+      "lng": 118.9647489,
+      "lat": 32.1520702
     },
     "art": "water",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS049",
@@ -616,25 +708,30 @@
     "providerName": "江总碑",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.957943,
-      "lat": 32.151769
+      "lng": 118.9579483,
+      "lat": 32.1517549
     },
     "art": "pagoda",
     "tier": 3,
-    "referenceCode": "E26"
+    "referenceCode": "E26",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS050",
     "name": "春雨桥",
-    "providerName": "春雨桥",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "providerName": "栖霞山风景名胜区-春雨桥",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西南角)",
     "location": {
-      "lng": 118.961876,
-      "lat": 32.151432
+      "lng": 118.961884,
+      "lat": 32.151409
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "D13"
+    "referenceCode": "D13",
+    "providerId": "B0FFFFAOPQ",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS051",
@@ -642,24 +739,29 @@
     "providerName": "春雨桥瀑布",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.961954,
-      "lat": 32.151385
+      "lng": 118.9619592,
+      "lat": 32.1513702
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "E27"
+    "referenceCode": "E27",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS052",
     "name": "紫峰阁",
     "providerName": "紫峰阁",
-    "address": "栖霞山风景名胜区内（据官方导览图配准）",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西南角)",
     "location": {
-      "lng": 118.960432,
-      "lat": 32.15128
+      "lng": 118.96044,
+      "lat": 32.15126
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B0FFFFAF7Z",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXS053",
@@ -667,11 +769,14 @@
     "providerName": "寂然法师像",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.957442,
-      "lat": 32.151249
+      "lng": 118.957588,
+      "lat": 32.151036
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B0FFFF3O5H",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "QXS054",
@@ -679,12 +784,15 @@
     "providerName": "集云亭",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.966905,
-      "lat": 32.150734
+      "lng": 118.966906,
+      "lat": 32.150717
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "E28"
+    "referenceCode": "E28",
+    "providerId": "B0HK7CL7E2",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "QXS055",
@@ -696,7 +804,9 @@
       "lat": 32.149524
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS056",
@@ -709,7 +819,9 @@
     },
     "art": "maple",
     "tier": 3,
-    "referenceCode": "E30"
+    "referenceCode": "E30",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS057",
@@ -722,7 +834,9 @@
     },
     "art": "water",
     "tier": 3,
-    "referenceCode": "E31"
+    "referenceCode": "E31",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS058",
@@ -730,12 +844,14 @@
     "providerName": "财神殿",
     "address": "栖霞山风景名胜区内（据官方导览图配准）",
     "location": {
-      "lng": 118.957393,
-      "lat": 32.152019
+      "lng": 118.9573962,
+      "lat": 32.1520134
     },
     "art": "temple",
     "tier": 3,
-    "referenceCode": "E29"
+    "referenceCode": "E29",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXS059",
@@ -747,6 +863,293 @@
       "lat": 32.146
     },
     "art": "pavilion",
+    "tier": 3,
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFFFAFM4",
+    "name": "祈福堂",
+    "providerId": "B0FFFFAFM4",
+    "location": {
+      "lng": 118.958849,
+      "lat": 32.15284
+    },
+    "address": "栖霞山名胜风景区摄山栖霞寺(东北角)",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "providerName": "栖霞山名胜风景区-祈福堂",
+    "art": "pavilion",
     "tier": 3
+  },
+  {
+    "id": "B00190AK20",
+    "name": "忆君禅画展览",
+    "providerId": "B00190AK20",
+    "location": {
+      "lng": 118.957116,
+      "lat": 32.152256
+    },
+    "address": "摄山栖霞寺内",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "providerName": "忆君禅画展览",
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "B0HD9DZ5E8",
+    "name": "云谷艺术馆",
+    "providerId": "B0HD9DZ5E8",
+    "location": {
+      "lng": 118.960137,
+      "lat": 32.151209
+    },
+    "address": "栖霞街88号",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "providerName": "云谷艺术馆",
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "B0LGRUEGVE",
+    "name": "皇家鹿苑",
+    "providerId": "B0LGRUEGVE",
+    "location": {
+      "lng": 118.966654,
+      "lat": 32.153144
+    },
+    "address": "栖霞街88号栖霞山风景名胜区",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "providerName": "皇家鹿苑",
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "B0LGCLUNZW",
+    "name": "飞越丛林",
+    "providerId": "B0LGCLUNZW",
+    "location": {
+      "lng": 118.963544,
+      "lat": 32.155802
+    },
+    "address": "栖霞街88号栖霞山风景名胜区",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "providerName": "栖霞山飞越丛林",
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "B0K0HCDG1I",
+    "name": "山崖",
+    "providerId": "B0K0HCDG1I",
+    "location": {
+      "lng": 118.964701,
+      "lat": 32.155362
+    },
+    "address": "栖霞街88号栖霞山风景名胜区",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "providerName": "山崖",
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "B0FFGNJSL5",
+    "name": "一线天",
+    "providerId": "B0FFGNJSL5",
+    "location": {
+      "lng": 118.964542,
+      "lat": 32.155194
+    },
+    "address": "栖霞山风景名胜区内",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "providerName": "栖霞山名胜风景区-一线天",
+    "art": "pavilion",
+    "tier": 3
+  },
+  {
+    "id": "B001912IKB",
+    "name": "幽居庵",
+    "providerName": "栖霞山名胜风景区-幽居庵",
+    "address": "栖霞街88号栖霞山风景名胜区内西侧",
+    "location": {
+      "lng": 118.963097,
+      "lat": 32.155701
+    },
+    "art": "temple",
+    "tier": 3,
+    "providerId": "B001912IKB",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFF0FKH6",
+    "name": "御花园",
+    "providerName": "栖霞山名胜风景区-御花园",
+    "address": "栖霞街88号栖霞山风景名胜区",
+    "location": {
+      "lng": 118.963264,
+      "lat": 32.155175
+    },
+    "art": "temple",
+    "tier": 3,
+    "providerId": "B0FFF0FKH6",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFFFLGG4",
+    "name": "碧藓亭",
+    "providerName": "栖霞山风景名胜区-碧藓亭",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内",
+    "location": {
+      "lng": 118.964794,
+      "lat": 32.155403
+    },
+    "art": "pavilion",
+    "tier": 3,
+    "providerId": "B0FFFFLGG4",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0IA67CDFV",
+    "name": "万松山房遗址",
+    "providerName": "万松山房遗址",
+    "address": "栖霞山风景名胜区内",
+    "location": {
+      "lng": 118.963119,
+      "lat": 32.153488
+    },
+    "art": "temple",
+    "tier": 3,
+    "providerId": "B0IA67CDFV",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFF0FKGJ",
+    "name": "德云庵",
+    "providerName": "栖霞山名胜风景区-德云庵",
+    "address": "栖霞街88号栖霞山风景名胜区内(西侧)",
+    "location": {
+      "lng": 118.960538,
+      "lat": 32.153709
+    },
+    "art": "temple",
+    "tier": 3,
+    "providerId": "B0FFF0FKGJ",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFFF77L3",
+    "name": "秋览丹枫",
+    "providerName": "栖霞山名胜风景区-秋览丹枫",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
+    "location": {
+      "lng": 118.95963,
+      "lat": 32.1565
+    },
+    "art": "maple",
+    "tier": 3,
+    "providerId": "B0FFFF77L3",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFFFLMOO",
+    "name": "待月亭",
+    "providerName": "栖霞山风景名胜区-待月亭",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区栖霞古寺内",
+    "location": {
+      "lng": 118.96115,
+      "lat": 32.151822
+    },
+    "art": "pavilion",
+    "tier": 3,
+    "providerId": "B0FFFFLMOO",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFK2NGB7",
+    "name": "曹洞宗高僧寿塔",
+    "providerName": "曹洞宗高僧寿塔",
+    "address": "",
+    "location": {
+      "lng": 118.964648,
+      "lat": 32.151599
+    },
+    "art": "pagoda",
+    "tier": 3,
+    "providerId": "B0FFK2NGB7",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFFF78UP",
+    "name": "三圣殿",
+    "providerName": "栖霞山名胜风景区-三圣殿",
+    "address": "栖霞山名胜风景区摄山栖霞寺内(东侧)",
+    "location": {
+      "lng": 118.960297,
+      "lat": 32.151624
+    },
+    "art": "temple",
+    "tier": 3,
+    "providerId": "B0FFFF78UP",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFFF6OEO",
+    "name": "栖霞秋色",
+    "providerName": "栖霞山名胜风景区-栖霞秋色",
+    "address": "栖霞山名胜风景区摄山栖霞寺内(东侧)",
+    "location": {
+      "lng": 118.96035,
+      "lat": 32.151571
+    },
+    "art": "maple",
+    "tier": 3,
+    "providerId": "B0FFFF6OEO",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0MAR75G6D",
+    "name": "玄奘舍利塔",
+    "providerName": "玄奘舍利塔",
+    "address": "栖霞山名胜风景区摄山栖霞寺内(东侧)",
+    "location": {
+      "lng": 118.960025,
+      "lat": 32.151725
+    },
+    "art": "pagoda",
+    "tier": 3,
+    "providerId": "B0MAR75G6D",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFLM3OSD",
+    "name": "如来堂",
+    "providerName": "栖霞山名胜风景区-如来堂",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区栖霞古寺内",
+    "location": {
+      "lng": 118.960403,
+      "lat": 32.151192
+    },
+    "art": "temple",
+    "tier": 3,
+    "providerId": "B0FFLM3OSD",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   }
 ]

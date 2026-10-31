@@ -38,6 +38,7 @@ import {
 } from "@/components/assistant-ui/elements/collapsible-root";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { toolTopic } from "@/components/zh-ui/tool-labels";
 
 const ANIMATION_DURATION = 200;
 
@@ -159,12 +160,14 @@ function ToolFallbackTrigger({
     responseDeliveryStatus === "queued"
       ? "回复已排队，尚未发送"
       : statusType === "running"
-        ? "正在调用工具"
+        ? "正在查询"
         : statusType === "requires-action"
-          ? "等待工具处理"
+          ? "等待处理"
           : statusType === "incomplete"
-            ? `${isCancelled ? "已取消" : "失败"}的工具调用`
-            : "已调用工具";
+            ? isCancelled
+              ? "已取消查询"
+              : "查询失败"
+            : "已查询";
 
   return (
     <CollapsibleTrigger
@@ -191,7 +194,7 @@ function ToolFallbackTrigger({
           isRunning && "shimmer motion-reduce:animate-none",
         )}
       >
-        {label}: <b>{toolName}</b>
+        {label}：<b title={toolName}>{toolTopic(toolName)}</b>
       </span>
       <ToolFallbackDuration />
       <ChevronDownIcon

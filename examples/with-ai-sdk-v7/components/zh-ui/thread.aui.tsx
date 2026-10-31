@@ -81,6 +81,14 @@ const DefaultToolGroup: FC<PropsWithChildren<{ group: ThreadGroupPart }>> = ({
   children,
 }) => {
   const [open, setOpen] = useState(false);
+  const toolNames = useAuiState((s) =>
+    group.indices
+      .map((index) => {
+        const part = s.message.parts[index];
+        return part?.type === "tool-call" ? part.toolName : "";
+      })
+      .join("\n"),
+  );
 
   return (
     <ToolGroupRoot
@@ -91,6 +99,7 @@ const DefaultToolGroup: FC<PropsWithChildren<{ group: ThreadGroupPart }>> = ({
       <ToolGroupTrigger
         count={group.indices.length}
         active={group.status.type === "running"}
+        toolNames={toolNames.split("\n").filter(Boolean)}
       />
       <ToolGroupContent>{children}</ToolGroupContent>
     </ToolGroupRoot>

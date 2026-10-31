@@ -1,25 +1,14 @@
-import { scenicPlaces, facilityPlaces } from "./qixia-map";
-import type { CatalogPlace, PlaceFilter } from "./place-catalog";
+import { scenicPlaces, facilityPlaces, facilityCategories } from "./qixia-map";
+import pinyinIndex from "./qixia-pinyin.json";
+import type { Place } from "../components/map/amap-types";
 
-const restNames = new Set([
-  "卧云亭",
-  "太虚亭",
-  "半馆",
-  "五松阁",
-  "夕佳亭",
-  "环翠亭",
-  "秋枫亭",
-  "凝霜亭",
-  "得趣亭",
-  "虚云亭",
-  "德云亭",
-  "畅观亭",
-  "试茶亭",
-  "话山亭",
-  "读枫阁",
-  "碧云亭",
-]);
-const diningNames = new Set(["千佛斋", "陆羽茶庄", "徐十郎茶肆"]);
+export const mapSearchCategories = ["景点", ...facilityCategories] as const;
+export type MapSearchFilter = "全部" | (typeof mapSearchCategories)[number];
+export type MapSearchPlace = Place & {
+  category: (typeof mapSearchCategories)[number];
+  number: number;
+};
+
 const aliases: Record<string, readonly string[]> = {
   彩虹明镜: ["明镜湖"],
   栖霞古寺: ["栖霞寺", "栖霞禅寺"],
@@ -27,15 +16,8 @@ const aliases: Record<string, readonly string[]> = {
   玲峰池遗址: ["玲峰池", "玲珑池遗址"],
   "白莲池（月牙池）": ["白莲池", "月牙池"],
 };
-export const mapSearchCatalog: CatalogPlace[] = [
-  ...scenicPlaces.map((place) => ({
-    ...place,
-    category: diningNames.has(place.name)
-      ? ("餐饮" as const)
-      : restNames.has(place.name)
-        ? ("休息" as const)
-        : ("景点" as const),
-  })),
+export const mapSearchCatalog: MapSearchPlace[] = [
+  ...scenicPlaces.map((place) => ({ ...place, category: "景点" as const })),
   ...facilityPlaces.map((place) => {
     const nearest = [...scenicPlaces].sort(
       (a, b) =>
@@ -50,18 +32,82 @@ export const mapSearchCatalog: CatalogPlace[] = [
     )[0];
     return {
       ...place,
-      category:
-        place.group === "toilet" ? ("厕所" as const) : ("其他" as const),
-      address: nearest ? nearest.name + "附近" : "景区内服务设施",
+      category: place.category,
+      address:
+        place.address || (nearest ? nearest.name + "附近" : "景区内服务设施"),
     };
   }),
 ].map((place, index) => ({ ...place, number: index + 1 }));
 
-export function searchMapPlaces(
+/**
+ * 拼音索引，由 .workbuddy/scripts/build-pinyin.mjs 生成：
+ * p = 全拼，i = 首字母，a = 别名（全拼 + 首字母）
+ */
+type PinyinEntry = { p: string; i: string; a?: string[] };
+const PINYIN = pinyinIndex as Record<string, PinyinEntry>;
+
+const CJK = /[\u3400-\u9fff]/;
+
+/** 归一化输入法组字阶段的拼音串（去掉分隔符、选字数字等） */
+export function normalizeLatinQuery(raw: string): string {
+  return raw.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+/**
+ * 是否走拼音检索。
+ * 含汉字时不进这条路径（中文 includes 已经能命中名称和别名），
+ * 只有纯字母（"qianfoyan" / "qfy"）才当拼音处理。
+ */
+export function isPinyinQuery(raw: string): boolean {
+  if (!raw || CJK.test(raw)) return false;
+  const query = normalizeLatinQuery(raw);
+  return query.length > 0 && /[a-z]/.test(query);
+}
+
+export type MapSearchSuggestion = {
+  place: MapSearchPlace;
+  /** 越大越靠前；中文查询恒为 0 */
+  score: number;
+  /** 命中的拼音形式，非拼音查询为 null */
+  form: string | null;
+};
+
+function pinyinHit(
+  name: string,
   query: string,
-  category: PlaceFilter,
-): CatalogPlace[] {
-  const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+): { score: number; form: string } | null {
+  const entry = PINYIN[name];
+  if (!entry) return null;
+  if (entry.p.startsWith(query)) {
+    // 整词全拼命中优先于前缀命中
+    return { score: entry.p === query ? 100 : 82, form: entry.p };
+  }
+  if (entry.i.startsWith(query)) return { score: 60, form: entry.i };
+  for (const form of entry.a ?? []) {
+    if (form.startsWith(query))
+      return { score: form.length > 3 ? 44 : 40, form };
+  }
+  return null;
+}
+
+function rankByPinyin(
+  raw: string,
+  category: MapSearchFilter,
+): MapSearchSuggestion[] {
+  const query = normalizeLatinQuery(raw);
+  const hits: MapSearchSuggestion[] = [];
+  for (const place of mapSearchCatalog) {
+    if (category !== "全部" && place.category !== category) continue;
+    const hit = pinyinHit(place.name, query);
+    if (hit) hits.push({ place, score: hit.score, form: hit.form });
+  }
+  return hits.sort(
+    (a, b) => b.score - a.score || a.place.number - b.place.number,
+  );
+}
+
+function matchByText(raw: string, category: MapSearchFilter): MapSearchPlace[] {
+  const words = raw.toLowerCase().split(/\s+/).filter(Boolean);
   return mapSearchCatalog.filter((place) => {
     if (category !== "全部" && place.category !== category) return false;
     const text = [
@@ -70,10 +116,56 @@ export function searchMapPlaces(
       place.referenceName,
       place.category,
       ...(aliases[place.name] ?? []),
-      place.category === "厕所" ? "卫生间 洗手间 wc restroom toilet" : "",
+      place.category === "卫生间"
+        ? "厕所 卫生间 洗手间 wc restroom toilet"
+        : "",
     ]
       .join(" ")
       .toLowerCase();
     return words.every((word) => text.includes(word));
   });
+}
+
+/**
+ * 有关键词时一律全局搜索（跨类别），类别只在空关键词的「分类浏览」里生效。
+ * 搜索框里只要有一个字符，就不该再被上面的类别按钮挡住。
+ */
+export function resolveSearchScope(
+  query: string,
+  category: MapSearchFilter,
+): MapSearchFilter {
+  return query.trim() ? "全部" : category;
+}
+
+export function searchMapPlaces(
+  query: string,
+  category: MapSearchFilter,
+): MapSearchPlace[] {
+  const raw = query.trim();
+  // 空关键词时按类别列出全部，保持面板「分类浏览」的原有行为
+  if (!raw) {
+    return mapSearchCatalog.filter(
+      (place) => category === "全部" || place.category === category,
+    );
+  }
+  const scope = resolveSearchScope(raw, category);
+  if (isPinyinQuery(raw)) {
+    return rankByPinyin(raw, scope).map((hit) => hit.place);
+  }
+  return matchByText(raw, scope);
+}
+
+/** 候选浮层用：返回带匹配分数的前 limit 条（恒为全局搜索） */
+export function suggestMapPlaces(
+  query: string,
+  category: MapSearchFilter,
+  limit = 8,
+): MapSearchSuggestion[] {
+  const raw = query.trim();
+  if (!raw) return [];
+  const scope = resolveSearchScope(raw, category);
+  if (isPinyinQuery(raw)) return rankByPinyin(raw, scope).slice(0, limit);
+  return matchByText(raw, scope)
+    .slice(0, limit)
+    .map((place) => ({ place, score: 0, form: null }));
 }

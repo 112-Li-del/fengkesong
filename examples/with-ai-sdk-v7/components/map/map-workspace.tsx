@@ -7,6 +7,7 @@ import {
   useState,
   useSyncExternalStore,
   type FormEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import { useAui } from "@assistant-ui/react";
 import { createPortal } from "react-dom";
@@ -22,9 +23,18 @@ import {
   BellRing,
   ChevronDown,
 } from "lucide-react";
-import { placeCategories, type PlaceFilter } from "@/lib/place-catalog";
+import { setTripContext } from "@/lib/trip-context";
+import { scenicRoutes } from "@/lib/scenic-display";
 import { referenceScenicPlaces } from "@/lib/scenic-places";
-import { mapSearchCatalog, searchMapPlaces } from "@/lib/map-search";
+import {
+  mapSearchCatalog,
+  searchMapPlaces,
+  suggestMapPlaces,
+  isPinyinQuery,
+  normalizeLatinQuery,
+  mapSearchCategories,
+  type MapSearchFilter,
+} from "@/lib/map-search";
 import { locationQuality } from "@/lib/location-quality";
 import {
   createProximityState,
@@ -61,6 +71,14 @@ export function MapWorkspace() {
   );
   const [illustrated, setIllustrated] = useState(true);
   const [dotsOnly, setDotsOnly] = useState(false);
+  const [scenicRoute, setScenicRoute] = useState("");
+  const activeScenicRoute = scenicRoutes.find(
+    (route) => route.id === scenicRoute,
+  );
+  const missingRouteStops =
+    activeScenicRoute?.stops.filter(
+      (name) => !scenicPlaces.some((place) => place.name === name),
+    ) ?? [];
   const positionOverlays = useRef<Overlay[]>([]);
   const walking = useRef<InstanceType<MapAPI["Walking"]> | null>(null);
   const watch = useRef<number | null>(null);
@@ -73,14 +91,37 @@ export function MapWorkspace() {
   useEffect(() => {
     autumnLayer.current?.setPaperVisible(illustrated);
   }, [illustrated, state]);
+  useEffect(() => {
+    const ids = new Map<string, number>();
+    activeScenicRoute?.stops.forEach((name, index) => {
+      const place = scenicPlaces.find((p) => p.name === name);
+      if (place) ids.set(place.id, index + 1);
+    });
+    autumnLayer.current?.setRoute(ids);
+  }, [activeScenicRoute, state]);
   const [retry, setRetry] = useState(0);
   const [mcp, setMcp] = useState(false);
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<PlaceFilter>("全部");
+  const [category, setCategory] = useState<MapSearchFilter>("景点");
+  /** 输入法组字状态：中文还没上屏时也要能出候选 */
+  const [composing, setComposing] = useState(false);
+  const [compositionText, setCompositionText] = useState("");
+  /** Esc 收起候选，回到完整结果列表 */
+  const [suggestDismissed, setSuggestDismissed] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const effectiveQuery = composing && compositionText ? compositionText : query;
+  /** 只要搜索框里有一个字符（含拼音组字中），就切全局搜索并收起类别按钮 */
+  const globalSearch = effectiveQuery.trim().length > 0;
+  const suggestions = useMemo(
+    () => suggestMapPlaces(effectiveQuery, category, 8),
+    [effectiveQuery, category],
+  );
+  const showSuggest = suggestions.length > 0 && !suggestDismissed;
   const places = useMemo(
     () => searchMapPlaces(query, category),
     [query, category],
   );
+  const mapPlaces = useMemo(() => searchMapPlaces("", category), [category]);
   const filterWanted = useRef<ReadonlySet<string>>(
     new Set(mapSearchCatalog.map((place) => place.id)),
   );
@@ -93,6 +134,13 @@ export function MapWorkspace() {
   const [knowledgeOpen, setKnowledgeOpen] = useState(false);
   const [tracking, setTracking] = useState(false);
   const [position, setPosition] = useState<Position | null>(null);
+  useEffect(() => {
+    setTripContext({
+      ...(activeScenicRoute ? { route: activeScenicRoute.id } : {}),
+      ...(tracking && position ? { position } : {}),
+    });
+    return () => setTripContext({});
+  }, [activeScenicRoute, tracking, position]);
   const [locationNote, setLocationNote] = useState("");
   const [locationFailure, setLocationFailure] = useState<number | null>(null);
   const [clock, setClock] = useState(() => Date.now());
@@ -138,7 +186,7 @@ export function MapWorkspace() {
         !reveal && selectedRef.current?.id === place.id ? null : place;
       setSelected(next);
       setKnowledgeOpen(false);
-      autumnLayer.current?.setSelected(next?.id ?? null);
+      autumnLayer.current?.setSelected(next?.id ?? null, reveal);
       if (!next) return;
       if (reveal) setPanelOpen(!window.matchMedia("(max-width:720px)").matches);
       if (reveal)
@@ -149,10 +197,12 @@ export function MapWorkspace() {
     [clearWalk, setSelected],
   );
   useEffect(() => {
-    const ids = new Set(places.map((place) => place.id));
+    const ids = new Set(mapPlaces.map((place) => place.id));
+    // 全局搜索可能命中当前类别之外的点位，选中它的 marker 必须能显示
+    if (selected) ids.add(selected.id);
     filterWanted.current = ids;
     autumnLayer.current?.setFilter(ids);
-  }, [places]);
+  }, [mapPlaces, selected]);
   const closePlacePanel = useCallback(() => {
     setPanelOpen(false);
   }, []);
@@ -222,7 +272,7 @@ export function MapWorkspace() {
         map.current = new api.Map(container.current, {
           center: [origin.lng, origin.lat],
           zoom: 16,
-          features: ["bg", "road"],
+          features: ["bg", "road", "building"],
           viewMode: "2D",
           rotateEnable: false,
           pitchEnable: false,
@@ -362,7 +412,7 @@ export function MapWorkspace() {
               }),
             ];
             const positionFix = {
-              point,
+              point: { lng: point.lng, lat: point.lat },
               accuracy: fix.coords.accuracy,
               timestamp: captured,
             };
@@ -544,29 +594,53 @@ export function MapWorkspace() {
       },
     });
   }
-  function updateSearch(
-    nextQuery: string,
-    nextCategory: PlaceFilter = category,
-  ) {
-    setQuery(nextQuery);
-    setCategory(nextCategory);
-    if (
-      selected &&
-      !searchMapPlaces(nextQuery, nextCategory).some(
-        (place) => place.id === selected.id,
-      )
-    ) {
-      setSelected(null);
-      setKnowledgeOpen(false);
-      autumnLayer.current?.setSelected(null);
-      clearWalk();
-      routeVersion.current++;
-      setRouteNote("");
-    }
-  }
   function submit(event: FormEvent) {
     event.preventDefault();
-    setQuery(query.trim());
+    const keyword = query.trim();
+    setQuery(keyword);
+    if (!keyword) return;
+    const exact = places.find(
+      (place) => place.name === keyword || place.referenceName === keyword,
+    );
+    const match = exact ?? (places.length === 1 ? places[0] : undefined);
+    if (match) select(match, true);
+  }
+  /** 关键词或类别一变，候选回到第一条并重新展开 */
+  function resetSuggestion() {
+    setActiveIndex(0);
+    setSuggestDismissed(false);
+  }
+  function chooseSuggestion(index: number) {
+    const hit = suggestions[Math.min(index, suggestions.length - 1)];
+    if (!hit) return;
+    setQuery(hit.place.name);
+    setSuggestDismissed(true);
+    select(hit.place, true);
+  }
+  function onSearchKeyDown(event: ReactKeyboardEvent<HTMLInputElement>) {
+    // 组字阶段交给输入法：只拦 Enter，避免把拼音串提交成关键词
+    if (composing || event.nativeEvent.isComposing) {
+      if (event.key === "Enter") event.preventDefault();
+      return;
+    }
+    if (!showSuggest) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setActiveIndex((index) => (index + 1) % suggestions.length);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveIndex(
+        (index) => (index - 1 + suggestions.length) % suggestions.length,
+      );
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      chooseSuggestion(activeIndex);
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      // 先只收候选：别让 Esc 顺带把整个搜索面板关掉
+      event.stopPropagation();
+      setSuggestDismissed(true);
+    }
   }
   return (
     <section
@@ -594,6 +668,27 @@ export function MapWorkspace() {
           ))}
         </div>
         <div className="autumn-display-tools">
+          <select
+            aria-label="推荐路线"
+            value={scenicRoute}
+            disabled={state !== "ready"}
+            onChange={(event) => {
+              setScenicRoute(event.target.value);
+              setCategory("景点");
+            }}
+          >
+            <option value="">自由游览</option>
+            {scenicRoutes.map((route) => (
+              <option key={route.id} value={route.id}>
+                {route.id} · {route.name}
+              </option>
+            ))}
+          </select>
+          {missingRouteStops.length > 0 && (
+            <p className="scenic-route-note" role="status">
+              {missingRouteStops.join("、")}暂缺坐标，编号保留，未标在地图上。
+            </p>
+          )}
           <button
             disabled={state !== "ready"}
             aria-pressed={dotsOnly}
@@ -633,8 +728,8 @@ export function MapWorkspace() {
       </div>
       <div className="autumn-map-caption">
         <span className="autumn-caption-dot" />
-        <span>景点实位 · 插画意象</span>
-        <small>白色：园内道路 · 蓝色：步行导航</small>
+        <span>景点位置 · 高德原生路网</span>
+        <small>放大查看细路 · 蓝色：步行导航</small>
       </div>
       {state !== "ready" && (
         <div className="map-connection-state" role="status">
@@ -685,77 +780,157 @@ export function MapWorkspace() {
               <ChevronDown size={15} className="map-panel-chevron" />
             </button>
             <div className="map-panel-body" id="map-panel-body">
-              <form className="map-search" onSubmit={submit}>
+              <form className="map-search" onSubmit={submit} role="search">
                 <Search size={16} />
                 <input
                   aria-label="搜索景点与设施"
-                  placeholder="搜索景点、厕所、餐饮…"
+                  aria-autocomplete="list"
+                  aria-expanded={showSuggest}
+                  aria-controls="map-search-suggest"
+                  placeholder="搜索景点、卫生间、停车场…"
                   value={query}
-                  onChange={(event) => updateSearch(event.target.value)}
+                  onChange={(event) => {
+                    setQuery(event.target.value);
+                    resetSuggestion();
+                  }}
+                  onCompositionStart={() => setComposing(true)}
+                  onCompositionUpdate={(event) => {
+                    setCompositionText(event.data ?? "");
+                    resetSuggestion();
+                  }}
+                  onCompositionEnd={() => {
+                    setComposing(false);
+                    setCompositionText("");
+                  }}
+                  onKeyDown={onSearchKeyDown}
                   maxLength={60}
                 />
                 {query && (
                   <button
                     type="button"
                     aria-label="清空搜索"
-                    onClick={() => updateSearch("")}
+                    onClick={() => {
+                      setQuery("");
+                      setCompositionText("");
+                      resetSuggestion();
+                    }}
                   >
                     <X size={14} />
                   </button>
                 )}
                 <button type="submit">搜索</button>
               </form>
-              <div
-                className="map-category-list"
-                role="group"
-                aria-label="地点类别"
-              >
-                {(["全部", ...placeCategories] as const).map((item) => (
-                  <button
-                    key={item}
-                    aria-pressed={category === item}
-                    data-category={item}
-                    onClick={() => {
-                      setCategory(item);
-                      setSelected(null);
-                      setKnowledgeOpen(false);
-                      autumnLayer.current?.setSelected(null);
-                      clearWalk();
-                    }}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-              <p className="map-search-note" role="status">
-                {places.length
-                  ? "找到 " + places.length + " 处地点"
-                  : "没有匹配地点，试试其他关键词或类别"}
-              </p>
-              <div
-                className="map-results map-search-results"
-                aria-label="搜索结果"
-              >
-                {places.map((place) => (
-                  <button
-                    className={selected?.id === place.id ? "is-selected" : ""}
-                    key={place.id}
-                    onClick={() => select(place, true)}
-                  >
-                    <span data-category={place.category}>{place.number}</span>
-                    <span>
-                      <strong>{place.name}</strong>
-                      <small>{place.address || place.category}</small>
-                    </span>
-                  </button>
-                ))}
-              </div>
+              {showSuggest && (
+                <div
+                  className="map-search-suggest"
+                  id="map-search-suggest"
+                  aria-label="搜索候选"
+                >
+                  <p className="map-suggest-hint">
+                    <span>{composing ? "拼音组字中" : "全局搜索"}</span>
+                    {isPinyinQuery(effectiveQuery) && (
+                      <b>{normalizeLatinQuery(effectiveQuery)}</b>
+                    )}
+                    <em>{suggestions.length} 条 · ↑↓ 选择 · Enter 定位</em>
+                  </p>
+                  <ul>
+                    {suggestions.map((hit, index) => (
+                      <li key={hit.place.id}>
+                        <button
+                          type="button"
+                          className={index === activeIndex ? "is-active" : ""}
+                          aria-current={index === activeIndex}
+                          onMouseEnter={() => setActiveIndex(index)}
+                          onClick={() => chooseSuggestion(index)}
+                        >
+                          <span data-category={hit.place.category}>
+                            {hit.place.number}
+                          </span>
+                          <span>
+                            <strong>{hit.place.name}</strong>
+                            <small>
+                              {hit.place.address || hit.place.category}
+                            </small>
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                  {places.length > suggestions.length && (
+                    <button
+                      type="button"
+                      className="map-suggest-all"
+                      onClick={() => setSuggestDismissed(true)}
+                    >
+                      展开全部 {places.length} 处结果
+                    </button>
+                  )}
+                </div>
+              )}
+              {!globalSearch && (
+                <div
+                  className="map-category-list"
+                  role="group"
+                  aria-label="地点类别"
+                >
+                  {(["全部", ...mapSearchCategories] as const).map((item) => (
+                    <button
+                      key={item}
+                      aria-pressed={category === item}
+                      data-category={item}
+                      onClick={() => {
+                        setCategory(item);
+                        resetSuggestion();
+                        setSelected(null);
+                        setKnowledgeOpen(false);
+                        autumnLayer.current?.setSelected(null);
+                        clearWalk();
+                      }}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {!showSuggest && (
+                <p className="map-search-note" role="status">
+                  {places.length
+                    ? (globalSearch ? "全局搜索 · " : "") +
+                      "找到 " +
+                      places.length +
+                      " 处地点" +
+                      (globalSearch && places.length > 1 ? "，点击选择" : "")
+                    : globalSearch
+                      ? "没有匹配地点，换个关键词试试"
+                      : "没有匹配地点，试试其他关键词或类别"}
+                </p>
+              )}
+              {!showSuggest && (
+                <div
+                  className="map-results map-search-results"
+                  aria-label="搜索结果"
+                >
+                  {places.map((place) => (
+                    <button
+                      className={selected?.id === place.id ? "is-selected" : ""}
+                      key={place.id}
+                      onClick={() => select(place, true)}
+                    >
+                      <span data-category={place.category}>{place.number}</span>
+                      <span>
+                        <strong>{place.name}</strong>
+                        <small>{place.address || place.category}</small>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>,
           placeDockNode,
         )}
       {selected && (
-        <div className="map-place-detail map-selection-card">
+        <div key={selected.id} className="map-place-detail map-selection-card">
           <button
             className="map-detail-close"
             aria-label="关闭地点详情"
@@ -772,6 +947,15 @@ export function MapWorkspace() {
           </button>
           <span className="map-detail-label">已选择地点</span>
           <h2>{selected.name}</h2>
+          {selected.coordinateSource && (
+            <p>
+              {selected.coordinateSource === "amap-verified"
+                ? "高德POI已复核"
+                : selected.coordinateSource === "guide-map-estimate"
+                  ? "导览图估算位置，可能存在误差"
+                  : "高德历史点位，尚待复核"}
+            </p>
+          )}
           <p>{typeof selected.address === "string" ? selected.address : ""}</p>
           <div className="map-detail-actions">
             <button onClick={ask}>询问助手</button>

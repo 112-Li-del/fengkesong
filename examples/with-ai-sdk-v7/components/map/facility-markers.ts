@@ -2,6 +2,11 @@ import { facilityPlaces, type FacilityPlace } from "@/lib/qixia-map";
 import type { MapAPI, MapInstance, Place } from "./amap-types";
 
 const GLYPH: Readonly<Record<string, string>> = {
+  cafe: "咖",
+  food: "餐",
+  rest: "歇",
+  phone: "话",
+  security: "安",
   center: "i",
   info: "问",
   ticket: "票",
@@ -41,6 +46,11 @@ const TONE: Readonly<Record<string, string>> = {
 
 /** 簇的代表字取优先级最高的那一类，让「门」「厕」这类一眼能认出来。 */
 const PRIORITY: readonly string[] = [
+  "cafe",
+  "food",
+  "rest",
+  "phone",
+  "security",
   "gate",
   "out",
   "center",
@@ -205,11 +215,27 @@ export function facilityMarkers(
       visibleIds = ids;
       layout();
     },
-    setSelected(id: string | null) {
+    setSelected(id: string | null, bounce = false) {
       selectedId = id;
       for (const entry of entries) {
         const selected = entry.facility.id === id;
         entry.root.classList.toggle("is-selected", selected);
+        if (
+          selected &&
+          bounce &&
+          !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          for (const animation of entry.root.getAnimations())
+            animation.cancel();
+          entry.root.animate(
+            [
+              { transform: "translateY(0)" },
+              { transform: "translateY(-6px)" },
+              { transform: "translateY(0)" },
+            ],
+            { duration: 420, easing: "ease-out" },
+          );
+        }
         entry.root.setAttribute("aria-pressed", String(selected));
       }
       layout();
