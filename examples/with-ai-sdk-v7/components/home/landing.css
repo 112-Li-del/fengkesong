@@ -104,7 +104,13 @@
   line-height: 1.02;
   letter-spacing: 0.08em;
   text-indent: 0.08em;
-  background: linear-gradient(180deg, #fff6e8 8%, #fbe0b4 46%, #e8a05c 78%, #d4573c 100%);
+  background: linear-gradient(
+    180deg,
+    #fff6e8 8%,
+    #fbe0b4 46%,
+    #e8a05c 78%,
+    #d4573c 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
