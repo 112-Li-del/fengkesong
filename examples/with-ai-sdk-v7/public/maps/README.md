@@ -83,3 +83,5 @@
 青峰涧东南侧、两段道路之间的用户红圈使用湖泊 `qixia-lake-ripple-21.png`，从用户提供的 105×56 像素素材分离青蓝波纹，去除鹅黄背景、右上灰色道路线和左下文字残片，保留原湖形及可见波纹。范围保存在 `lib/qixia-qingfeng-lake-decoration.json`，以青峰涧、中峰涧、试茶亭和凌虚室遗址配准，按红圈范围放置；沿用湖泊装饰层级、地图缩放和手绘图层显隐规则，景点贴图及名称保持在上层。
 
 全部湖泊贴图根据 `lib/qixia-roads.json` 的实际道路轨迹应用透明遮罩，道路描边外各留 1 像素空隙；遮罩随缩放及窗口尺寸重新计算，避免全景或更小比例下波纹盖住固定像素宽度的道路。湖泊原始素材、地理范围、整体大小及景点贴图层级保持不变。
+
+设施点位使用按组命名的透明插画：游客中心 `qixia-facility-center.png`、入口 `qixia-facility-gate.png`、出口 `qixia-facility-out.png`、检票处 `qixia-facility-check.png`、问询处 `qixia-facility-info.png`、售票处 `qixia-facility-ticket.png`、停车场 `qixia-facility-parking.png`、卫生间 `qixia-facility-toilet.png`、游览车停靠站 `qixia-facility-bus.png`、消防 `qixia-facility-fire.png`、医疗 `qixia-facility-medical.png`、服务点 `qixia-facility-shop.png`、自助能量补给站 `qixia-facility-supply.png` 和森林消防半专业队 `qixia-facility-squad.png`。素材按设施分组应用到全部对应点位，低缩放级别的设施聚合徽标也使用对应插画的缩小版。
