@@ -1,15 +1,25 @@
 "use client";
 
 import { createLocalStorageAdapter } from "@assistant-ui/core/react";
-import { useChatRuntime } from "@assistant-ui/ai-sdk";
+import { AssistantChatTransport, useChatRuntime } from "@assistant-ui/ai-sdk";
 import {
   AssistantRuntimeProvider,
   useRemoteThreadListRuntime,
 } from "@assistant-ui/react";
 import { useState } from "react";
+import { getTripContext } from "@/lib/trip-context";
 import { HistoryWorkspace } from "./workspace";
 import "./history.css";
 
+function useTripChatRuntime() {
+  const [transport] = useState(
+    () =>
+      new AssistantChatTransport({
+        body: () => ({ tripContext: getTripContext() }),
+      }),
+  );
+  return useChatRuntime({ transport });
+}
 export function HistoryChat() {
   const [storageError, setStorageError] = useState(false);
   const [adapter] = useState(() =>
@@ -55,7 +65,7 @@ export function HistoryChat() {
     }),
   );
   const runtime = useRemoteThreadListRuntime({
-    runtimeHook: useChatRuntime,
+    runtimeHook: useTripChatRuntime,
     adapter,
   });
   return (

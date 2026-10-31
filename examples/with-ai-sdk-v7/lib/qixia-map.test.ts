@@ -9,6 +9,7 @@ describe("Qixia scenic map search", () => {
   it("keeps the confirmed canonical names and collapses provider aliases", () => {
     for (const name of [
       "毘灵宝殿",
+      "栖霞山大桥",
       "定照庵石刻",
       "玲珑池遗址",
       "白莲池（用牙池）",

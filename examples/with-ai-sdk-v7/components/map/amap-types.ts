@@ -1,5 +1,9 @@
 export type LngLat = { lng: number; lat: number };
 export type Place = {
+  providerId?: string;
+  coordinateSource?: string;
+  coordinateCheckedAt?: string;
+  coordinateCalibratedAt?: string;
   id: string;
   name: string;
   address?: string;
@@ -10,6 +14,7 @@ export type Place = {
 export type Overlay = { setMap(map: MapInstance | null): void };
 export type MapInstance = {
   destroy(): void;
+  setFeatures(features: string[]): void;
   setPitch(pitch: number): void;
   setRotation(rotation: number): void;
   getRotation(): number;

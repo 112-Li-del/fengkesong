@@ -10,7 +10,10 @@
       "lat": 32.150758
     },
     "art": "temple",
-    "tier": 1
+    "tier": 1,
+    "providerId": "B0L1KKTEQQ",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B0FFHNMDN6",
@@ -23,7 +26,10 @@
       "lat": 32.150991
     },
     "art": "temple",
-    "tier": 2
+    "tier": 2,
+    "providerId": "B0FFHNMDN6",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B0FFIZWTKW",
@@ -36,7 +42,10 @@
       "lat": 32.151627
     },
     "art": "pavilion",
-    "tier": 2
+    "tier": 2,
+    "providerId": "B0FFIZWTKW",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B00190AK1Z",
@@ -49,7 +58,10 @@
       "lat": 32.15523
     },
     "art": "pavilion",
-    "tier": 1
+    "tier": 1,
+    "providerId": "B00190AK1Z",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B001912JAL",
@@ -62,7 +74,10 @@
       "lat": 32.155048
     },
     "art": "pavilion",
-    "tier": 2
+    "tier": 2,
+    "providerId": "B001912JAL",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B001912JBJ",
@@ -74,7 +89,10 @@
       "lat": 32.151692
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B001912JBJ",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B001912JC3",
@@ -86,7 +104,10 @@
       "lat": 32.151691
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B001912JC3",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B001912HOX",
@@ -99,7 +120,10 @@
       "lat": 32.152333
     },
     "art": "pagoda",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B001912HOX",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B00190D2L7",
@@ -108,11 +132,14 @@
     "providerName": "栖霞山名胜风景区摄山栖霞寺",
     "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
     "location": {
-      "lng": 118.957978,
-      "lat": 32.151821
+      "lng": 118.957983,
+      "lat": 32.151807
     },
     "art": "temple",
-    "tier": 1
+    "tier": 1,
+    "providerId": "B00190D2L7",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B001909CRJ",
@@ -125,7 +152,10 @@
       "lat": 32.151791
     },
     "art": "pagoda",
-    "tier": 1
+    "tier": 1,
+    "providerId": "B001909CRJ",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B001912JE8",
@@ -138,7 +168,10 @@
       "lat": 32.151673
     },
     "art": "maple",
-    "tier": 1
+    "tier": 1,
+    "providerId": "B001912JE8",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0FFFFLDXQ",
@@ -151,7 +184,10 @@
       "lat": 32.151957
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B0FFFFLDXQ",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0FFFFA5A4",
@@ -164,7 +200,10 @@
       "lat": 32.151514
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B0FFFFA5A4",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B00190CQK0",
@@ -177,7 +216,10 @@
       "lat": 32.15501
     },
     "art": "pavilion",
-    "tier": 2
+    "tier": 2,
+    "providerId": "B00190CQK0",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B001912IQ4",
@@ -190,7 +232,10 @@
       "lat": 32.155238
     },
     "art": "maple",
-    "tier": 2
+    "tier": 2,
+    "providerId": "B001912IQ4",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B00190AJZJ",
@@ -199,11 +244,14 @@
     "providerName": "栖霞山名胜风景区-乾隆御花园",
     "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内",
     "location": {
-      "lng": 118.964287,
-      "lat": 32.156442
+      "lng": 118.964293,
+      "lat": 32.156408
     },
     "art": "temple",
-    "tier": 2
+    "tier": 2,
+    "providerId": "B00190AJZJ",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B001909CRH",
@@ -216,7 +264,10 @@
       "lat": 32.157522
     },
     "art": "maple",
-    "tier": 1
+    "tier": 1,
+    "providerId": "B001909CRH",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0FFFFA5IH",
@@ -229,7 +280,10 @@
       "lat": 32.156922
     },
     "art": "pavilion",
-    "tier": 2
+    "tier": 2,
+    "coordinateSource": "amap-verified",
+    "providerId": "B0FFFFA5IH",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B001912IAZ",
@@ -242,7 +296,10 @@
       "lat": 32.159612
     },
     "art": "pavilion",
-    "tier": 1
+    "tier": 1,
+    "providerId": "B001912IAZ",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B00190AJZI",
@@ -255,7 +312,10 @@
       "lat": 32.156058
     },
     "art": "pavilion",
-    "tier": 1
+    "tier": 1,
+    "providerId": "B00190AJZI",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B00191552W",
@@ -268,7 +328,10 @@
       "lat": 32.152673
     },
     "art": "temple",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B00191552W",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B0FFHLQ4T0",
@@ -281,7 +344,10 @@
       "lat": 32.152374
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B0FFHLQ4T0",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B0FFF05UMW",
@@ -294,7 +360,10 @@
       "lat": 32.151199
     },
     "art": "pavilion",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B0FFF05UMW",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B00190AK1Y",
@@ -307,7 +376,10 @@
       "lat": 32.149745
     },
     "art": "temple",
-    "tier": 2
+    "tier": 2,
+    "coordinateSource": "amap-verified",
+    "providerId": "B00190AK1Y",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0FFF0FKGO",
@@ -320,7 +392,10 @@
     },
     "art": "maple",
     "tier": 3,
-    "referenceCode": "F1"
+    "referenceCode": "F1",
+    "providerId": "B0FFF0FKGO",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B001912JDN",
@@ -333,7 +408,10 @@
     },
     "art": "maple",
     "tier": 3,
-    "referenceCode": "F2"
+    "referenceCode": "F2",
+    "providerId": "B001912JDN",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0FFGHFYWY",
@@ -345,7 +423,10 @@
       "lat": 32.15321
     },
     "art": "maple",
-    "tier": 3
+    "tier": 3,
+    "providerId": "B0FFGHFYWY",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0LDD5CW33",
@@ -358,7 +439,10 @@
     },
     "art": "maple",
     "tier": 3,
-    "referenceCode": "F10"
+    "referenceCode": "F10",
+    "providerId": "B0LDD5CW33",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B0FFFFKJRG",
@@ -366,12 +450,15 @@
     "providerName": "栖霞山名胜风景区-弥勒圣境",
     "address": "栖霞山名胜风景区摄山栖霞寺内(东侧)",
     "location": {
-      "lng": 118.959654,
-      "lat": 32.151266
+      "lng": 118.959662,
+      "lat": 32.151247
     },
     "art": "temple",
     "tier": 3,
-    "referenceCode": "F3"
+    "referenceCode": "F3",
+    "providerId": "B0FFFFKJRG",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B0FFFF6043",
@@ -379,12 +466,15 @@
     "providerName": "栖霞山名胜风景区-斋堂",
     "address": "栖霞山名胜风景区摄山栖霞寺内(东侧)",
     "location": {
-      "lng": 118.959265,
-      "lat": 32.151771
+      "lng": 118.95927,
+      "lat": 32.15176
     },
     "art": "temple",
     "tier": 3,
-    "referenceCode": "F4"
+    "referenceCode": "F4",
+    "coordinateSource": "amap-verified",
+    "providerId": "B0FFFF6043",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0JDSRSXG7",
@@ -397,7 +487,10 @@
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "F5"
+    "referenceCode": "F5",
+    "providerId": "B0JDSRSXG7",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0M6NHF2DG",
@@ -410,7 +503,10 @@
     },
     "art": "temple",
     "tier": 3,
-    "referenceCode": "D8"
+    "referenceCode": "D8",
+    "providerId": "B0M6NHF2DG",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B0KRK9CH8P",
@@ -423,7 +519,10 @@
     },
     "art": "temple",
     "tier": 3,
-    "referenceCode": "F6"
+    "referenceCode": "F6",
+    "providerId": "B0KRK9CH8P",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0FFF0FKGI",
@@ -436,7 +535,10 @@
     },
     "art": "temple",
     "tier": 3,
-    "referenceCode": "F7"
+    "referenceCode": "F7",
+    "providerId": "B0FFF0FKGI",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0MU3UOUOP",
@@ -449,7 +551,10 @@
     },
     "art": "maple",
     "tier": 3,
-    "referenceCode": "F11"
+    "referenceCode": "F11",
+    "coordinateSource": "amap-verified",
+    "providerId": "B0MU3UOUOP",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0H6X5V9VE",
@@ -462,7 +567,10 @@
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "F8"
+    "referenceCode": "F8",
+    "coordinateSource": "amap-verified",
+    "providerId": "B0H6X5V9VE",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0FFHNLM4E",
@@ -470,12 +578,15 @@
     "providerName": "栖霞山风景区-受降井",
     "address": "近郊栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
     "location": {
-      "lng": 118.958282,
-      "lat": 32.152167
+      "lng": 118.958284,
+      "lat": 32.152156
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "D1"
+    "referenceCode": "D1",
+    "providerId": "B0FFHNLM4E",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-30"
   },
   {
     "id": "B0FFFF5YUS",
@@ -488,7 +599,10 @@
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "D11"
+    "referenceCode": "D11",
+    "providerId": "B0FFFF5YUS",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0L315VK7T",
@@ -501,7 +615,10 @@
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "F9"
+    "referenceCode": "F9",
+    "providerId": "B0L315VK7T",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0K0KHC2MA",
@@ -514,7 +631,10 @@
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "F12"
+    "referenceCode": "F12",
+    "coordinateSource": "amap-verified",
+    "providerId": "B0K0KHC2MA",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0L31HVBHB",
@@ -527,7 +647,10 @@
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "F13"
+    "referenceCode": "F13",
+    "coordinateSource": "amap-verified",
+    "providerId": "B0L31HVBHB",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B0MRFSSJLS",
@@ -540,7 +663,10 @@
     },
     "art": "pavilion",
     "tier": 3,
-    "referenceCode": "F14"
+    "referenceCode": "F14",
+    "providerId": "B0MRFSSJLS",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "B001912HP8",
@@ -553,6 +679,9 @@
     },
     "art": "temple",
     "tier": 3,
-    "referenceCode": "D12"
+    "referenceCode": "D12",
+    "providerId": "B001912HP8",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   }
 ]

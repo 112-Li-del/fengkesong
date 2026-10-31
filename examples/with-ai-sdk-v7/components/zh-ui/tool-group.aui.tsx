@@ -17,6 +17,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/assistant-ui/elements/collapsible-root";
+import { toolGroupLabel } from "@/components/zh-ui/tool-labels";
 
 const ANIMATION_DURATION = 200;
 
@@ -95,13 +96,19 @@ function ToolGroupRoot({
 function ToolGroupTrigger({
   count,
   active = false,
+  toolNames,
   className,
   ...props
 }: React.ComponentProps<typeof CollapsibleTrigger> & {
   count: number;
   active?: boolean;
+  toolNames?: readonly string[];
 }) {
-  const label = `${count} 次工具调用`;
+  const label = toolNames
+    ? toolGroupLabel(toolNames, active)
+    : active
+      ? "正在查询…"
+      : `已查询 ${count} 项信息`;
 
   return (
     <CollapsibleTrigger

@@ -284,21 +284,53 @@
   cursor: not-allowed;
 }
 
-/* 细部点位：远景只留圆点，放大后才放出插画与名称 */
-.scenic-coordinate.is-minor:not(.is-revealed) .scenic-site-art,
-.scenic-coordinate.is-minor:not(.is-revealed) .scenic-site-label {
+/* 分级布局只移动名称，不移动地理锚点。 */
+.scenic-coordinate:not(.has-lod-label) .scenic-site-label,
+.scenic-coordinate:not(.has-lod-art) .scenic-site-art {
   display: none;
 }
-.scenic-coordinate.is-minor .scenic-site-dot::after {
-  background: #b06a48;
+.scenic-route-number {
+  display: none;
 }
-.scenic-coordinate.is-minor.is-revealed .scenic-site-label {
+.scenic-coordinate.is-route-stop .scenic-route-number {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: #80543f;
+  color: #fff8e9;
+  border: 2px solid #fff8e9;
+  font: 600 11px/1 sans-serif;
+  z-index: 1;
+}
+.scenic-coordinate.is-route-stop.is-selected .scenic-route-number {
+  background: #aa2e21;
+}
+.autumn-display-tools select {
+  max-width: 175px;
+  background: #fff8e9;
+  color: #6e402b;
+  border: 1px solid #cbac7d;
+  border-radius: 8px;
+  padding: 8px;
+}
+.scenic-route-note {
+  max-width: 175px;
+  padding: 6px;
+  color: #6e402b;
+  background: #fff8e9;
   font-size: 11px;
-  height: 24px;
-  line-height: 16px;
-  padding: 3px 6px;
 }
-.scenic-coordinate.is-selected .scenic-site-label,
-.scenic-coordinate.is-selected .scenic-site-art {
-  display: block;
+
+.scenic-coordinate.has-lod-art .scenic-site-art {
+  top: -78px;
+}
+
+.scenic-coordinate:not(.has-lod-label):not(.is-selected):not(.is-route-stop)
+  .scenic-site-dot::after {
+  inset: 5px;
+  background: #b4433266;
+  border: 1px solid #fffaf099;
+  box-shadow: none;
 }

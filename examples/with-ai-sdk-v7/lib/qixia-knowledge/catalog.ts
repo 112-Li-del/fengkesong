@@ -1,3 +1,5 @@
+import { placeD17 } from "./data/D17";
+import { placeD16 } from "./data/D16";
 import type { QixiaPlaceKnowledge } from "./types";
 import { placeA1 } from "./data/A1";
 import { placeA2 } from "./data/A2";
@@ -137,6 +139,8 @@ export const qixiaKnowledge: QixiaPlaceKnowledge[] = [
   placeD13,
   placeD14,
   placeD15,
+  placeD16,
+  placeD17,
   placeE1,
   placeE2,
   placeE3,

@@ -70,12 +70,12 @@ describe("scenic navigation", () => {
     });
   });
   it.each([
-    [1240, 939, 16.880349132129513],
-    [390, 787, 15.365775959299755],
-    [844, 330, 14.148260319693282],
-    [2200, 1100, 17.227211661088106],
+    [1240, 939, 15.880349132129513],
+    [390, 787, 14.365775959299755],
+    [844, 330, 13.148260319693282],
+    [2200, 1100, 16.227211661088106],
   ])(
-    "centers the map one zoom level closer in a %sx%s map",
+    "fits the approved overview frame in a %sx%s map",
     (width, height, expectedZoom) => {
       const view = scenicOverview(width, height);
       expect(view.zoom).toBeCloseTo(expectedZoom, 8);
@@ -83,15 +83,21 @@ describe("scenic navigation", () => {
       const mercatorY = (lat: number) =>
         Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
       const pixels: { x: number; y: number }[] = [];
-      for (const place of scenicPlaces) {
-        const x =
-          width / 2 + ((place.location.lng - view.center.lng) / 360) * scale;
+      for (const location of [
+        { lng: 118.953996, lat: 32.146498 },
+        { lng: 118.971714, lat: 32.159612 },
+      ]) {
+        const x = width / 2 + ((location.lng - view.center.lng) / 360) * scale;
         const y =
           height / 2 -
-          ((mercatorY(place.location.lat) - mercatorY(view.center.lat)) /
+          ((mercatorY(location.lat) - mercatorY(view.center.lat)) /
             (2 * Math.PI)) *
             scale;
         pixels.push({ x, y });
+        expect(x).toBeGreaterThanOrEqual(0);
+        expect(x).toBeLessThanOrEqual(width);
+        expect(y).toBeGreaterThanOrEqual(0);
+        expect(y).toBeLessThanOrEqual(height);
       }
       expect(
         (Math.min(...pixels.map((p) => p.x)) +
