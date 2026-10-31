@@ -4,6 +4,7 @@ import type { MapAPI, MapInstance, Place, Overlay } from "./amap-types";
 import { facilityMarkers } from "./facility-markers";
 import { scenicMarkers } from "./scenic-markers";
 import { mountainDecorations } from "./mountain-decorations";
+import { roadOutlineWidth } from "./lake-road-mask";
 
 export function addAutumnLayer(
   api: MapAPI,
@@ -32,7 +33,7 @@ export function addAutumnLayer(
           map,
           path,
           strokeColor: outline ? "#a18b6c" : "#ffffff",
-          strokeWeight: outline ? 7 : 5,
+          strokeWeight: outline ? roadOutlineWidth : 5,
           strokeOpacity: 1,
           lineJoin: "round",
           lineCap: "round",
