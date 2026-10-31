@@ -1,11 +1,12 @@
 import type { MapAPI } from "./amap-types";
 let pending: Promise<MapAPI> | undefined;
-export function loadAmap(key: string): Promise<MapAPI> {
+export function loadAmap(key: string, securityCode?: string): Promise<MapAPI> {
   if (window.AMap) return Promise.resolve(window.AMap);
   if (pending) return pending;
-  window._AMapSecurityConfig = {
-    serviceHost: window.location.origin + "/_AMapService",
-  };
+  // 静态部署没有 /_AMapService 反向代理，改为直接内联 JS 安全密钥。
+  window._AMapSecurityConfig = securityCode
+    ? { securityJsCode: securityCode }
+    : { serviceHost: window.location.origin + "/_AMapService" };
   pending = new Promise<MapAPI>((resolve, reject) => {
     const script = document.createElement("script");
     const timer = window.setTimeout(() => finish(false), 15000);

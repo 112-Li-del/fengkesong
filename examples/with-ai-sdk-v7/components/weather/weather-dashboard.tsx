@@ -18,6 +18,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 import type { WeatherSnapshot } from "@/lib/weather";
+import { getQixiaWeatherClient } from "@/lib/qixia-weather-client";
+import { FKS_STATIC } from "@/lib/zion-config";
 import { MagicBento } from "./magic-bento";
 import { weatherDetailItems } from "./weather-details";
 import "./weather.css";
@@ -71,12 +73,19 @@ export function WeatherDashboard() {
     controller.current = next;
     setRefreshing(true);
     try {
-      const response = await fetch(
-        `/api/weather/qixia${force ? "?refresh=1" : ""}`,
-        { signal: next.signal, cache: "no-store" },
-      );
-      if (!response.ok) throw new Error("Weather unavailable");
-      const data: WeatherSnapshot = await response.json();
+      const data: WeatherSnapshot = FKS_STATIC
+        ? ((await getQixiaWeatherClient(next.signal)) ??
+          (() => {
+            throw new Error("Weather unavailable");
+          })())
+        : await (async () => {
+            const response = await fetch(
+              `/api/weather/qixia${force ? "?refresh=1" : ""}`,
+              { signal: next.signal, cache: "no-store" },
+            );
+            if (!response.ok) throw new Error("Weather unavailable");
+            return (await response.json()) as WeatherSnapshot;
+          })();
       if (data.status !== "success" || !Array.isArray(data.hourly))
         throw new Error("Unexpected location");
       setSnapshot(data);
