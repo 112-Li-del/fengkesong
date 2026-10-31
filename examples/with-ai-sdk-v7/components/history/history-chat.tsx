@@ -64,10 +64,16 @@ export function HistoryChat() {
         : undefined,
     [],
   );
+  // 关键：useRemoteThreadListRuntime 不会把额外字段（如 transport）透传给
+  // runtimeHook，它只会“无参”调用 runtimeHook。若写成 `runtimeHook: useChatRuntime`
+  // 再在外层塞 transport，transport 会被丢掉，useChatRuntime 退回默认的
+  // AssistantChatTransport（POST /api/chat）——静态站没有该路由，于是报
+  // “Failed to fetch the chat response.”。必须用闭包把 transport 传进 useChatRuntime。
   const runtime = useRemoteThreadListRuntime({
-    runtimeHook: useChatRuntime,
+    runtimeHook: function ZionChatRuntime() {
+      return useChatRuntime(zionTransport ? { transport: zionTransport } : {});
+    },
     adapter,
-    ...(zionTransport ? { transport: zionTransport } : {}),
   });
   return (
     <AssistantRuntimeProvider runtime={runtime}>
