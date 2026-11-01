@@ -8,7 +8,9 @@
       "lng": 118.955772,
       "lat": 32.15069
     },
-    "category": "门票入口"
+    "category": "门票入口",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF002",
@@ -19,7 +21,9 @@
       "lng": 118.955832,
       "lat": 32.150948
     },
-    "category": "门票入口"
+    "category": "门票入口",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF003",
@@ -30,7 +34,9 @@
       "lng": 118.954694,
       "lat": 32.150247
     },
-    "category": "门票入口"
+    "category": "门票入口",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF004",
@@ -41,7 +47,9 @@
       "lng": 118.954557,
       "lat": 32.15028
     },
-    "category": "门票入口"
+    "category": "门票入口",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF005",
@@ -52,7 +60,9 @@
       "lng": 118.964722,
       "lat": 32.158397
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF006",
@@ -63,7 +73,9 @@
       "lng": 118.96507,
       "lat": 32.145805
     },
-    "category": "门票入口"
+    "category": "门票入口",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF007",
@@ -74,7 +86,9 @@
       "lng": 118.955893,
       "lat": 32.150538
     },
-    "category": "门票入口"
+    "category": "门票入口",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF008",
@@ -82,10 +96,12 @@
     "en": "Parking",
     "group": "parking",
     "location": {
-      "lng": 118.959205,
-      "lat": 32.152607
+      "lng": 118.9592066,
+      "lat": 32.152598
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF009",
@@ -96,29 +112,39 @@
       "lng": 118.964799,
       "lat": 32.145866
     },
-    "category": "门票入口"
+    "category": "门票入口",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF010",
-    "name": "售票处",
+    "name": "西门售票处",
     "en": "Ticket Office",
     "group": "ticket",
     "location": {
-      "lng": 118.954552,
-      "lat": 32.150245
+      "lng": 118.954566,
+      "lat": 32.150215
     },
-    "category": "门票入口"
+    "category": "门票入口",
+    "coordinateSource": "amap-verified",
+    "coordinateCalibratedAt": "2026-10-31",
+    "providerId": "B001913YX0",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXF011",
-    "name": "售票处",
+    "name": "南门售票处",
     "en": "Ticket Office",
     "group": "ticket",
     "location": {
-      "lng": 118.965142,
-      "lat": 32.145758
+      "lng": 118.965153,
+      "lat": 32.145722
     },
-    "category": "门票入口"
+    "category": "门票入口",
+    "coordinateSource": "amap-verified",
+    "coordinateCalibratedAt": "2026-10-31",
+    "providerId": "B0G0M1MPTG",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXF012",
@@ -129,7 +155,9 @@
       "lng": 118.954568,
       "lat": 32.150172
     },
-    "category": "安全医疗"
+    "category": "安全医疗",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF013",
@@ -140,7 +168,9 @@
       "lng": 118.965022,
       "lat": 32.145779
     },
-    "category": "安全医疗"
+    "category": "安全医疗",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF014",
@@ -151,7 +181,9 @@
       "lng": 118.954697,
       "lat": 32.150212
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF015",
@@ -159,10 +191,16 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.963922,
-      "lat": 32.158699
+      "lng": 118.963926,
+      "lat": 32.158675
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "amap-verified",
+    "coordinateCalibratedAt": "2026-10-31",
+    "providerId": "B0J0JCTST5",
+    "providerName": "公共厕所",
+    "address": "栖霞街88号",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXF016",
@@ -170,10 +208,16 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.96943,
-      "lat": 32.156047
+      "lng": 118.969182,
+      "lat": 32.155877
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "amap-verified",
+    "coordinateCalibratedAt": "2026-10-31",
+    "providerId": "B0FFGXEI9Y",
+    "providerName": "栖霞山名胜风景区-公共厕所",
+    "address": "栖霞山名胜风景区-太虚亭西南侧",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXF017",
@@ -184,7 +228,9 @@
       "lng": 118.961086,
       "lat": 32.152997
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF018",
@@ -195,7 +241,9 @@
       "lng": 118.956185,
       "lat": 32.151473
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF019",
@@ -203,10 +251,16 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.960579,
-      "lat": 32.151218
+      "lng": 118.960575,
+      "lat": 32.151246
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "amap-verified",
+    "coordinateCalibratedAt": "2026-10-31",
+    "providerId": "B0FFFVFDHV",
+    "providerName": "栖霞山名胜风景区-公共厕所",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区栖霞古寺内",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXF020",
@@ -214,10 +268,12 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.956686,
-      "lat": 32.15086
+      "lng": 118.9566917,
+      "lat": 32.1508516
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF021",
@@ -228,7 +284,9 @@
       "lng": 118.96763,
       "lat": 32.149575
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF022",
@@ -239,7 +297,9 @@
       "lng": 118.964295,
       "lat": 32.149343
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF024",
@@ -250,7 +310,9 @@
       "lng": 118.954034,
       "lat": 32.150721
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF025",
@@ -261,7 +323,9 @@
       "lng": 118.954131,
       "lat": 32.15034
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF026",
@@ -272,7 +336,9 @@
       "lng": 118.956027,
       "lat": 32.148654
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF027",
@@ -283,7 +349,9 @@
       "lng": 118.964518,
       "lat": 32.146071
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF028",
@@ -294,7 +362,9 @@
       "lng": 118.971116,
       "lat": 32.158421
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF029",
@@ -305,7 +375,9 @@
       "lng": 118.968365,
       "lat": 32.159326
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF030",
@@ -316,7 +388,9 @@
       "lng": 118.962363,
       "lat": 32.15761
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF031",
@@ -325,9 +399,11 @@
     "group": "bus",
     "location": {
       "lng": 118.963905,
-      "lat": 32.155549
+      "lat": 32.1555488
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF032",
@@ -335,10 +411,12 @@
     "en": "Sightseeing Bus Stop",
     "group": "bus",
     "location": {
-      "lng": 118.956908,
-      "lat": 32.151212
+      "lng": 118.9569508,
+      "lat": 32.1511495
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF033",
@@ -349,7 +427,9 @@
       "lng": 118.964789,
       "lat": 32.145709
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF034",
@@ -360,7 +440,9 @@
       "lng": 118.965482,
       "lat": 32.151012
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF035",
@@ -371,7 +453,9 @@
       "lng": 118.963283,
       "lat": 32.157988
     },
-    "category": "购物补给"
+    "category": "购物补给",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF036",
@@ -382,7 +466,9 @@
       "lng": 118.969543,
       "lat": 32.156406
     },
-    "category": "购物补给"
+    "category": "购物补给",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF037",
@@ -393,7 +479,9 @@
       "lng": 118.960978,
       "lat": 32.156927
     },
-    "category": "安全医疗"
+    "category": "安全医疗",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF038",
@@ -401,10 +489,12 @@
     "en": "Fire Equipment Room",
     "group": "fire",
     "location": {
-      "lng": 118.964227,
-      "lat": 32.156797
+      "lng": 118.9642312,
+      "lat": 32.1567732
     },
-    "category": "安全医疗"
+    "category": "安全医疗",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF039",
@@ -412,10 +502,12 @@
     "en": "Fire Equipment Room",
     "group": "fire",
     "location": {
-      "lng": 118.960176,
-      "lat": 32.152154
+      "lng": 118.9601764,
+      "lat": 32.1521519
     },
-    "category": "安全医疗"
+    "category": "安全医疗",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF040",
@@ -426,7 +518,9 @@
       "lng": 118.957121,
       "lat": 32.149007
     },
-    "category": "安全医疗"
+    "category": "安全医疗",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF041",
@@ -437,7 +531,9 @@
       "lng": 118.965156,
       "lat": 32.145854
     },
-    "category": "安全医疗"
+    "category": "安全医疗",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF042",
@@ -448,7 +544,9 @@
       "lng": 118.964751,
       "lat": 32.145895
     },
-    "category": "安全医疗"
+    "category": "安全医疗",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF043",
@@ -459,7 +557,9 @@
       "lng": 118.955384,
       "lat": 32.151
     },
-    "category": "购物补给"
+    "category": "购物补给",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF044",
@@ -470,7 +570,9 @@
       "lng": 118.954984,
       "lat": 32.15107
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF045",
@@ -481,7 +583,9 @@
       "lng": 118.954903,
       "lat": 32.15102
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF046",
@@ -492,7 +596,9 @@
       "lng": 118.955107,
       "lat": 32.151292
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF047",
@@ -503,7 +609,9 @@
       "lng": 118.956675,
       "lat": 32.152159
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF048",
@@ -511,10 +619,16 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.967942,
-      "lat": 32.15929
+      "lng": 118.967951,
+      "lat": 32.159269
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "amap-verified",
+    "coordinateCalibratedAt": "2026-10-31",
+    "providerId": "B0FFFVMVBS",
+    "providerName": "栖霞山名胜风景区-公共厕所",
+    "address": "近郊栖霞街88号(近栖霞大道)栖霞山风景名胜区内",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXF049",
@@ -522,10 +636,16 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.963902,
-      "lat": 32.158458
+      "lng": 118.963909,
+      "lat": 32.158429
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "amap-verified",
+    "coordinateCalibratedAt": "2026-10-31",
+    "providerId": "B0FFFVHS03",
+    "providerName": "栖霞山名胜风景区-公共厕所",
+    "address": "红叶谷北侧100米",
+    "coordinateCheckedAt": "2026-10-31"
   },
   {
     "id": "QXF050",
@@ -533,10 +653,12 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.959766,
-      "lat": 32.15589
+      "lng": 118.9597677,
+      "lat": 32.1558858
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF051",
@@ -547,7 +669,9 @@
       "lng": 118.967239,
       "lat": 32.15246
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF052",
@@ -555,10 +679,12 @@
     "en": "Sightseeing Bus Stop",
     "group": "bus",
     "location": {
-      "lng": 118.966276,
-      "lat": 32.153315
+      "lng": 118.9662786,
+      "lat": 32.1533039
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF053",
@@ -566,10 +692,12 @@
     "en": "Sightseeing Bus Stop",
     "group": "bus",
     "location": {
-      "lng": 118.958461,
-      "lat": 32.152598
+      "lng": 118.9584635,
+      "lat": 32.1525914
     },
-    "category": "停车交通"
+    "category": "停车交通",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
   },
   {
     "id": "QXF054",
@@ -577,9 +705,257 @@
     "en": "Toilet",
     "group": "toilet",
     "location": {
-      "lng": 118.960281,
-      "lat": 32.152011
+      "lng": 118.9602813,
+      "lat": 32.1520098
     },
-    "category": "卫生间"
+    "category": "卫生间",
+    "coordinateSource": "guide-map-estimate",
+    "coordinateCalibratedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFFRGOF3",
+    "name": "公用电话",
+    "providerId": "B0FFFRGOF3",
+    "location": {
+      "lng": 118.958034,
+      "lat": 32.152565
+    },
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "en": "",
+    "category": "安全医疗",
+    "group": "phone"
+  },
+  {
+    "id": "B0M6DM67XQ",
+    "name": "摄山栖霞寺售票处",
+    "providerId": "B0M6DM67XQ",
+    "location": {
+      "lng": 118.95849,
+      "lat": 32.152465
+    },
+    "address": "栖霞山名胜风景区摄山栖霞寺(东北角)",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "en": "",
+    "category": "门票入口",
+    "group": "ticket"
+  },
+  {
+    "id": "B0FFIPT1AE",
+    "name": "栖游纪",
+    "providerId": "B0FFIPT1AE",
+    "location": {
+      "lng": 118.954659,
+      "lat": 32.150589
+    },
+    "address": "栖霞街88号栖霞山风景区正大门口",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "en": "",
+    "category": "购物补给",
+    "group": "shop"
+  },
+  {
+    "id": "B0LDPZTD01",
+    "name": "邮局咖啡(栖霞山店)",
+    "providerId": "B0LDPZTD01",
+    "location": {
+      "lng": 118.954436,
+      "lat": 32.150464
+    },
+    "address": "栖霞街68-45号",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "en": "",
+    "category": "休息",
+    "group": "cafe",
+    "providerName": "邮局咖啡(栖霞山店)"
+  },
+  {
+    "id": "B0FFHDD8MI",
+    "name": "栖霞古寺素菜馆",
+    "providerId": "B0FFHDD8MI",
+    "location": {
+      "lng": 118.958975,
+      "lat": 32.152125
+    },
+    "address": "栖霞山名胜风景区摄山栖霞寺内(东侧)",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "en": "",
+    "category": "休息",
+    "group": "food",
+    "providerName": "栖霞古寺素菜馆"
+  },
+  {
+    "id": "B0HRVL5IFV",
+    "name": "安保调解室",
+    "providerId": "B0HRVL5IFV",
+    "location": {
+      "lng": 118.955014,
+      "lat": 32.150341
+    },
+    "address": "栖霞街与栖霞大道交叉口东100米",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "en": "",
+    "category": "安全医疗",
+    "group": "security"
+  },
+  {
+    "id": "B0JKPSTICL",
+    "name": "自在咖啡",
+    "providerId": "B0JKPSTICL",
+    "location": {
+      "lng": 118.959606,
+      "lat": 32.151705
+    },
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "en": "",
+    "category": "休息",
+    "group": "cafe",
+    "address": "栖霞寺古舍利塔旁",
+    "providerName": "自在咖啡"
+  },
+  {
+    "id": "B0L07Z0Y4H",
+    "name": "拾间咖啡",
+    "providerId": "B0L07Z0Y4H",
+    "location": {
+      "lng": 118.959425,
+      "lat": 32.152825
+    },
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "en": "",
+    "category": "休息",
+    "group": "cafe",
+    "address": "栖霞街88号栖霞山风景名胜区内(西侧)",
+    "providerName": "拾间咖啡"
+  },
+  {
+    "id": "B0L0HNOMM1",
+    "name": "山胡里咖啡店",
+    "providerId": "B0L0HNOMM1",
+    "location": {
+      "lng": 118.961915,
+      "lat": 32.154674
+    },
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "en": "",
+    "category": "休息",
+    "group": "cafe",
+    "address": "栖霞街88号栖霞山风景名胜区内(西侧)",
+    "providerName": "山胡里咖啡店"
+  },
+  {
+    "id": "B0MUCL2KE3",
+    "name": "枫雅小馆(五松阁休闲驿站)",
+    "providerId": "B0MUCL2KE3",
+    "location": {
+      "lng": 118.962675,
+      "lat": 32.157875
+    },
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "en": "",
+    "category": "休息",
+    "group": "cafe",
+    "address": "栖霞街88号栖霞山风景名胜区(西北角)",
+    "providerName": "枫雅小馆(五松阁休闲驿站)"
+  },
+  {
+    "id": "B001909CRI",
+    "name": "千佛斋素菜馆",
+    "en": "Food & Cafe",
+    "group": "food",
+    "category": "休息",
+    "address": "栖霞街88号(近栖霞大道)栖霞山风景名胜区内(西侧)",
+    "location": {
+      "lng": 118.958513,
+      "lat": 32.152448
+    },
+    "providerId": "B001909CRI",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0MA5OQI0U",
+    "name": "如意甜品(栖霞山店)",
+    "en": "Food & Cafe",
+    "group": "food",
+    "category": "休息",
+    "address": "栖霞街88号栖霞山风景名胜区",
+    "location": {
+      "lng": 118.968275,
+      "lat": 32.159525
+    },
+    "providerId": "B0MA5OQI0U",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0MBDHGCSV",
+    "name": "星巴克(南京栖霞古镇店)",
+    "en": "Food & Cafe",
+    "group": "cafe",
+    "category": "休息",
+    "address": "栖霞街道栖霞古镇81-4栋1号商铺",
+    "location": {
+      "lng": 118.953922,
+      "lat": 32.150138
+    },
+    "providerId": "B0MBDHGCSV",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0LAKXPRGC",
+    "name": "J CAFE(栖霞古镇店)",
+    "en": "Food & Cafe",
+    "group": "cafe",
+    "category": "休息",
+    "address": "栖霞街与茶圣路交叉口北200米",
+    "location": {
+      "lng": 118.953647,
+      "lat": 32.150089
+    },
+    "providerId": "B0LAKXPRGC",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0MBMH79JE",
+    "name": "肯德基(栖霞古镇店)",
+    "en": "Food & Cafe",
+    "group": "food",
+    "category": "休息",
+    "address": "NO.2024G14地块栖霞古镇北区A2号商业楼101室&103室",
+    "location": {
+      "lng": 118.953742,
+      "lat": 32.150567
+    },
+    "providerId": "B0MBMH79JE",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0HDGHOWFO",
+    "name": "卫生间",
+    "en": "Toilet",
+    "group": "toilet",
+    "category": "卫生间",
+    "address": "栖霞山名胜风景区-太虚亭东南侧",
+    "location": {
+      "lng": 118.969429,
+      "lat": 32.156015
+    },
+    "providerId": "B0HDGHOWFO",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31"
   }
 ]

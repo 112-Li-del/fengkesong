@@ -4,32 +4,30 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
   BookOpen,
-  Bus,
   CalendarDays,
   Clock,
-  Compass,
   ExternalLink,
-  Eye,
+  FileText,
   Image as ImageIcon,
   ListChecks,
   MapPin,
-  Route,
   Sparkles,
-  Utensils,
   Volume2,
   X,
 } from "lucide-react";
 import {
   buildAnswerView,
-  getQixiaKnowledgeByCode,
-  getQixiaKnowledgeByName,
+  displayAliases,
+  sourceLabel,
 } from "@/lib/qixia-knowledge";
 import type {
-  QixiaFact,
+  QixiaAnswerFact,
+  QixiaAnswerView,
   QixiaPlaceKnowledge,
-  VisitorGroup,
 } from "@/lib/qixia-knowledge";
+import { getMapPlaceKnowledge } from "@/lib/map-search";
 import type { Place } from "./amap-types";
+import "./knowledge-archive.css";
 
 /** 清理正文中的引用数字记号（如 [1]、[7][8]），并归并多余空格。 */
 function stripCitations(text: string) {
@@ -55,131 +53,83 @@ function formatFactValue(value: string, unit?: string) {
   return feature ? `${feature}：${num}` : num;
 }
 
-/** 游玩信息维度（顺序即展示顺序） */
-const VISITOR_GROUPS: {
-  group: VisitorGroup;
-  title: string;
-  icon: React.ReactNode;
-}[] = [
-  { group: "time", title: "开放时间", icon: <Clock size={13} /> },
-  { group: "location", title: "位置", icon: <MapPin size={13} /> },
-  { group: "transport", title: "交通到达", icon: <Bus size={13} /> },
-  { group: "route", title: "游览路线", icon: <Route size={13} /> },
-  { group: "view", title: "最佳观赏", icon: <Eye size={13} /> },
-  { group: "service", title: "服务设施", icon: <Utensils size={13} /> },
-];
+/** 速览区亮点徽章取自这些审核后的项目。 */
+const HIGHLIGHT_LABELS = ["地位", "称号", "文物保护级别"];
 
-/** 速览区亮点徽章：从这些「重量级」字段提取短语 */
-const HIGHLIGHT_KEYS = [
-  "地位",
-  "历史地位",
-  "文化地位",
-  "景区地位",
-  "称号",
-  "并称",
-  "文物保护级别",
-  "始建年代",
-  "著名景点",
-  "评价",
-  "景观特色",
-  "特色",
-  "看点",
-];
+/** 速览区已经展示过、不在「关键信息」里重复的项目。 */
+const OVERVIEW_LABELS = new Set(["位置", ...HIGHLIGHT_LABELS]);
 
-/** 提取速览区亮点徽章短语（去重，最多 4 个） */
-function extractHighlights(facts: QixiaFact[]) {
-  const result: string[] = [];
-  const seen = new Set<string>();
-  for (const fact of facts) {
-    if (!HIGHLIGHT_KEYS.includes(fact.key)) continue;
-    for (const v of fact.values) {
-      const t = (v.value + (v.unit ? ` ${v.unit}` : "")).trim();
-      if (t && !seen.has(t)) {
-        seen.add(t);
-        result.push(t);
-      }
-    }
-    if (result.length >= 4) break;
-  }
-  return result.slice(0, 4);
+/** 一句话定位：取审核后简介的第一句。 */
+function leadOf(view: QixiaAnswerView) {
+  const m = view.overview.match(/^[^。！？!?\n]+/);
+  return (m ? m[0] : view.overview).trim();
 }
 
-/** 按维度分组史实：有 group 归游玩类（同 key 合并 values），无 group 归历史。 */
-function groupVisitorFacts(facts: QixiaFact[]) {
-  const visitor = new Map<VisitorGroup, Map<string, QixiaFact>>();
-  const history: QixiaFact[] = [];
-  for (const fact of facts) {
-    if (!fact.group) {
-      history.push(fact);
-      continue;
-    }
-    if (!visitor.has(fact.group)) visitor.set(fact.group, new Map());
-    const byKey = visitor.get(fact.group)!;
-    const existing = byKey.get(fact.key);
-    if (existing) {
-      existing.values.push(...fact.values);
-    } else {
-      byKey.set(fact.key, {
-        key: fact.key,
-        group: fact.group,
-        values: [...fact.values],
-      });
-    }
-  }
-  return { visitor, history };
-}
-
-/** 一句话定位：取简介第一句。 */
-function getLead(knowledge: QixiaPlaceKnowledge) {
-  const s = buildAnswerView(knowledge).overview || knowledge.summary || "";
-  if (!s) return "";
-  const m = s.match(/^[^。！？!?\n]+/);
-  return (m ? m[0] : s.slice(0, 40)).trim();
-}
-
-/** 速览区实用信息条：时间 / 交通 / 位置各取第一条。 */
-function buildPractical(visitor: Map<VisitorGroup, Map<string, QixiaFact>>) {
-  const find = (group: VisitorGroup) => {
-    for (const fact of visitor.get(group)?.values() ?? []) {
-      if (fact.values.length) return fact.values[0]?.value ?? "";
-    }
-    return "";
-  };
-  return {
-    time: find("time"),
-    transport: find("transport"),
-    location: find("location"),
-  };
-}
-
-/** 单个史实卡片的 value 列表。 */
-function FactValues({ fact }: { fact: QixiaFact }) {
+/** 速览区：一句话定位 + 亮点徽章 + 位置与开放时间提示。 */
+function OverviewSection({
+  view,
+  timeNote,
+}: {
+  view: QixiaAnswerView;
+  timeNote: boolean;
+}) {
+  const lead = leadOf(view);
+  const highlights = view.facts
+    .filter((fact) => HIGHLIGHT_LABELS.includes(fact.label))
+    .map((fact) => fact.value)
+    .slice(0, 4);
+  const location = view.facts.find((fact) => fact.label === "位置")?.value;
+  if (!lead && highlights.length === 0 && !location && !timeNote) return null;
   return (
-    <ul>
-      {fact.values.map((value, valueIndex) => (
-        <li key={valueIndex}>
-          <span className="knowledge-fact-value">
-            {formatFactValue(value.value, value.unit)}
-          </span>
-        </li>
-      ))}
-    </ul>
+    <section className="knowledge-section knowledge-overview">
+      {lead && <p className="knowledge-overview-lead">{lead}</p>}
+      {highlights.length > 0 && (
+        <div className="knowledge-highlights">
+          {highlights.map((h) => (
+            <span className="knowledge-highlight" key={h}>
+              <Sparkles size={12} />
+              {h}
+            </span>
+          ))}
+        </div>
+      )}
+      {(location || timeNote) && (
+        <div className="knowledge-practical">
+          {location && (
+            <span className="knowledge-practical-item">
+              <MapPin size={13} />
+              {location}
+            </span>
+          )}
+          {timeNote && (
+            <span className="knowledge-practical-item">
+              <Clock size={13} />
+              开放时间以景区当日公告为准
+            </span>
+          )}
+        </div>
+      )}
+    </section>
   );
 }
 
-/** 关键史实（历史典故）区块：两列卡片。 */
-function HistoryFactsSection({ facts }: { facts: QixiaFact[] }) {
+/** 审核后的要点：两列卡片，每项只有一个说法。 */
+function PublishedFactsSection({ facts }: { facts: QixiaAnswerFact[] }) {
   if (facts.length === 0) return null;
   return (
     <section className="knowledge-section">
       <h3>
-        <ListChecks size={14} /> 关键史实 · {facts.length} 项
+        <ListChecks size={14} /> 关键信息 · {facts.length} 项
       </h3>
       <div className="knowledge-facts">
-        {facts.map((fact, index) => (
-          <div className="knowledge-fact" key={index}>
-            <div className="knowledge-fact-key">{fact.key}</div>
-            <FactValues fact={fact} />
+        {facts.map((fact) => (
+          <div className="knowledge-fact" key={fact.label}>
+            <div className="knowledge-fact-key">{fact.label}</div>
+            <ul>
+              <li>
+                <span className="knowledge-fact-value">{fact.value}</span>
+              </li>
+            </ul>
           </div>
         ))}
       </div>
@@ -187,130 +137,67 @@ function HistoryFactsSection({ facts }: { facts: QixiaFact[] }) {
   );
 }
 
-/** 红枫渐变徽章：给游玩信息的图标统一套上精致容器 */
-function IconBadge({
-  children,
-  small = false,
-}: {
-  children: React.ReactNode;
-  small?: boolean;
-}) {
-  return (
-    <span
-      className={`knowledge-icon-badge${small ? " knowledge-icon-badge--sm" : ""}`}
+function SourceTag({ source }: { source: string }) {
+  const label = sourceLabel(source);
+  return /^https?:\/\//.test(source) ? (
+    <a
+      className="knowledge-archive-source"
+      href={source}
+      target="_blank"
+      rel="noreferrer"
     >
-      {children}
-    </span>
+      {label}
+    </a>
+  ) : (
+    <span className="knowledge-archive-source">{label}</span>
   );
 }
 
-/** 游玩信息区块：五维度分组，字段多处用紧凑表格对齐。 */
-function VisitorSection({
-  visitor,
-}: {
-  visitor: Map<VisitorGroup, Map<string, QixiaFact>>;
-}) {
-  const groups = VISITOR_GROUPS.map((g) => ({
-    ...g,
-    facts: [...(visitor.get(g.group)?.values() ?? [])],
-  })).filter((g) => g.facts.length > 0);
-  if (groups.length === 0) return null;
+/** 资料原文：各来源的原始说法与出处，可能互相矛盾，默认收起。 */
+function SourceArchive({ knowledge }: { knowledge: QixiaPlaceKnowledge }) {
+  const facts = knowledge.keyFacts ?? [];
+  const timeline = knowledge.timeline ?? [];
+  const history = knowledge.history ? stripCitations(knowledge.history) : "";
+  if (!facts.length && !timeline.length && !history && !knowledge.note)
+    return null;
   return (
-    <section className="knowledge-section knowledge-visitor">
-      <h3>
-        <IconBadge>
-          <Compass size={15} />
-        </IconBadge>
-        游玩信息
-      </h3>
-      <div className="knowledge-visitor-groups">
-        {groups.map((g) => {
-          const hideLabel = g.facts.length === 1 && g.facts[0]?.key === g.title;
-          return (
-            <div className="knowledge-visitor-group" key={g.group}>
-              <div className="knowledge-visitor-group-head">
-                <IconBadge small>{g.icon}</IconBadge>
-                <span>{g.title}</span>
-              </div>
-              <div className="knowledge-visitor-table">
-                {g.facts.map((fact, i) => (
-                  <div className="knowledge-visitor-row" key={i}>
-                    {!hideLabel && (
-                      <span className="knowledge-visitor-label">
-                        {fact.key}
-                      </span>
-                    )}
-                    <div className="knowledge-visitor-values">
-                      {fact.values.map((v, vi) => (
-                        <div className="knowledge-visitor-value" key={vi}>
-                          <span>{formatFactValue(v.value, v.unit)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+    <details className="knowledge-section knowledge-archive">
+      <summary>
+        <FileText size={14} />
+        <span>资料原文</span>
+        <small>各来源的原始记载，未经审核，可能互相矛盾</small>
+      </summary>
+      {knowledge.note && (
+        <p className="knowledge-archive-note">{knowledge.note}</p>
+      )}
+      {history && <p className="knowledge-archive-text">{history}</p>}
+      {facts.length > 0 && (
+        <dl className="knowledge-archive-facts">
+          {facts.map((fact, index) => (
+            <div key={index}>
+              <dt>{fact.key}</dt>
+              {fact.values.map((value, valueIndex) => (
+                <dd key={valueIndex}>
+                  {formatFactValue(value.value, value.unit)}
+                  <SourceTag source={value.source} />
+                </dd>
+              ))}
             </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-/** 速览区：一句话定位 + 亮点徽章 + 关键实用信息。 */
-function OverviewSection({
-  knowledge,
-  highlights,
-  practical,
-}: {
-  knowledge: QixiaPlaceKnowledge;
-  highlights: string[];
-  practical: { time: string; transport: string; location: string };
-}) {
-  const lead = getLead(knowledge);
-  const hasPractical = !!(
-    practical.time ||
-    practical.transport ||
-    practical.location
-  );
-  if (!lead && highlights.length === 0 && !hasPractical) return null;
-  return (
-    <section className="knowledge-section knowledge-overview">
-      {lead && <p className="knowledge-overview-lead">{lead}</p>}
-      {highlights.length > 0 && (
-        <div className="knowledge-highlights">
-          {highlights.map((h, i) => (
-            <span className="knowledge-highlight" key={i}>
-              <Sparkles size={12} />
-              {h}
-            </span>
           ))}
-        </div>
+        </dl>
       )}
-      {hasPractical && (
-        <div className="knowledge-practical">
-          {practical.time && (
-            <span className="knowledge-practical-item">
-              <Clock size={13} />
-              {practical.time}
-            </span>
-          )}
-          {practical.transport && (
-            <span className="knowledge-practical-item">
-              <Bus size={13} />
-              {practical.transport}
-            </span>
-          )}
-          {practical.location && (
-            <span className="knowledge-practical-item">
-              <MapPin size={13} />
-              {practical.location}
-            </span>
-          )}
-        </div>
+      {timeline.length > 0 && (
+        <ol className="knowledge-archive-timeline">
+          {timeline.map((item, index) => (
+            <li key={index}>
+              <span className="knowledge-archive-date">{item.date}</span>
+              {item.what}
+              <SourceTag source={item.source} />
+            </li>
+          ))}
+        </ol>
       )}
-    </section>
+    </details>
   );
 }
 
@@ -505,15 +392,14 @@ function KnowledgeModal({
     };
   }, [onClose]);
 
-  const timeline = knowledge.timeline ?? [];
+  const view = buildAnswerView(knowledge);
   const audio = knowledge.audio ?? [];
   const images = knowledge.images ?? [];
-  const facts = knowledge.keyFacts ?? [];
-  const aliases = knowledge.aliases ?? [];
+  const aliases = displayAliases(knowledge);
   const gushu = knowledge.gushu ?? null;
-  const { visitor, history } = groupVisitorFacts(facts);
-  const highlights = extractHighlights(history);
-  const practical = buildPractical(visitor);
+  const timeNote =
+    !view.visitorInfo &&
+    (knowledge.keyFacts ?? []).some((fact) => fact.group === "time");
 
   return createPortal(
     <div
@@ -587,43 +473,60 @@ function KnowledgeModal({
         </header>
 
         <div className="knowledge-modal-body">
-          <OverviewSection
-            knowledge={knowledge}
-            highlights={highlights}
-            practical={practical}
-          />
+          <OverviewSection view={view} timeNote={timeNote} />
 
-          <VisitorSection visitor={visitor} />
-
-          {knowledge.summary && (
+          {(!view.overview ||
+            view.overview.replace(/[。！？!?]$/, "") !== leadOf(view)) && (
             <section className="knowledge-section">
               <h3>
                 <MapleLeaf size={13} /> 简介
               </h3>
               <p className="knowledge-summary-text">
-                {stripCitations(
-                  buildAnswerView(knowledge).overview || knowledge.summary,
-                )}
+                {view.overview || "这处景点的介绍还在整理中。"}
               </p>
             </section>
           )}
 
-          {knowledge.history && (
+          <PublishedFactsSection
+            facts={view.facts.filter(
+              (fact) => !OVERVIEW_LABELS.has(fact.label),
+            )}
+          />
+
+          {view.visitorInfo && (
             <section className="knowledge-section">
               <h3>
-                <MapleLeaf size={13} /> 来历
+                <Clock size={14} /> 游览与票务 · 2026年参考
               </h3>
-              <p className="knowledge-history-text">
-                {stripCitations(knowledge.history)}
+              <p className="knowledge-archive-note">
+                {view.visitorInfo.note}（确认：{view.visitorInfo.confirmedOn}
+                ；参考截止：{view.visitorInfo.validThrough}）
               </p>
+              <PublishedFactsSection facts={view.visitorInfo.items} />
+            </section>
+          )}
+          {view.timeline.length > 0 && (
+            <section className="knowledge-section">
+              <h3>
+                <CalendarDays size={14} /> 大事记 · {view.timeline.length} 条
+              </h3>
+              <ol className="knowledge-timeline">
+                {view.timeline.map((item, index) => (
+                  <li key={index}>
+                    <span className="knowledge-timeline-date">{item.date}</span>
+                    <span className="knowledge-timeline-what">{item.what}</span>
+                  </li>
+                ))}
+              </ol>
             </section>
           )}
 
           {gushu && gushu.records.length > 0 && (
-            <section className="knowledge-section">
-              <h3>
+            <details className="knowledge-section knowledge-archive">
+              <summary>
                 <BookOpen size={14} /> 古籍记载
-              </h3>
+                <small>历史文献记载，不等同于现状</small>
+              </summary>
               <p className="knowledge-gushu-book">{gushu.book}</p>
               {gushu.note && (
                 <p className="knowledge-gushu-note">{gushu.note}</p>
@@ -638,25 +541,7 @@ function KnowledgeModal({
                   </blockquote>
                 ))}
               </div>
-            </section>
-          )}
-
-          <HistoryFactsSection facts={history} />
-
-          {timeline.length > 0 && (
-            <section className="knowledge-section">
-              <h3>
-                <CalendarDays size={14} /> 大事记 · {timeline.length} 条
-              </h3>
-              <ol className="knowledge-timeline">
-                {timeline.map((item, index) => (
-                  <li key={index}>
-                    <span className="knowledge-timeline-date">{item.date}</span>
-                    <span className="knowledge-timeline-what">{item.what}</span>
-                  </li>
-                ))}
-              </ol>
-            </section>
+            </details>
           )}
 
           {audio.length > 0 && (
@@ -717,6 +602,8 @@ function KnowledgeModal({
             </section>
           )}
 
+          <SourceArchive knowledge={knowledge} />
+
           <footer className="knowledge-modal-foot">
             <p>
               <MapleLeaf size={11} style={{ verticalAlign: "-1px" }} /> 数据来自
@@ -727,7 +614,7 @@ function KnowledgeModal({
               >
                 栖霞知识库
               </a>
-              ，同一信息如有多种说法，均以并列展示、供参考。图片来自维基共享资源开放许可，转用须按各自
+              。正文采用已确认口径，未补充审核的条目暂沿用现有简介；古籍及各来源原始记载默认收起，历史记载不等同于现状。图片来自维基共享资源开放许可，转用须按各自
               license 署名。
             </p>
           </footer>
@@ -745,15 +632,29 @@ export function PlaceKnowledge({
   place: Place;
   onExpand: () => void;
 }) {
-  const knowledge =
-    getQixiaKnowledgeByCode(place.referenceCode) ??
-    getQixiaKnowledgeByName(place.referenceName ?? place.name);
+  const knowledge = getMapPlaceKnowledge(place);
   if (!knowledge) return null;
 
-  const facts = knowledge.keyFacts ?? [];
-  const timeline = knowledge.timeline ?? [];
+  const view = buildAnswerView(knowledge);
   const images = knowledge.images ?? [];
   const audio = knowledge.audio ?? [];
+  const hasMore =
+    view.facts.length > 0 ||
+    view.timeline.length > 0 ||
+    audio.length > 0 ||
+    images.length > 0 ||
+    (knowledge.gushu?.records.length ?? 0) > 0 ||
+    (knowledge.keyFacts?.length ?? 0) > 0 ||
+    (knowledge.timeline?.length ?? 0) > 0 ||
+    Boolean(knowledge.history);
+  const meta = [
+    view.facts.length ? `${view.facts.length} 项要点` : "",
+    view.timeline.length ? `${view.timeline.length} 条大事记` : "",
+    audio.length ? `${audio.length} 条音频` : "",
+    images.length ? `${images.length} 张图` : "",
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <div className="place-knowledge">
@@ -762,37 +663,24 @@ export function PlaceKnowledge({
         <span>景点知识 · 栖霞知识库</span>
       </div>
 
-      {knowledge.kbCardId || knowledge.summary ? (
-        <>
-          {knowledge.summary && (
-            <p className="place-knowledge-summary">
-              {stripCitations(
-                buildAnswerView(knowledge).overview || knowledge.summary,
-              )}
-            </p>
-          )}
-
-          <button
-            type="button"
-            className="place-knowledge-open"
-            onClick={onExpand}
-          >
-            <span className="place-knowledge-open-main">
-              <MapleLeaf size={15} />
-              查看完整知识卡片
-            </span>
-            <span className="place-knowledge-open-sub">
-              {facts.length ? `${facts.length} 项史实` : ""}
-              {timeline.length ? ` · ${timeline.length} 条大事记` : ""}
-              {audio.length ? ` · ${audio.length} 条音频` : ""}
-              {images.length ? ` · ${images.length} 张图` : ""}
-            </span>
-          </button>
-        </>
+      {view.overview ? (
+        <p className="place-knowledge-summary">{view.overview}</p>
       ) : (
-        <p className="place-knowledge-missing">
-          {knowledge.note ?? "栖霞知识库暂无该景点的独立资料。"}
-        </p>
+        <p className="place-knowledge-missing">这处景点的介绍还在整理中。</p>
+      )}
+
+      {hasMore && (
+        <button
+          type="button"
+          className="place-knowledge-open"
+          onClick={onExpand}
+        >
+          <span className="place-knowledge-open-main">
+            <MapleLeaf size={15} />
+            查看完整知识卡片
+          </span>
+          {meta && <span className="place-knowledge-open-sub">{meta}</span>}
+        </button>
       )}
     </div>
   );

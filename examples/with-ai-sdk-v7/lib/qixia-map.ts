@@ -26,15 +26,8 @@ export type ScenicPlace = Place & {
   tier: number;
 };
 
-export type FacilityPlace = Place & {
-  en: string;
-  group: string;
-  // 一级大类：卫生间 / 停车交通 / 门票入口 / 购物补给 / 安全医疗
-  category: string;
-};
-
-// 服务设施一级大类（按游客「最常找」归并的少数标签，覆盖全部设施）。
 export const facilityCategories = [
+  "休息",
   "卫生间",
   "停车交通",
   "门票入口",
@@ -43,21 +36,24 @@ export const facilityCategories = [
 ] as const;
 export type FacilityCategory = (typeof facilityCategories)[number];
 
-// 前 46 条来自高德 POI（坐标已核验）；其余来自官方导览图配准，误差约 ±20–40 m。
+export type FacilityPlace = Place & {
+  en: string;
+  group: string;
+  category: FacilityCategory;
+};
+
+// 坐标来源与复核日期逐点记录；导览图估算点不等于实测位置，校准记录见 qixia-coordinate-audit.json。
 export const scenicPlaces: ScenicPlace[] = [
   ...catalog.map(withReference),
   ...extraCatalog.map(withReference),
 ];
 
-// 导览图上的服务设施（卫生间、停车场、观光车站等），默认隐藏，可在地图面板开关。
-export const facilityPlaces: FacilityPlace[] = facilityCatalog;
-export const unverifiedPlaces = [
-  "霜红苑",
-  "桃花涧",
-  "桃花坞",
-  "印心湖",
-  "萌宠乐园",
-];
+export const facilityPlaces: FacilityPlace[] = facilityCatalog.map((place) => {
+  const category = facilityCategories.find((item) => item === place.category);
+  if (!category) throw new Error("未知服务设施分类：" + place.category);
+  return { ...place, category };
+});
+export const unverifiedPlaces = ["桃花涧", "桃花坞", "印心湖", "萌宠乐园"];
 export const scenicCenter: LngLat = { lng: 118.9628, lat: 32.1554 };
 export const scenicViewport = [118.9505, 32.1454, 118.977, 32.1655] as const;
 

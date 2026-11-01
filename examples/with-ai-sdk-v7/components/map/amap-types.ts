@@ -1,5 +1,9 @@
 export type LngLat = { lng: number; lat: number };
 export type Place = {
+  providerId?: string;
+  coordinateSource?: string;
+  coordinateCheckedAt?: string;
+  coordinateCalibratedAt?: string;
   id: string;
   name: string;
   address?: string;
@@ -15,6 +19,7 @@ export type LineOverlay = Overlay & {
 };
 export type MapInstance = {
   destroy(): void;
+  setFeatures(features: string[]): void;
   setPitch(pitch: number): void;
   setRotation(rotation: number): void;
   getRotation(): number;
@@ -60,10 +65,12 @@ export type GeoResult = {
   location_type?: string;
   isConverted?: boolean;
   info?: string;
+  message?: string;
 };
 export type GeoInstance = {
-  watchPosition(): number;
-  clearWatch(id: number): void;
+  getCurrentPosition(): void;
+  watchPosition(callback: (status: string, result: GeoResult) => void): number;
+  clearWatch(): void;
   on(name: string, callback: (result: GeoResult) => void): void;
   off(name: string, callback: (result: GeoResult) => void): void;
 };

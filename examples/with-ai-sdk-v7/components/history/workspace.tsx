@@ -355,7 +355,7 @@ function Sidebar({
 }
 
 export function HistoryWorkspace({ runtime, storageError }: WorkspaceProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div

@@ -1,0 +1,2241 @@
+{
+  "checkedAt": "2026-10-30",
+  "coordinateSystem": "GCJ-02",
+  "anchors": 56,
+  "method": "实时POI锚点；估算点使用120米局部平滑残差，剔除超过30米的歧义位移；不强制吸附道路。坐标估算不是实测精度保证。",
+  "roadProbe": {
+    "origin": "牌坊",
+    "destination": "始皇临江处",
+    "samples": 133,
+    "maxDistanceToCachedPathMeters": 0
+  },
+  "unresolved": [],
+  "rejected": [
+    {
+      "name": "财神殿",
+      "candidate": "栖霞古寺财神店",
+      "reason": "名称与用途有歧义，距离约155米，未自动替换。"
+    }
+  ],
+  "changes": [
+    {
+      "id": "B0L1KKTEQQ",
+      "name": "牌坊",
+      "source": "amap-verified",
+      "providerId": "B0L1KKTEQQ",
+      "before": {
+        "lng": 118.954729,
+        "lat": 32.150758
+      },
+      "after": {
+        "lng": 118.954729,
+        "lat": 32.150758
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0FFHNMDN6",
+      "name": "哼哈殿",
+      "source": "amap-verified",
+      "providerId": "B0FFHNMDN6",
+      "before": {
+        "lng": 118.956292,
+        "lat": 32.150991
+      },
+      "after": {
+        "lng": 118.956292,
+        "lat": 32.150991
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0FFIZWTKW",
+      "name": "彩虹明镜",
+      "source": "amap-verified",
+      "providerId": "B0FFIZWTKW",
+      "before": {
+        "lng": 118.956416,
+        "lat": 32.151627
+      },
+      "after": {
+        "lng": 118.956416,
+        "lat": 32.151627
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B00190AK1Z",
+      "name": "桃花湖",
+      "source": "amap-verified",
+      "providerId": "B00190AK1Z",
+      "before": {
+        "lng": 118.962395,
+        "lat": 32.15523
+      },
+      "after": {
+        "lng": 118.962395,
+        "lat": 32.15523
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B001912JAL",
+      "name": "卧云亭",
+      "source": "amap-verified",
+      "providerId": "B001912JAL",
+      "before": {
+        "lng": 118.963243,
+        "lat": 32.155048
+      },
+      "after": {
+        "lng": 118.963243,
+        "lat": 32.155048
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B001912JBJ",
+      "name": "钟楼",
+      "source": "amap-verified",
+      "providerId": "B001912JBJ",
+      "before": {
+        "lng": 118.957481,
+        "lat": 32.151692
+      },
+      "after": {
+        "lng": 118.957481,
+        "lat": 32.151692
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B001912JC3",
+      "name": "鼓楼",
+      "source": "amap-verified",
+      "providerId": "B001912JC3",
+      "before": {
+        "lng": 118.957131,
+        "lat": 32.151691
+      },
+      "after": {
+        "lng": 118.957131,
+        "lat": 32.151691
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B001912HOX",
+      "name": "明征君碑",
+      "source": "amap-verified",
+      "providerId": "B001912HOX",
+      "before": {
+        "lng": 118.958533,
+        "lat": 32.152333
+      },
+      "after": {
+        "lng": 118.958533,
+        "lat": 32.152333
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B00190D2L7",
+      "name": "栖霞古寺",
+      "source": "amap-verified",
+      "providerId": "B00190D2L7",
+      "before": {
+        "lng": 118.957978,
+        "lat": 32.151821
+      },
+      "after": {
+        "lng": 118.957983,
+        "lat": 32.151807
+      },
+      "shiftMeters": 1.63
+    },
+    {
+      "id": "B001909CRJ",
+      "name": "舍利塔",
+      "source": "amap-verified",
+      "providerId": "B001909CRJ",
+      "before": {
+        "lng": 118.959868,
+        "lat": 32.151791
+      },
+      "after": {
+        "lng": 118.959868,
+        "lat": 32.151791
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B001912JE8",
+      "name": "千佛岩",
+      "source": "amap-verified",
+      "providerId": "B001912JE8",
+      "before": {
+        "lng": 118.960159,
+        "lat": 32.151673
+      },
+      "after": {
+        "lng": 118.960159,
+        "lat": 32.151673
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0FFFFLDXQ",
+      "name": "纱帽峰",
+      "source": "amap-verified",
+      "providerId": "B0FFFFLDXQ",
+      "before": {
+        "lng": 118.961202,
+        "lat": 32.151957
+      },
+      "after": {
+        "lng": 118.961202,
+        "lat": 32.151957
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0FFFFA5A4",
+      "name": "乾隆行宫遗址",
+      "source": "amap-verified",
+      "providerId": "B0FFFFA5A4",
+      "before": {
+        "lng": 118.961952,
+        "lat": 32.151514
+      },
+      "after": {
+        "lng": 118.961952,
+        "lat": 32.151514
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B00190CQK0",
+      "name": "话山亭",
+      "source": "amap-verified",
+      "providerId": "B00190CQK0",
+      "before": {
+        "lng": 118.96445,
+        "lat": 32.15501
+      },
+      "after": {
+        "lng": 118.96445,
+        "lat": 32.15501
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B001912IQ4",
+      "name": "天开岩",
+      "source": "amap-verified",
+      "providerId": "B001912IQ4",
+      "before": {
+        "lng": 118.964308,
+        "lat": 32.155238
+      },
+      "after": {
+        "lng": 118.964308,
+        "lat": 32.155238
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B00190AJZJ",
+      "name": "乾隆御花园",
+      "source": "amap-verified",
+      "providerId": "B00190AJZJ",
+      "before": {
+        "lng": 118.964287,
+        "lat": 32.156442
+      },
+      "after": {
+        "lng": 118.964293,
+        "lat": 32.156408
+      },
+      "shiftMeters": 3.82
+    },
+    {
+      "id": "B001909CRH",
+      "name": "红叶谷",
+      "source": "amap-verified",
+      "providerId": "B001909CRH",
+      "before": {
+        "lng": 118.964226,
+        "lat": 32.157522
+      },
+      "after": {
+        "lng": 118.964226,
+        "lat": 32.157522
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0FFFFA5IH",
+      "name": "枫林湖",
+      "source": "amap-verified",
+      "before": {
+        "lng": 118.966646,
+        "lat": 32.156922
+      },
+      "after": {
+        "lng": 118.966646,
+        "lat": 32.156922
+      },
+      "shiftMeters": 0,
+      "providerId": "B0FFFFA5IH"
+    },
+    {
+      "id": "B001912IAZ",
+      "name": "始皇临江处",
+      "source": "amap-verified",
+      "providerId": "B001912IAZ",
+      "before": {
+        "lng": 118.968394,
+        "lat": 32.159612
+      },
+      "after": {
+        "lng": 118.968394,
+        "lat": 32.159612
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B00190AJZI",
+      "name": "太虚亭",
+      "source": "amap-verified",
+      "providerId": "B00190AJZI",
+      "before": {
+        "lng": 118.969327,
+        "lat": 32.156058
+      },
+      "after": {
+        "lng": 118.969327,
+        "lat": 32.156058
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B00191552W",
+      "name": "半馆",
+      "source": "amap-verified",
+      "providerId": "B00191552W",
+      "before": {
+        "lng": 118.967547,
+        "lat": 32.152673
+      },
+      "after": {
+        "lng": 118.967547,
+        "lat": 32.152673
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0FFHLQ4T0",
+      "name": "百草园",
+      "source": "amap-verified",
+      "providerId": "B0FFHLQ4T0",
+      "before": {
+        "lng": 118.967564,
+        "lat": 32.152374
+      },
+      "after": {
+        "lng": 118.967564,
+        "lat": 32.152374
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0FFF05UMW",
+      "name": "饮马池",
+      "source": "amap-verified",
+      "providerId": "B0FFF05UMW",
+      "before": {
+        "lng": 118.966308,
+        "lat": 32.151199
+      },
+      "after": {
+        "lng": 118.966308,
+        "lat": 32.151199
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B00190AK1Y",
+      "name": "陆羽茶庄",
+      "source": "amap-verified",
+      "before": {
+        "lng": 118.964477,
+        "lat": 32.149745
+      },
+      "after": {
+        "lng": 118.964477,
+        "lat": 32.149745
+      },
+      "shiftMeters": 0,
+      "providerId": "B00190AK1Y"
+    },
+    {
+      "id": "B0FFF0FKGO",
+      "name": "凤翔峰",
+      "source": "amap-verified",
+      "providerId": "B0FFF0FKGO",
+      "before": {
+        "lng": 118.969851,
+        "lat": 32.158487
+      },
+      "after": {
+        "lng": 118.969851,
+        "lat": 32.158487
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B001912JDN",
+      "name": "虎山",
+      "source": "amap-verified",
+      "providerId": "B001912JDN",
+      "before": {
+        "lng": 118.959596,
+        "lat": 32.156694
+      },
+      "after": {
+        "lng": 118.959596,
+        "lat": 32.156694
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0FFGHFYWY",
+      "name": "红枫林",
+      "source": "amap-verified",
+      "providerId": "B0FFGHFYWY",
+      "before": {
+        "lng": 118.96641,
+        "lat": 32.15321
+      },
+      "after": {
+        "lng": 118.96641,
+        "lat": 32.15321
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0LDD5CW33",
+      "name": "蝴蝶谷",
+      "source": "amap-verified",
+      "providerId": "B0LDD5CW33",
+      "before": {
+        "lng": 118.963333,
+        "lat": 32.146498
+      },
+      "after": {
+        "lng": 118.963333,
+        "lat": 32.146498
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0FFFFKJRG",
+      "name": "弥勒圣境",
+      "source": "amap-verified",
+      "providerId": "B0FFFFKJRG",
+      "before": {
+        "lng": 118.959654,
+        "lat": 32.151266
+      },
+      "after": {
+        "lng": 118.959662,
+        "lat": 32.151247
+      },
+      "shiftMeters": 2.24
+    },
+    {
+      "id": "B0FFFF6043",
+      "name": "斋堂",
+      "source": "amap-verified",
+      "before": {
+        "lng": 118.959265,
+        "lat": 32.151771
+      },
+      "after": {
+        "lng": 118.95927,
+        "lat": 32.15176
+      },
+      "shiftMeters": 1.31,
+      "providerId": "B0FFFF6043"
+    },
+    {
+      "id": "B0JDSRSXG7",
+      "name": "有凌云意",
+      "source": "amap-verified",
+      "providerId": "B0JDSRSXG7",
+      "before": {
+        "lng": 118.957999,
+        "lat": 32.156411
+      },
+      "after": {
+        "lng": 118.957999,
+        "lat": 32.156411
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0M6NHF2DG",
+      "name": "栖霞古镇",
+      "source": "amap-verified",
+      "providerId": "B0M6NHF2DG",
+      "before": {
+        "lng": 118.953996,
+        "lat": 32.148679
+      },
+      "after": {
+        "lng": 118.953996,
+        "lat": 32.148679
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0KRK9CH8P",
+      "name": "李香君墓",
+      "source": "amap-verified",
+      "providerId": "B0KRK9CH8P",
+      "before": {
+        "lng": 118.962424,
+        "lat": 32.154661
+      },
+      "after": {
+        "lng": 118.962424,
+        "lat": 32.154661
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0FFF0FKGI",
+      "name": "般若台遗址",
+      "source": "amap-verified",
+      "providerId": "B0FFF0FKGI",
+      "before": {
+        "lng": 118.961551,
+        "lat": 32.153555
+      },
+      "after": {
+        "lng": 118.961551,
+        "lat": 32.153555
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0MU3UOUOP",
+      "name": "森境侏罗纪",
+      "source": "amap-verified",
+      "before": {
+        "lng": 118.959898,
+        "lat": 32.154943
+      },
+      "after": {
+        "lng": 118.959898,
+        "lat": 32.154943
+      },
+      "shiftMeters": 0,
+      "providerId": "B0MU3UOUOP"
+    },
+    {
+      "id": "B0H6X5V9VE",
+      "name": "五松阁",
+      "source": "amap-verified",
+      "before": {
+        "lng": 118.96268,
+        "lat": 32.157848
+      },
+      "after": {
+        "lng": 118.96268,
+        "lat": 32.157848
+      },
+      "shiftMeters": 0,
+      "providerId": "B0H6X5V9VE"
+    },
+    {
+      "id": "B0FFHNLM4E",
+      "name": "受降井",
+      "source": "amap-verified",
+      "providerId": "B0FFHNLM4E",
+      "before": {
+        "lng": 118.958282,
+        "lat": 32.152167
+      },
+      "after": {
+        "lng": 118.958284,
+        "lat": 32.152156
+      },
+      "shiftMeters": 1.24
+    },
+    {
+      "id": "B0FFFF5YUS",
+      "name": "畅观亭",
+      "source": "amap-verified",
+      "providerId": "B0FFFF5YUS",
+      "before": {
+        "lng": 118.962821,
+        "lat": 32.152494
+      },
+      "after": {
+        "lng": 118.962821,
+        "lat": 32.152494
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0L315VK7T",
+      "name": "夕佳亭",
+      "source": "amap-verified",
+      "providerId": "B0L315VK7T",
+      "before": {
+        "lng": 118.964094,
+        "lat": 32.158149
+      },
+      "after": {
+        "lng": 118.964094,
+        "lat": 32.158149
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B0K0KHC2MA",
+      "name": "环翠亭",
+      "source": "amap-verified",
+      "before": {
+        "lng": 118.966649,
+        "lat": 32.156589
+      },
+      "after": {
+        "lng": 118.966649,
+        "lat": 32.156589
+      },
+      "shiftMeters": 0,
+      "providerId": "B0K0KHC2MA"
+    },
+    {
+      "id": "B0L31HVBHB",
+      "name": "秋枫亭",
+      "source": "amap-verified",
+      "before": {
+        "lng": 118.966248,
+        "lat": 32.157383
+      },
+      "after": {
+        "lng": 118.966248,
+        "lat": 32.157383
+      },
+      "shiftMeters": 0,
+      "providerId": "B0L31HVBHB"
+    },
+    {
+      "id": "B0MRFSSJLS",
+      "name": "凝霜亭",
+      "source": "amap-verified",
+      "providerId": "B0MRFSSJLS",
+      "before": {
+        "lng": 118.964858,
+        "lat": 32.158534
+      },
+      "after": {
+        "lng": 118.964858,
+        "lat": 32.158534
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "B001912HP8",
+      "name": "小营盘遗址",
+      "source": "amap-verified",
+      "providerId": "B001912HP8",
+      "before": {
+        "lng": 118.966781,
+        "lat": 32.153355
+      },
+      "after": {
+        "lng": 118.966781,
+        "lat": 32.153355
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS001",
+      "name": "虎爪岩",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.95566,
+        "lat": 32.151451
+      },
+      "after": {
+        "lng": 118.95566,
+        "lat": 32.151451
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS003",
+      "name": "碧云亭",
+      "source": "amap-verified",
+      "providerId": "B0MAB6S5BK",
+      "before": {
+        "lng": 118.958811,
+        "lat": 32.156813
+      },
+      "after": {
+        "lng": 118.95882,
+        "lat": 32.156795
+      },
+      "shiftMeters": 2.17
+    },
+    {
+      "id": "QXS004",
+      "name": "虎山瀑布",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.961984,
+        "lat": 32.156856
+      },
+      "after": {
+        "lng": 118.961984,
+        "lat": 32.156856
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS005",
+      "name": "读枫阁",
+      "source": "amap-verified",
+      "providerId": "B001912JA8",
+      "before": {
+        "lng": 118.959881,
+        "lat": 32.156464
+      },
+      "after": {
+        "lng": 118.959886,
+        "lat": 32.156452
+      },
+      "shiftMeters": 1.42
+    },
+    {
+      "id": "QXS006",
+      "name": "揽秋湖",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.961475,
+        "lat": 32.155937
+      },
+      "after": {
+        "lng": 118.961475,
+        "lat": 32.155937
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS007",
+      "name": "叠浪岩",
+      "source": "amap-verified",
+      "providerId": "B001912JNK",
+      "before": {
+        "lng": 118.959535,
+        "lat": 32.15327
+      },
+      "after": {
+        "lng": 118.959544,
+        "lat": 32.153237
+      },
+      "shiftMeters": 3.77
+    },
+    {
+      "id": "QXS008",
+      "name": "半月池",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.965691,
+        "lat": 32.159426
+      },
+      "after": {
+        "lng": 118.965691,
+        "lat": 32.159426
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS009",
+      "name": "寻仙崖瀑布",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.966207,
+        "lat": 32.159106
+      },
+      "after": {
+        "lng": 118.966207,
+        "lat": 32.159106
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS010",
+      "name": "望月潭",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.965898,
+        "lat": 32.158979
+      },
+      "after": {
+        "lng": 118.965898,
+        "lat": 32.158979
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS011",
+      "name": "望月桥",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.965667,
+        "lat": 32.158698
+      },
+      "after": {
+        "lng": 118.965667,
+        "lat": 32.158698
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS012",
+      "name": "印心湖",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.96722,
+        "lat": 32.158372
+      },
+      "after": {
+        "lng": 118.96722,
+        "lat": 32.158372
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS013",
+      "name": "天街",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.971813,
+        "lat": 32.158503
+      },
+      "after": {
+        "lng": 118.971813,
+        "lat": 32.158503
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS014",
+      "name": "揽红池",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.963771,
+        "lat": 32.158252
+      },
+      "after": {
+        "lng": 118.963771,
+        "lat": 32.158252
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS015",
+      "name": "双亭",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.966023,
+        "lat": 32.157331
+      },
+      "after": {
+        "lng": 118.966023,
+        "lat": 32.157331
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS016",
+      "name": "铺翠池",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.96412,
+        "lat": 32.157752
+      },
+      "after": {
+        "lng": 118.96412,
+        "lat": 32.157752
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS017",
+      "name": "春·赏花点",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.965348,
+        "lat": 32.156617
+      },
+      "after": {
+        "lng": 118.9653482,
+        "lat": 32.1566161
+      },
+      "shiftMeters": 0.1
+    },
+    {
+      "id": "QXS018",
+      "name": "乾隆御碑",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.96393,
+        "lat": 32.156468
+      },
+      "after": {
+        "lng": 118.9639349,
+        "lat": 32.1564405
+      },
+      "shiftMeters": 3.09
+    },
+    {
+      "id": "QXS019",
+      "name": "珍珠泉",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.962408,
+        "lat": 32.155458
+      },
+      "after": {
+        "lng": 118.962408,
+        "lat": 32.155458
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS020",
+      "name": "高僧塔林",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.964946,
+        "lat": 32.155697
+      },
+      "after": {
+        "lng": 118.9649461,
+        "lat": 32.1556965
+      },
+      "shiftMeters": 0.06
+    },
+    {
+      "id": "QXS021",
+      "name": "禹王碑",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.966035,
+        "lat": 32.155581
+      },
+      "after": {
+        "lng": 118.966035,
+        "lat": 32.155581
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS022",
+      "name": "幽居桥",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.963907,
+        "lat": 32.155549
+      },
+      "after": {
+        "lng": 118.963907,
+        "lat": 32.1555488
+      },
+      "shiftMeters": 0.02
+    },
+    {
+      "id": "QXS023",
+      "name": "德云亭",
+      "source": "amap-verified",
+      "providerId": "B0FFFEVMY2",
+      "before": {
+        "lng": 118.960475,
+        "lat": 32.155223
+      },
+      "after": {
+        "lng": 118.960474,
+        "lat": 32.155214
+      },
+      "shiftMeters": 1.01
+    },
+    {
+      "id": "QXS024",
+      "name": "了凡问道",
+      "source": "amap-verified",
+      "providerId": "B0FFF0ANIL",
+      "before": {
+        "lng": 118.964702,
+        "lat": 32.154503
+      },
+      "after": {
+        "lng": 118.964711,
+        "lat": 32.154484
+      },
+      "shiftMeters": 2.28
+    },
+    {
+      "id": "QXS025",
+      "name": "读枫文化美食园",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.959454,
+        "lat": 32.154259
+      },
+      "after": {
+        "lng": 118.9594541,
+        "lat": 32.1542588
+      },
+      "shiftMeters": 0.02
+    },
+    {
+      "id": "QXS026",
+      "name": "桃花扇亭",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.960858,
+        "lat": 32.154199
+      },
+      "after": {
+        "lng": 118.960858,
+        "lat": 32.154199
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS027",
+      "name": "桃花坞",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.960277,
+        "lat": 32.153774
+      },
+      "after": {
+        "lng": 118.9602778,
+        "lat": 32.1537711
+      },
+      "shiftMeters": 0.33
+    },
+    {
+      "id": "QXS028",
+      "name": "高奇峰墓园",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.960098,
+        "lat": 32.153426
+      },
+      "after": {
+        "lng": 118.9601025,
+        "lat": 32.1534094
+      },
+      "shiftMeters": 1.89
+    },
+    {
+      "id": "QXS029",
+      "name": "德云桥",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.9603,
+        "lat": 32.152918
+      },
+      "after": {
+        "lng": 118.9603014,
+        "lat": 32.152913
+      },
+      "shiftMeters": 0.57
+    },
+    {
+      "id": "QXS030",
+      "name": "桃花涧",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.959545,
+        "lat": 32.152876
+      },
+      "after": {
+        "lng": 118.9595509,
+        "lat": 32.1528537
+      },
+      "shiftMeters": 2.54
+    },
+    {
+      "id": "QXS031",
+      "name": "凌虚室遗址",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.964082,
+        "lat": 32.152803
+      },
+      "after": {
+        "lng": 118.9640832,
+        "lat": 32.1527994
+      },
+      "shiftMeters": 0.42
+    },
+    {
+      "id": "QXS032",
+      "name": "玲峰池遗址",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.964223,
+        "lat": 32.153266
+      },
+      "after": {
+        "lng": 118.964223,
+        "lat": 32.153266
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS033",
+      "name": "定照庵碑刻",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.969774,
+        "lat": 32.153546
+      },
+      "after": {
+        "lng": 118.969774,
+        "lat": 32.153546
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS034",
+      "name": "试茶亭",
+      "source": "amap-verified",
+      "providerId": "B0FFFF662S",
+      "before": {
+        "lng": 118.964895,
+        "lat": 32.152264
+      },
+      "after": {
+        "lng": 118.964922,
+        "lat": 32.152182
+      },
+      "shiftMeters": 9.47
+    },
+    {
+      "id": "QXS035",
+      "name": "白乳泉",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.965042,
+        "lat": 32.152954
+      },
+      "after": {
+        "lng": 118.9650472,
+        "lat": 32.1529381
+      },
+      "shiftMeters": 1.83
+    },
+    {
+      "id": "QXS036",
+      "name": "青锋剑",
+      "source": "amap-verified",
+      "providerId": "B0FFF0FKH2",
+      "before": {
+        "lng": 118.96625,
+        "lat": 32.153029
+      },
+      "after": {
+        "lng": 118.966263,
+        "lat": 32.152974
+      },
+      "shiftMeters": 6.24
+    },
+    {
+      "id": "QXS037",
+      "name": "「太古」摩崖石刻",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.961675,
+        "lat": 32.152142
+      },
+      "after": {
+        "lng": 118.9616755,
+        "lat": 32.1521406
+      },
+      "shiftMeters": 0.16
+    },
+    {
+      "id": "QXS038",
+      "name": "萌宠乐园",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.967181,
+        "lat": 32.152954
+      },
+      "after": {
+        "lng": 118.9671813,
+        "lat": 32.1529526
+      },
+      "shiftMeters": 0.16
+    },
+    {
+      "id": "QXS039",
+      "name": "虚云亭",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.969362,
+        "lat": 32.152902
+      },
+      "after": {
+        "lng": 118.969362,
+        "lat": 32.152902
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS040",
+      "name": "得趣亭",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.962608,
+        "lat": 32.151873
+      },
+      "after": {
+        "lng": 118.9626086,
+        "lat": 32.1518712
+      },
+      "shiftMeters": 0.21
+    },
+    {
+      "id": "QXS041",
+      "name": "栖霞飞天",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.960097,
+        "lat": 32.151903
+      },
+      "after": {
+        "lng": 118.9600973,
+        "lat": 32.1519019
+      },
+      "shiftMeters": 0.13
+    },
+    {
+      "id": "QXS042",
+      "name": "千佛斋",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.958508,
+        "lat": 32.152473
+      },
+      "after": {
+        "lng": 118.9585093,
+        "lat": 32.1524692
+      },
+      "shiftMeters": 0.44
+    },
+    {
+      "id": "QXS043",
+      "name": "青峰涧",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.963731,
+        "lat": 32.152091
+      },
+      "after": {
+        "lng": 118.9637311,
+        "lat": 32.1520906
+      },
+      "shiftMeters": 0.05
+    },
+    {
+      "id": "QXS044",
+      "name": "白莲池（月牙池）",
+      "source": "amap-verified",
+      "providerId": "B001912JCZ",
+      "before": {
+        "lng": 118.958187,
+        "lat": 32.152432
+      },
+      "after": {
+        "lng": 118.958193,
+        "lat": 32.152418
+      },
+      "shiftMeters": 1.66
+    },
+    {
+      "id": "QXS045",
+      "name": "毗卢宝殿",
+      "source": "amap-verified",
+      "providerId": "B0FFFFAB2W",
+      "before": {
+        "lng": 118.959448,
+        "lat": 32.152132
+      },
+      "after": {
+        "lng": 118.95945,
+        "lat": 32.152115
+      },
+      "shiftMeters": 1.9
+    },
+    {
+      "id": "QXS046",
+      "name": "白鹿泉",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.962788,
+        "lat": 32.151484
+      },
+      "after": {
+        "lng": 118.9627888,
+        "lat": 32.1514818
+      },
+      "shiftMeters": 0.26
+    },
+    {
+      "id": "QXS047",
+      "name": "品外泉",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.961095,
+        "lat": 32.151503
+      },
+      "after": {
+        "lng": 118.9610969,
+        "lat": 32.151498
+      },
+      "shiftMeters": 0.58
+    },
+    {
+      "id": "QXS048",
+      "name": "中峰涧",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.964724,
+        "lat": 32.152147
+      },
+      "after": {
+        "lng": 118.9647489,
+        "lat": 32.1520713
+      },
+      "shiftMeters": 8.74
+    },
+    {
+      "id": "QXS049",
+      "name": "江总碑",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.957943,
+        "lat": 32.151769
+      },
+      "after": {
+        "lng": 118.9579483,
+        "lat": 32.1517549
+      },
+      "shiftMeters": 1.65
+    },
+    {
+      "id": "QXS050",
+      "name": "春雨桥",
+      "source": "amap-verified",
+      "providerId": "B0FFFFAOPQ",
+      "before": {
+        "lng": 118.961876,
+        "lat": 32.151432
+      },
+      "after": {
+        "lng": 118.961884,
+        "lat": 32.151409
+      },
+      "shiftMeters": 2.67
+    },
+    {
+      "id": "QXS051",
+      "name": "春雨桥瀑布",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.961954,
+        "lat": 32.151385
+      },
+      "after": {
+        "lng": 118.9619592,
+        "lat": 32.1513702
+      },
+      "shiftMeters": 1.72
+    },
+    {
+      "id": "QXS052",
+      "name": "紫峰阁",
+      "source": "amap-verified",
+      "providerId": "B0FFFFAF7Z",
+      "before": {
+        "lng": 118.960432,
+        "lat": 32.15128
+      },
+      "after": {
+        "lng": 118.96044,
+        "lat": 32.15126
+      },
+      "shiftMeters": 2.35
+    },
+    {
+      "id": "QXS053",
+      "name": "寂然法师像",
+      "source": "amap-verified",
+      "providerId": "B0FFFF3O5H",
+      "before": {
+        "lng": 118.957442,
+        "lat": 32.151249
+      },
+      "after": {
+        "lng": 118.957588,
+        "lat": 32.151036
+      },
+      "shiftMeters": 27.4
+    },
+    {
+      "id": "QXS054",
+      "name": "集云亭",
+      "source": "amap-verified",
+      "providerId": "B0HK7CL7E2",
+      "before": {
+        "lng": 118.966905,
+        "lat": 32.150734
+      },
+      "after": {
+        "lng": 118.966906,
+        "lat": 32.150717
+      },
+      "shiftMeters": 1.89
+    },
+    {
+      "id": "QXS055",
+      "name": "龙山",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.96397,
+        "lat": 32.149524
+      },
+      "after": {
+        "lng": 118.96397,
+        "lat": 32.149524
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS056",
+      "name": "九龙坡",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.958737,
+        "lat": 32.149086
+      },
+      "after": {
+        "lng": 118.958737,
+        "lat": 32.149086
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS057",
+      "name": "天鹅凼",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.967906,
+        "lat": 32.148639
+      },
+      "after": {
+        "lng": 118.967906,
+        "lat": 32.148639
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXS058",
+      "name": "财神殿",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.957393,
+        "lat": 32.152019
+      },
+      "after": {
+        "lng": 118.9573962,
+        "lat": 32.1520134
+      },
+      "shiftMeters": 0.69
+    },
+    {
+      "id": "QXS059",
+      "name": "景区南门",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.96525,
+        "lat": 32.146
+      },
+      "after": {
+        "lng": 118.96525,
+        "lat": 32.146
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF001",
+      "name": "入口",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.955772,
+        "lat": 32.15069
+      },
+      "after": {
+        "lng": 118.955772,
+        "lat": 32.15069
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF002",
+      "name": "出口",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.955832,
+        "lat": 32.150948
+      },
+      "after": {
+        "lng": 118.955832,
+        "lat": 32.150948
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF003",
+      "name": "游客中心",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.954694,
+        "lat": 32.150247
+      },
+      "after": {
+        "lng": 118.954694,
+        "lat": 32.150247
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF004",
+      "name": "问询处",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.954557,
+        "lat": 32.15028
+      },
+      "after": {
+        "lng": 118.954557,
+        "lat": 32.15028
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF005",
+      "name": "停车场",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.964722,
+        "lat": 32.158397
+      },
+      "after": {
+        "lng": 118.964722,
+        "lat": 32.158397
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF006",
+      "name": "问询处",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.965389,
+        "lat": 32.146238
+      },
+      "after": {
+        "lng": 118.965389,
+        "lat": 32.146238
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF007",
+      "name": "检票处",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.955893,
+        "lat": 32.150538
+      },
+      "after": {
+        "lng": 118.955893,
+        "lat": 32.150538
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF008",
+      "name": "停车场",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.959205,
+        "lat": 32.152607
+      },
+      "after": {
+        "lng": 118.9592066,
+        "lat": 32.152598
+      },
+      "shiftMeters": 1.01
+    },
+    {
+      "id": "QXF009",
+      "name": "检票处",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.965573,
+        "lat": 32.14655
+      },
+      "after": {
+        "lng": 118.965573,
+        "lat": 32.14655
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF010",
+      "name": "售票处",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.954552,
+        "lat": 32.150245
+      },
+      "after": {
+        "lng": 118.954552,
+        "lat": 32.150245
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF011",
+      "name": "售票处",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.96558,
+        "lat": 32.146257
+      },
+      "after": {
+        "lng": 118.96558,
+        "lat": 32.146257
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF012",
+      "name": "医疗室",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.954568,
+        "lat": 32.150172
+      },
+      "after": {
+        "lng": 118.954568,
+        "lat": 32.150172
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF013",
+      "name": "医疗室",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.96522,
+        "lat": 32.14644
+      },
+      "after": {
+        "lng": 118.96522,
+        "lat": 32.14644
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF014",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.954697,
+        "lat": 32.150212
+      },
+      "after": {
+        "lng": 118.954697,
+        "lat": 32.150212
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF015",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.963922,
+        "lat": 32.158699
+      },
+      "after": {
+        "lng": 118.963922,
+        "lat": 32.158699
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF016",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.96943,
+        "lat": 32.156047
+      },
+      "after": {
+        "lng": 118.96943,
+        "lat": 32.156047
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF017",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.961086,
+        "lat": 32.152997
+      },
+      "after": {
+        "lng": 118.961086,
+        "lat": 32.152997
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF018",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.956185,
+        "lat": 32.151473
+      },
+      "after": {
+        "lng": 118.956185,
+        "lat": 32.151473
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF019",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.960579,
+        "lat": 32.151218
+      },
+      "after": {
+        "lng": 118.9605864,
+        "lat": 32.1511996
+      },
+      "shiftMeters": 2.16
+    },
+    {
+      "id": "QXF020",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.956686,
+        "lat": 32.15086
+      },
+      "after": {
+        "lng": 118.9566917,
+        "lat": 32.1508516
+      },
+      "shiftMeters": 1.08
+    },
+    {
+      "id": "QXF021",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.96763,
+        "lat": 32.149575
+      },
+      "after": {
+        "lng": 118.96763,
+        "lat": 32.149575
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF022",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.964295,
+        "lat": 32.149343
+      },
+      "after": {
+        "lng": 118.964295,
+        "lat": 32.149343
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF024",
+      "name": "停车场",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.954034,
+        "lat": 32.150721
+      },
+      "after": {
+        "lng": 118.954034,
+        "lat": 32.150721
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF025",
+      "name": "停车场",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.954131,
+        "lat": 32.15034
+      },
+      "after": {
+        "lng": 118.954131,
+        "lat": 32.15034
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF026",
+      "name": "停车场",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.956027,
+        "lat": 32.148654
+      },
+      "after": {
+        "lng": 118.956027,
+        "lat": 32.148654
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF027",
+      "name": "停车场",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.964518,
+        "lat": 32.146071
+      },
+      "after": {
+        "lng": 118.964518,
+        "lat": 32.146071
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF028",
+      "name": "游览车停靠站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.971116,
+        "lat": 32.158421
+      },
+      "after": {
+        "lng": 118.971116,
+        "lat": 32.158421
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF029",
+      "name": "游览车停靠站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.968365,
+        "lat": 32.159326
+      },
+      "after": {
+        "lng": 118.968365,
+        "lat": 32.159326
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF030",
+      "name": "游览车停靠站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.962363,
+        "lat": 32.15761
+      },
+      "after": {
+        "lng": 118.962363,
+        "lat": 32.15761
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF031",
+      "name": "游览车停靠站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.963905,
+        "lat": 32.155549
+      },
+      "after": {
+        "lng": 118.963905,
+        "lat": 32.1555488
+      },
+      "shiftMeters": 0.02
+    },
+    {
+      "id": "QXF032",
+      "name": "游览车停靠站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.956908,
+        "lat": 32.151212
+      },
+      "after": {
+        "lng": 118.9569508,
+        "lat": 32.1511495
+      },
+      "shiftMeters": 8.04
+    },
+    {
+      "id": "QXF033",
+      "name": "游览车停靠站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.966002,
+        "lat": 32.146586
+      },
+      "after": {
+        "lng": 118.966002,
+        "lat": 32.146586
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF034",
+      "name": "游览车停靠站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.965482,
+        "lat": 32.151012
+      },
+      "after": {
+        "lng": 118.965482,
+        "lat": 32.151012
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF035",
+      "name": "自助能量补给站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.963283,
+        "lat": 32.157988
+      },
+      "after": {
+        "lng": 118.963283,
+        "lat": 32.157988
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF036",
+      "name": "自助能量补给站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.969543,
+        "lat": 32.156406
+      },
+      "after": {
+        "lng": 118.969543,
+        "lat": 32.156406
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF037",
+      "name": "消防器材室",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.960978,
+        "lat": 32.156927
+      },
+      "after": {
+        "lng": 118.960978,
+        "lat": 32.156927
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF038",
+      "name": "消防器材室",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.964227,
+        "lat": 32.156797
+      },
+      "after": {
+        "lng": 118.9642312,
+        "lat": 32.1567732
+      },
+      "shiftMeters": 2.68
+    },
+    {
+      "id": "QXF039",
+      "name": "消防器材室",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.960176,
+        "lat": 32.152154
+      },
+      "after": {
+        "lng": 118.9601764,
+        "lat": 32.1521519
+      },
+      "shiftMeters": 0.24
+    },
+    {
+      "id": "QXF040",
+      "name": "消防器材室",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.957121,
+        "lat": 32.149007
+      },
+      "after": {
+        "lng": 118.957121,
+        "lat": 32.149007
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF041",
+      "name": "消防器材室",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.965144,
+        "lat": 32.146384
+      },
+      "after": {
+        "lng": 118.965144,
+        "lat": 32.146384
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF042",
+      "name": "森林消防半专业队",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.9651,
+        "lat": 32.146851
+      },
+      "after": {
+        "lng": 118.9651,
+        "lat": 32.146851
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF043",
+      "name": "旅游文创馆",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.955384,
+        "lat": 32.151
+      },
+      "after": {
+        "lng": 118.955384,
+        "lat": 32.151
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF044",
+      "name": "停车场",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.954984,
+        "lat": 32.15107
+      },
+      "after": {
+        "lng": 118.954984,
+        "lat": 32.15107
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF045",
+      "name": "停车场",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.954903,
+        "lat": 32.15102
+      },
+      "after": {
+        "lng": 118.954903,
+        "lat": 32.15102
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF046",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.955107,
+        "lat": 32.151292
+      },
+      "after": {
+        "lng": 118.955107,
+        "lat": 32.151292
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF047",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.956675,
+        "lat": 32.152159
+      },
+      "after": {
+        "lng": 118.956675,
+        "lat": 32.152159
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF048",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.967942,
+        "lat": 32.15929
+      },
+      "after": {
+        "lng": 118.967942,
+        "lat": 32.15929
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF049",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.963902,
+        "lat": 32.158458
+      },
+      "after": {
+        "lng": 118.963902,
+        "lat": 32.158458
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF050",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.959766,
+        "lat": 32.15589
+      },
+      "after": {
+        "lng": 118.9597677,
+        "lat": 32.1558858
+      },
+      "shiftMeters": 0.49
+    },
+    {
+      "id": "QXF051",
+      "name": "游览车停靠站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.967239,
+        "lat": 32.15246
+      },
+      "after": {
+        "lng": 118.967239,
+        "lat": 32.15246
+      },
+      "shiftMeters": 0
+    },
+    {
+      "id": "QXF052",
+      "name": "游览车停靠站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.966276,
+        "lat": 32.153315
+      },
+      "after": {
+        "lng": 118.9662786,
+        "lat": 32.1533039
+      },
+      "shiftMeters": 1.26
+    },
+    {
+      "id": "QXF053",
+      "name": "游览车停靠站",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.958461,
+        "lat": 32.152598
+      },
+      "after": {
+        "lng": 118.9584635,
+        "lat": 32.1525914
+      },
+      "shiftMeters": 0.77
+    },
+    {
+      "id": "QXF054",
+      "name": "卫生间",
+      "source": "guide-map-estimate",
+      "before": {
+        "lng": 118.960281,
+        "lat": 32.152011
+      },
+      "after": {
+        "lng": 118.9602813,
+        "lat": 32.1520098
+      },
+      "shiftMeters": 0.14
+    }
+  ],
+  "roadDisplay": {
+    "features": ["bg", "road", "building"],
+    "paperOpacity": 1,
+    "cachedPathOverlay": "用户要求保留黄色底色：赏秋模式各缩放级别绘制3px高德步行轨迹；高德底图关闭该线层",
+    "evidence": "56个点位核验与局部估算点校准保持；纸底恢复不透明，独立道路折线不做视觉变形。路径为已查询通道子集，非完整原生路网。"
+  },
+  "lastUpdatedAt": "2026-10-31"
+}

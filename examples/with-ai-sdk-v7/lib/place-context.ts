@@ -41,7 +41,8 @@ export function readSelectedPlace(
   const lat = place.lat;
   if (!name || typeof lng !== "number" || typeof lat !== "number") return null;
   if (!Number.isFinite(lng) || !Number.isFinite(lat)) return null;
-  const referenceCode = text(place.referenceCode, 12);
+  const code = text(place.referenceCode, 12)?.toUpperCase();
+  const referenceCode = code && /^[A-Z]\d{1,3}$/.test(code) ? code : undefined;
   const referenceName = text(place.referenceName, 60);
   const address = text(place.address, 120);
   const poiId = text(place.poiId, 40);

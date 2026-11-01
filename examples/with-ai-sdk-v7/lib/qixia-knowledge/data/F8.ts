@@ -7,7 +7,7 @@ export const placeF8: QixiaPlaceKnowledge = {
   name: "五松阁",
   kbCardId: null,
   kbTitle: null,
-  aliases: ["万松山房"],
+  aliases: [],
   summary:
     "即「万松山房」，位于中峰之半，山间多松、风过如万壑鸣涛，为乾隆御题「栖霞十景」之一。地图作「五松阁」，疑为「万松山房」的变体称呼。",
   history:
