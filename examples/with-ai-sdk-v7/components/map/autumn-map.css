@@ -149,11 +149,40 @@
   font-size: 12px;
   box-shadow: 0 3px 12px #72542b15;
 }
-.autumn-route-summary strong,
-.autumn-route-summary > span {
+.autumn-route-summary-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.autumn-route-summary-head > strong,
+.autumn-route-summary [aria-live] > span {
   display: block;
 }
-.autumn-route-summary > span {
+.autumn-route-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: none;
+  min-height: 26px;
+  padding: 0 7px;
+  border: 1px solid #d3b98f;
+  border-radius: 7px;
+  background: #fdf6e6;
+  color: #8b5a3c;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+.autumn-route-close:hover {
+  background: #f4e2c4;
+  color: #7d2f22;
+}
+.autumn-route-close:focus-visible {
+  outline: 2px solid #a74732;
+  outline-offset: 2px;
+}
+.autumn-route-summary [aria-live] > span {
   margin-top: 5px;
   color: #8b7963;
   font-size: 11px;

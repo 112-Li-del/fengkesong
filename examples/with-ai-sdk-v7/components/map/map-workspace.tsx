@@ -791,6 +791,16 @@ export function MapWorkspace() {
     }
   }
 
+  function closeRoute() {
+    routeVersion.current++;
+    clearWalk();
+    setRouteNote("");
+    setScenicRouteNote("");
+    setAgentRoute(null);
+    setScenicRoute("");
+    setCategory("景点");
+  }
+
   function planWalk() {
     const api = sdk.current,
       view = map.current;
@@ -971,18 +981,31 @@ export function MapWorkspace() {
           </button>
         </div>
         {activeRoute && (
-          <div className="autumn-route-summary" aria-live="polite">
-            <strong>
-              {agentRoute ? "助手推荐路线" : activeScenicRoute?.name}
-            </strong>
-            {!agentRoute && (
-              <span>
-                {activeRoute.stops[0]?.name.replace("售票处", "出发")}
-                {!presetOrigin && "（无定位预览）"} →{" "}
-                {activeRoute.stops.at(-1)?.name.replace("售票处", "返回")}
-              </span>
-            )}
-            <p className="scenic-route-note">{scenicRouteNote}</p>
+          <div className="autumn-route-summary">
+            <div className="autumn-route-summary-head">
+              <strong>
+                {agentRoute ? "助手推荐路线" : activeScenicRoute?.name}
+              </strong>
+              <button
+                type="button"
+                className="autumn-route-close"
+                onClick={closeRoute}
+                title="关闭推荐路线，移除地图上的流光路线与站点编号"
+              >
+                <X size={13} />
+                <span>关闭</span>
+              </button>
+            </div>
+            <div aria-live="polite">
+              {!agentRoute && (
+                <span>
+                  {activeRoute.stops[0]?.name.replace("售票处", "出发")}
+                  {!presetOrigin && "（无定位预览）"} →{" "}
+                  {activeRoute.stops.at(-1)?.name.replace("售票处", "返回")}
+                </span>
+              )}
+              <p className="scenic-route-note">{scenicRouteNote}</p>
+            </div>
           </div>
         )}
       </div>
