@@ -86,6 +86,14 @@ for (const missingTeams of [false, true]) {
       areas: policy.areas,
       missingTeams,
     })})`;
+    // review-health.mjs 拒绝 29 天以前的 --since，所以这里按当前日期推导，
+    // 避免写死日期后随时间推移而失效。
+    const until = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
+    const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
     const result = spawnSync(
       process.execPath,
       [
@@ -93,14 +101,17 @@ for (const missingTeams of [false, true]) {
         `data:text/javascript,${encodeURIComponent(preload)}`,
         path.resolve(import.meta.dirname, "review-health.mjs"),
         "--since",
-        "2026-10-01",
+        since,
         "--until",
-        "2026-10-07",
+        until,
       ],
       { encoding: "utf8", env: { ...process.env, GITHUB_TOKEN: "test" } },
     );
     assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stdout, /^# Review health, 2026-10-01 to 2026-10-07/m);
+    assert.match(
+      result.stdout,
+      new RegExp(`^# Review health, ${since} to ${until}`, "m"),
+    );
     for (const slug of new Set([
       ...Object.values(policy.teams),
       ...policy.areas.map((area) => area.ownerTeam),
