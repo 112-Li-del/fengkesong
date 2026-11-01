@@ -1,6 +1,7 @@
 "use client";
 
-import { BellRing, X } from "lucide-react";
+import { BellRing, ChevronDown, X } from "lucide-react";
+import { useState } from "react";
 import type { Suggestion } from "@/lib/companion";
 
 const KIND_LABEL: Record<Suggestion["kind"], string> = {
@@ -23,8 +24,12 @@ export function CompanionBoard({
   onDismiss,
   onClear,
 }: Props) {
+  const [collapsed, setCollapsed] = useState(false);
   return (
-    <aside className="companion-board" aria-label="霞宝建议">
+    <aside
+      className={`companion-board${collapsed ? " is-collapsed" : ""}`}
+      aria-label="霞宝建议"
+    >
       <header className="companion-board-head">
         <span className="companion-board-title">
           <BellRing size={15} />
@@ -33,7 +38,7 @@ export function CompanionBoard({
         <small>
           {suggestions.length ? `${suggestions.length} 条建议` : "待命中"}
         </small>
-        {suggestions.length > 0 && (
+        {suggestions.length > 0 && !collapsed && (
           <button
             type="button"
             className="companion-board-clear"
@@ -42,8 +47,17 @@ export function CompanionBoard({
             清空
           </button>
         )}
+        <button
+          type="button"
+          className="companion-board-toggle"
+          aria-expanded={!collapsed}
+          aria-label={collapsed ? "展开霞宝建议" : "收起霞宝建议"}
+          onClick={() => setCollapsed((value) => !value)}
+        >
+          <ChevronDown size={14} />
+        </button>
       </header>
-      {suggestions.length === 0 ? (
+      {collapsed ? null : suggestions.length === 0 ? (
         <p className="companion-board-empty">
           靠近景点时，这里会不断刷新新的建议。
         </p>
