@@ -17,6 +17,15 @@ import summitBendLake from "@/lib/qixia-summit-bend-lake-decoration.json";
 import upperEastLake from "@/lib/qixia-upper-east-lake-decoration.json";
 import phoenixLake from "@/lib/qixia-phoenix-lake-decoration.json";
 import southSmallLake from "@/lib/qixia-south-small-lake-decoration.json";
+import ancientTownLake from "@/lib/qixia-ancient-town-lake-decoration.json";
+import ancientTownLakeGroup from "@/lib/qixia-ancient-town-lake-group-decoration.json";
+import mingjingLake from "@/lib/qixia-mingjing-lake-decoration.json";
+import bailianLake from "@/lib/qixia-bailian-lake-decoration.json";
+import pinwaiLake from "@/lib/qixia-pinwai-lake-decoration.json";
+import bailuSouthLake from "@/lib/qixia-bailu-south-lake-decoration.json";
+import qingfengLake from "@/lib/qixia-qingfeng-lake-decoration.json";
+import roads from "@/lib/qixia-roads.json";
+import { lakeRoadMask } from "./lake-road-mask";
 import type { MapAPI, MapInstance } from "./amap-types";
 
 export function mountainDecorations(
@@ -46,6 +55,13 @@ export function mountainDecorations(
         upperEastLake,
         phoenixLake,
         southSmallLake,
+        ancientTownLake,
+        ancientTownLakeGroup,
+        mingjingLake,
+        bailianLake,
+        pinwaiLake,
+        bailuSouthLake,
+        qingfengLake,
       ].map((placement) => {
         const isTitle = placement.id === "qixia-title";
         const isLake =
@@ -65,7 +81,14 @@ export function mountainDecorations(
           placement.id === summitBendLake.id ||
           placement.id === upperEastLake.id ||
           placement.id === phoenixLake.id ||
-          placement.id === southSmallLake.id;
+          placement.id === southSmallLake.id ||
+          placement.id === ancientTownLake.id ||
+          placement.id === ancientTownLakeGroup.id ||
+          placement.id === mingjingLake.id ||
+          placement.id === bailianLake.id ||
+          placement.id === pinwaiLake.id ||
+          placement.id === bailuSouthLake.id ||
+          placement.id === qingfengLake.id;
         const scale = isTitle || isLake ? 1 : 0.9;
         const root = document.createElement("div");
         root.className = isTitle
@@ -90,6 +113,8 @@ export function mountainDecorations(
           maxWidth: "none",
           objectFit: isTitle || isLake ? "contain" : "fill",
           pointerEvents: "none",
+          maskSize: "100% 100%",
+          maskRepeat: "no-repeat",
           transform: `translate(-50%, -50%) rotate(${placement.rotation}deg) scale(${placement.mirror ? -scale : scale}, ${scale})`,
         });
         root.append(image);
@@ -103,17 +128,41 @@ export function mountainDecorations(
           zIndex: isLake ? 10 : isTitle ? 12 : 7,
           bubble: true,
         });
-        return { root, image, marker, bounds: placement.bounds };
+        return { root, image, marker, placement, isLake };
       });
   const resize = () => {
+    const projectedRoads = roads.paths.map((path) =>
+      path.map((point) => map.lngLatToContainer(point)),
+    );
     for (const {
       image,
-      bounds: [west, south, east, north],
+      isLake,
+      placement: {
+        bounds: [west, south, east, north],
+        rotation,
+        mirror,
+      },
     } of entries) {
       const top = map.lngLatToContainer([west!, north!]);
       const bottom = map.lngLatToContainer([east!, south!]);
-      image.style.width = `${Math.abs(bottom.x - top.x)}px`;
-      image.style.height = `${Math.abs(bottom.y - top.y)}px`;
+      const width = Math.abs(bottom.x - top.x);
+      const height = Math.abs(bottom.y - top.y);
+      image.style.width = `${width}px`;
+      image.style.height = `${height}px`;
+      if (isLake) {
+        const center = map.lngLatToContainer([
+          (west! + east!) / 2,
+          (south! + north!) / 2,
+        ]);
+        image.style.maskImage = lakeRoadMask(
+          width,
+          height,
+          center,
+          projectedRoads,
+          rotation,
+          mirror,
+        );
+      }
     }
   };
   resize();
