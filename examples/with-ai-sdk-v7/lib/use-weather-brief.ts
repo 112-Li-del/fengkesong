@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { weatherBrief, type WeatherBrief } from "./companion-weather";
+import { getQixiaWeatherClient } from "./qixia-weather-client";
+import { FKS_STATIC } from "./zion-config";
 import type { WeatherSnapshot } from "./weather";
 
 /** 地图建议板与聊天首屏共用同一份天气结论。 */
@@ -12,12 +14,16 @@ export function useWeatherBrief(intervalMs = 5 * 60 * 1000) {
     async function load() {
       if (document.hidden) return;
       try {
-        const response = await fetch("/api/weather/qixia", {
-          cache: "no-store",
-        });
-        if (!response.ok) return;
-        const snapshot = (await response.json()) as WeatherSnapshot;
-        if (cancelled) return;
+        const snapshot: WeatherSnapshot | null = FKS_STATIC
+          ? await getQixiaWeatherClient()
+          : await (async () => {
+              const response = await fetch("/api/weather/qixia", {
+                cache: "no-store",
+              });
+              if (!response.ok) return null;
+              return (await response.json()) as WeatherSnapshot;
+            })();
+        if (!snapshot || cancelled) return;
         const next = weatherBrief(snapshot);
         if (next) setBrief(next);
       } catch {
