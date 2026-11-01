@@ -12,6 +12,9 @@ node_modules
 # Zion 部署同步脚本的中间产物
 /.tmp/
 
+# 浏览器临时 profile：含 Login Data 等登录凭据库，绝不能提交
+.tmp-chrome*/
+
 # debug
 .pnpm-debug.log*
 npm-debug.log*
