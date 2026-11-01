@@ -23,7 +23,10 @@ export function resetProximityPending(state: ProximityState) {
   state.candidate = null;
   state.leaving.clear();
 }
-function distance(a: ProximityFix["point"], b: ProximityFix["point"]) {
+export function distanceMeters(
+  a: ProximityFix["point"],
+  b: ProximityFix["point"],
+) {
   const rad = Math.PI / 180;
   const term =
     Math.sin(((b.lat - a.lat) * rad) / 2) ** 2 +
@@ -52,7 +55,7 @@ export function updateProximity(
   const ranked = targets
     .map((place) => ({
       id: place.id,
-      distance: distance(fix.point, place.location),
+      distance: distanceMeters(fix.point, place.location),
     }))
     .sort((a, b) => a.distance - b.distance);
   for (const id of state.inside) {

@@ -41,26 +41,32 @@ describe("景点分级", () => {
     for (const name of landmarks)
       expect(layout.get(name)?.label).not.toBeNull();
     expect(
-      layoutScenicPoints(points, 15.5, 1000, 600, null).get("popular")?.art,
+      layoutScenicPoints(points, 16.5, 1000, 600, null).get("popular")?.art,
     ).toBe(true);
     expect(
-      layoutScenicPoints(points, 15.5, 1000, 600, null).get("detail")?.label,
-    ).toBeNull();
+      layoutScenicPoints(points, 16.5, 1000, 600, null).get("detail"),
+    ).toBeUndefined();
   });
   it("全景到细节逐层展开，缩小重新收起", () => {
     for (const [zoom, count] of [
       [14, 1],
-      [15, 2],
-      [16.5, 3],
-      [17.5, 4],
+      [16.5, 2],
+      [17.5, 3],
+      [18, 4],
       [14, 1],
     ]) {
       const layout = layoutScenicPoints(points, zoom!, 1000, 600, null);
-      expect(layout.size).toBe(4);
+      expect(layout.size).toBe(count);
       expect([...layout.values()].filter((p) => p.label).length).toBe(count);
       for (const state of layout.values())
         expect(state.art).toBe(state.label !== null);
     }
+  });
+  it("未达到展开层级的景点连圆点一起收起", () => {
+    const layout = layoutScenicPoints(points, 14, 1000, 600, null);
+    expect(layout.has("core")).toBe(true);
+    for (const id of ["popular", "culture", "detail"])
+      expect(layout.has(id)).toBe(false);
   });
   it("选中和路线站点不受层级限制，取消后恢复", () => {
     expect(
@@ -78,7 +84,7 @@ describe("景点分级", () => {
     ).toBe(true);
     expect(
       layoutScenicPoints(points, 15, 1000, 600, null).get("culture"),
-    ).toEqual({ label: null, art: false });
+    ).toBeUndefined();
   });
   it("密集路线保留所有点，名称不会无限堆叠，选中优先", () => {
     const dense = Array.from({ length: 30 }, (_, i) => ({

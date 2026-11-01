@@ -4,6 +4,7 @@ import {
   recommendTrip,
   tripRequestSchema,
 } from "./trip-recommendation";
+import { recommendationRoute } from "./trip-route";
 const context = () => ({
   position: {
     point: { lng: 118.957983, lat: 32.151807 },
@@ -363,4 +364,30 @@ it("指定未知的具体返程地点仍需确认，不擅自换成入园门", a
     walk,
   );
   expect(result.status).toBe("needs_return_point");
+});
+
+it("人在园外时按指定入园门起算，不把通勤距离算进游览路线", async () => {
+  const city = context();
+  city.position.point = { lng: 118.7969, lat: 32.0603 };
+  const result = await recommendTrip(
+    tripRequestSchema.parse({ startName: "西门", minutes: 240 }),
+    city,
+    walk,
+  );
+  expect(result.status).toBe("planned");
+  expect(result.originSource).toBe("用户指定起点");
+  expect(result.segments![0]!.from.location).not.toEqual(city.position.point);
+});
+
+it("规划结果能被地图解析成流光路线与编号站点", async () => {
+  const result = await recommendTrip(
+    tripRequestSchema.parse({ startName: "西门", minutes: 240 }),
+    {},
+    walk,
+  );
+  expect(result.status).toBe("planned");
+  const route = recommendationRoute(result);
+  expect(route).not.toBeNull();
+  expect(route!.stops.length).toBeGreaterThan(0);
+  expect(route!.legs).toHaveLength(route!.stops.length);
 });

@@ -24,10 +24,12 @@ import {
   X,
   ChevronDown,
   ChevronUp,
+  CloudRain,
 } from "lucide-react";
 import { Thread } from "@/components/zh-ui/thread.aui";
 import { MapWorkspace } from "@/components/map/map-workspace";
 import { WeatherDashboard } from "@/components/weather/weather-dashboard";
+import { useWeatherBrief } from "@/lib/use-weather-brief";
 import {
   Dialog,
   DialogContent,
@@ -64,6 +66,10 @@ function ThreadWithSuggestions() {
 function FloatingChat() {
   const [openedFor, setOpenedFor] = useState<string | null>(null);
   const [closedFor, setClosedFor] = useState<string | null>(null);
+  const weather = useWeatherBrief();
+  const weatherAdvice = weather?.items.find(
+    (item) => item.id === "weather:rain" || item.id === "weather:rain-soon",
+  );
   const count = useAuiState((s) => s.thread.messages.length);
   const threadId = useAuiState((s) => s.threads.mainThreadId);
   const title = useAuiState((s) => s.threadListItem.title) || "与枫客松聊聊";
@@ -100,6 +106,13 @@ function FloatingChat() {
         >
           <ChevronUp size={15} />
         </button>
+      )}
+      {expanded && weather && (
+        <p className="weather-chat-brief" role="status">
+          <CloudRain size={12} />
+          <span>{weather.headline}</span>
+          {weatherAdvice ? <em>· {weatherAdvice.title}</em> : null}
+        </p>
       )}
       <div className="weather-chat-thread">
         <ThreadWithSuggestions />
