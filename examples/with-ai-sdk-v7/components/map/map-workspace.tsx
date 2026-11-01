@@ -20,7 +20,6 @@ import {
   X,
   Route,
   Mountain,
-  BellRing,
   ChevronDown,
 } from "lucide-react";
 import {
@@ -55,6 +54,21 @@ import {
   resetProximityPending,
   updateProximity,
 } from "@/lib/proximity";
+import {
+  APPROACH_MAX_DISTANCE,
+  CARE_INTERVAL_MS,
+  CARE_MAX_DISTANCE,
+  SUGGESTION_COOLDOWN_MS,
+  addSuggestion,
+  approachSuggestion,
+  arrivalSuggestion,
+  careSuggestion,
+  dismissSuggestion,
+  expiredSuggestions,
+  nearestSuggestionTarget,
+  type Suggestion,
+} from "@/lib/companion";
+import { CompanionBoard } from "./companion-board";
 import { loadAmap, watchAmapLocation } from "./load-amap";
 import { flowingRoute, traceWalkingRoute } from "./flowing-route";
 import { KnowledgeModal, PlaceKnowledge } from "./place-knowledge";
@@ -227,10 +241,35 @@ export function MapWorkspace() {
   const autoCount = scenicPlaces.length;
   const [autoNote, setAutoNote] = useState("开启定位后自动检测附近景点");
   const [demoPlaceId, setDemoPlaceId] = useState("");
-  const [nearby, setNearby] = useState<{
-    place: Place;
-    distance: number;
-  } | null>(null);
+  const [companionSuggestions, setCompanionSuggestions] = useState<
+    Suggestion[]
+  >([]);
+  const suggestedAt = useRef(new Map<string, number>());
+  const pushSuggestion = useCallback((next: Suggestion) => {
+    const previous = suggestedAt.current.get(next.id);
+    if (previous !== undefined && next.at - previous < SUGGESTION_COOLDOWN_MS)
+      return;
+    suggestedAt.current.set(next.id, next.at);
+    setCompanionSuggestions((items) => addSuggestion(items, next));
+  }, []);
+  // 常规关怀：每 120 秒基于当前位置补一条“附近还有……”的建议。
+  useEffect(() => {
+    if (!autoEnabled) return;
+    const timer = window.setInterval(() => {
+      const fix = latestPosition.current;
+      if (!fix || document.hidden) return;
+      const target = nearestSuggestionTarget(
+        targets.current,
+        fix.point,
+        60,
+        CARE_MAX_DISTANCE,
+      );
+      if (!target) return;
+      pushSuggestion(careSuggestion(target.place, target.distance, Date.now()));
+      setCompanionSuggestions((items) => expiredSuggestions(items, Date.now()));
+    }, CARE_INTERVAL_MS);
+    return () => window.clearInterval(timer);
+  }, [autoEnabled, pushSuggestion]);
   const routeOverlay = useRef<ReturnType<typeof flowingRoute> | null>(null);
   const [scenicRouteNote, setScenicRouteNote] = useState("");
   const [panelOpen, setPanelOpen] = useState(false);
@@ -411,7 +450,6 @@ export function MapWorkspace() {
     if (container.current) resize.observe(container.current);
     const visibility = () => {
       resetProximityPending(proximity.current);
-      setNearby(null);
       if (!document.hidden) {
         resumeAfter.current = Date.now();
         setAutoNote("等待新的位置后恢复附近提示");
@@ -452,7 +490,8 @@ export function MapWorkspace() {
     setPosition(null);
     setLocationNote("已停止定位");
     resetProximityPending(proximity.current);
-    setNearby(null);
+    suggestedAt.current.clear();
+    setCompanionSuggestions([]);
     setAutoNote("自动提示已暂停");
   }
   function drawFix(api: MapAPI, view: MapInstance, fix: Position) {
@@ -488,10 +527,15 @@ export function MapWorkspace() {
     setLocationFailure(null);
     return view;
   }
-  function announceArrival(place: Place, distance: number) {
-    setNearby({ place, distance });
+  function announceArrival(place: Place) {
+    pushSuggestion(arrivalSuggestion(place, Date.now()));
     setAutoNote(`已到达${place.name}，可以听听讲解`);
     autumnLayer.current?.setSelected(place.id, true);
+  }
+  function openCompanion(place: Place) {
+    if (selectedRef.current?.id !== place.id) select(place, false);
+    setKnowledgeOpen(true);
+    navigation.current?.reveal(place.location);
   }
   // 演示保底：手动选点后走与 GPS 到达同一条链路，不依赖现场定位。
   function simulateArrival(place: Place) {
@@ -515,7 +559,9 @@ export function MapWorkspace() {
     );
     autoRef.current = true;
     setAutoEnabled(true);
-    announceArrival(place, 0);
+    suggestedAt.current.clear();
+    setCompanionSuggestions([]);
+    announceArrival(place);
     setLocationNote(`演示：已模拟到达「${place.name}」`);
     view.setZoomAndCenter(17, [point.lng, point.lat]);
   }
@@ -578,15 +624,16 @@ export function MapWorkspace() {
           const match = targets.current.find(
             (place) => place.id === result.placeId,
           );
-          if (match && result.distance !== undefined)
-            announceArrival(match, result.distance);
-          else
-            setNearby((previous) =>
-              previous &&
-              proximity.current.inside.has(previous.place.id) &&
-              result.reason !== "stale"
-                ? previous
-                : null,
+          if (match && result.distance !== undefined) announceArrival(match);
+          const approach = nearestSuggestionTarget(
+            targets.current,
+            positionFix.point,
+            60,
+            APPROACH_MAX_DISTANCE,
+          );
+          if (approach)
+            pushSuggestion(
+              approachSuggestion(approach.place, approach.distance, Date.now()),
             );
         }
         setLocationNote("");
@@ -603,7 +650,6 @@ export function MapWorkspace() {
           setLocationNote("未获得定位权限，请允许网站使用位置后重试。");
         } else {
           resetProximityPending(proximity.current);
-          setNearby(null);
           setAutoNote("等待新的位置后恢复附近提示");
           setLocationNote(
             code === 3
@@ -1142,53 +1188,20 @@ export function MapWorkspace() {
         </div>
       )}
 
-      {nearby && autoEnabled && (
-        <aside
-          className="map-nearby-card"
-          aria-label="附近景点提示"
-          role="status"
-          aria-live="polite"
-        >
-          <button
-            className="map-nearby-close"
-            aria-label="关闭附近景点提示"
-            onClick={() => setNearby(null)}
-          >
-            <X size={16} />
-          </button>
-          <div className="map-nearby-label">
-            <BellRing size={15} />
-            霞宝 · 附近景点
-          </div>
-          <h2>{nearby.place.name}</h2>
-          <p className="map-nearby-distance">
-            {nearby.distance > 0
-              ? `直线约 ${Math.round(nearby.distance)} 米`
-              : "已到达 · 演示位置"}
-          </p>
-          <p>
-            {typeof nearby.place.address === "string"
-              ? nearby.place.address
-              : "高德地点资料"}
-          </p>
-          <p className="map-nearby-note">
-            {nearby.distance > 0
-              ? "你可能在该景点附近，需要我介绍一下吗？距离不代表步行路程。"
-              : "你已到达该景点，需要我介绍一下吗？"}
-          </p>
-          <button
-            className="map-nearby-open"
-            onClick={() => {
-              select(nearby.place, true);
-              setKnowledgeOpen(true);
-              setNearby(null);
-            }}
-          >
-            听听讲解
-            <ArrowUpRight size={14} />
-          </button>
-          <small>来源：高德地点信息</small>
-        </aside>
+      {autoEnabled && (
+        <CompanionBoard
+          suggestions={companionSuggestions}
+          onOpen={(suggestion) => {
+            const place =
+              scenicPlaces.find((item) => item.id === suggestion.placeId) ??
+              mapSearchCatalog.find((item) => item.id === suggestion.placeId);
+            if (place) openCompanion(place);
+          }}
+          onDismiss={(id) =>
+            setCompanionSuggestions((items) => dismissSuggestion(items, id))
+          }
+          onClear={() => setCompanionSuggestions([])}
+        />
       )}
       {dockNode &&
         createPortal(
@@ -1284,7 +1297,10 @@ export function MapWorkspace() {
                       autoRef.current = enabled;
                       setAutoEnabled(enabled);
                       resetProximityPending(proximity.current);
-                      setNearby(null);
+                      if (!enabled) {
+                        suggestedAt.current.clear();
+                        setCompanionSuggestions([]);
+                      }
                       setAutoNote(
                         enabled
                           ? "等待新的位置后检测附近景点"
