@@ -67,6 +67,9 @@ function FloatingChat() {
   const [openedFor, setOpenedFor] = useState<string | null>(null);
   const [closedFor, setClosedFor] = useState<string | null>(null);
   const weather = useWeatherBrief();
+  const weatherAdvice = weather?.items.find(
+    (item) => item.id === "weather:rain" || item.id === "weather:rain-soon",
+  );
   const count = useAuiState((s) => s.thread.messages.length);
   const threadId = useAuiState((s) => s.threads.mainThreadId);
   const title = useAuiState((s) => s.threadListItem.title) || "与枫客松聊聊";
@@ -108,7 +111,7 @@ function FloatingChat() {
         <p className="weather-chat-brief" role="status">
           <CloudRain size={12} />
           <span>{weather.headline}</span>
-          {weather.items[0] ? <em>· {weather.items[0].title}</em> : null}
+          {weatherAdvice ? <em>· {weatherAdvice.title}</em> : null}
         </p>
       )}
       <div className="weather-chat-thread">
