@@ -22,6 +22,13 @@ export const tripRequestSchema = z.object({
     .array(z.enum(["culture", "autumn", "family", "rest"]))
     .max(4)
     .default([]),
+  mustVisit: z
+    .array(z.string().max(60))
+    .max(4)
+    .default([])
+    .describe(
+      "游客点名要去的具体景点，例如桃花湖、千佛岩。必须尽量排进路线；不能静默漏掉，排不进去要说明原因。",
+    ),
   startName: z
     .string()
     .max(60)
@@ -278,7 +285,21 @@ export async function recommendTrip(
       distance(origin, p.location) / 15;
     return score(b) - score(a);
   });
-  const picked = ranked.slice(0, gentle ? 3 : 4);
+  const mustVisit = input.mustVisit
+    .map((name) => scenicPlaces.find((p) => p.name === (aliases[name] ?? name)))
+    .filter((place) => place !== undefined);
+  const mustIds = new Set(mustVisit.map((place) => place.id));
+  const excludedMustVisit = mustVisit.filter(
+    (place) => gentle && hills.has(place.name),
+  );
+  const wantedMustVisit = mustVisit.filter(
+    (place) => !excludedMustVisit.includes(place),
+  );
+  const limit = gentle ? 3 : 4;
+  const picked = [
+    ...wantedMustVisit,
+    ...ranked.filter((place) => !mustIds.has(place.id)),
+  ].slice(0, Math.max(limit, wantedMustVisit.length));
   const ordered: typeof picked = [];
   let cursor = origin;
   while (picked.length) {
@@ -518,6 +539,8 @@ export async function recommendTrip(
     originSource: startFromGate ? "用户指定起点" : "当前定位",
     route: route?.name,
     preferences: input,
+    mustVisit: wantedMustVisit.map((place) => place.name),
+    mustVisitExcluded: excludedMustVisit.map((place) => place.name),
     segments,
     candidates: segments.length ? [] : ranked.slice(0, 3).map(describe),
     services,

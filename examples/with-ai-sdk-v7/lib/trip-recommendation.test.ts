@@ -391,3 +391,21 @@ it("规划结果能被地图解析成流光路线与编号站点", async () => {
   expect(route!.stops.length).toBeGreaterThan(0);
   expect(route!.legs).toHaveLength(route!.stops.length);
 });
+
+it("游客点名要去的景点必须排进路线，不能被兴趣权重挤掉", async () => {
+  const result = await recommendTrip(
+    tripRequestSchema.parse({
+      startName: "西门",
+      mustVisit: ["桃花湖"],
+      interests: ["culture"],
+      stamina: "low",
+      childAge: 8,
+      minutes: 180,
+    }),
+    {},
+    walk,
+  );
+  expect(result.status).toBe("planned");
+  expect(result.mustVisit).toContain("桃花湖");
+  expect(result.segments!.some((s) => s.place.name === "桃花湖")).toBe(true);
+});
