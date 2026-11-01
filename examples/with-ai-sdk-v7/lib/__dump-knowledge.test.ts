@@ -13,8 +13,9 @@ it("dump answer views to JSON", () => {
     overview: v.overview,
     facts: v.facts.map((f) => ({ label: f.label, value: f.value })),
     timeline: v.timeline ?? [],
-    openIssues: v.openIssues ?? [],
-    sourceNote: v.sourceNote,
+    // 知识库重构后 openIssues 改名为 unsettled；这里仍以 openIssues 键导出，
+    // 保持 scripts/zion-sync-knowledge.mjs 与 Zion 表 open_issues 列的契约不变。
+    openIssues: v.unsettled ?? [],
     coverage: v.coverage,
   }));
   writeFileSync(
