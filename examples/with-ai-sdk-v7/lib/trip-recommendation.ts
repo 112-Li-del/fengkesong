@@ -79,6 +79,28 @@ export type WalkingLeg = {
   minutes: number;
   instructions: string[];
 };
+const PLACE_ALIASES: Record<string, string> = {
+  栖霞寺: "栖霞古寺",
+  栖霞禅寺: "栖霞古寺",
+  明镜湖: "彩虹明镜",
+  西门: "西门售票处",
+  南门: "南门售票处",
+  栖霞山西门: "西门售票处",
+  栖霞山南门: "南门售票处",
+};
+
+/** 从游客原话里认出点名的景点，模型没填 mustVisit 时兜底。 */
+export function namedPlacesIn(text: string, existing: string[] = []) {
+  const names = new Set(existing);
+  const scenicNames = new Set(scenicPlaces.map((place) => place.name));
+  for (const place of scenicPlaces)
+    if (place.name.length >= 2 && text.includes(place.name))
+      names.add(place.name);
+  // 别名只认落到景点上的那些；「西门」「南门」是入口，不是要去的景点。
+  for (const [alias, name] of Object.entries(PLACE_ALIASES))
+    if (text.includes(alias) && scenicNames.has(name)) names.add(name);
+  return [...names].slice(0, 4);
+}
 const walkingCache = new Map<string, { expires: number; value: WalkingLeg }>();
 let walkingQueue: Promise<void> = Promise.resolve();
 let nextWalkingAt = 0;
@@ -188,15 +210,7 @@ export async function recommendTrip(
     };
   const context = readTripContext(rawContext);
   const all: Place[] = [...scenicPlaces, ...facilityPlaces];
-  const aliases: Record<string, string> = {
-    栖霞寺: "栖霞古寺",
-    栖霞禅寺: "栖霞古寺",
-    明镜湖: "彩虹明镜",
-    西门: "西门售票处",
-    南门: "南门售票处",
-    栖霞山西门: "西门售票处",
-    栖霞山南门: "南门售票处",
-  };
+  const aliases = PLACE_ALIASES;
   const resolve = (name?: string) =>
     all.find((p) => p.name === (name ? (aliases[name] ?? name) : undefined));
   const returnToEntry =
@@ -289,12 +303,15 @@ export async function recommendTrip(
     .map((name) => scenicPlaces.find((p) => p.name === (aliases[name] ?? name)))
     .filter((place) => place !== undefined);
   const mustIds = new Set(mustVisit.map((place) => place.id));
-  const excludedMustVisit = mustVisit.filter(
-    (place) => gentle && hills.has(place.name),
-  );
-  const wantedMustVisit = mustVisit.filter(
-    (place) => !excludedMustVisit.includes(place),
-  );
+  const mustVisitNotes: { name: string; reason: string }[] = [];
+  const wantedMustVisit = mustVisit;
+  // 游客点名要去的地方不因“登高点”直接排除，只提示风险，由回答说明。
+  for (const place of mustVisit)
+    if (gentle && hills.has(place.name))
+      mustVisitNotes.push({
+        name: place.name,
+        reason: "登高点，台阶与坡度未核验；带老人孩子需现场确认能否前往",
+      });
   const limit = gentle ? 3 : 4;
   const picked = [
     ...wantedMustVisit,
@@ -409,18 +426,52 @@ export async function recommendTrip(
     leg.instructions.some((s) => /台阶|楼梯|登山/.test(s));
   cursor = origin;
   let elapsed = 0;
-  const droppedMustVisit: string[] = [];
-  const mustRecord = (place: Place) => {
-    if (mustIds.has(place.id)) droppedMustVisit.push(place.name);
+  const droppedMustVisit: { name: string; reason: string }[] = [];
+  const mustRecord = (place: Place, reason: string) => {
+    if (mustIds.has(place.id))
+      droppedMustVisit.push({ name: place.name, reason });
   };
+  // 湖心、林中等地物本身可能无法作为步行终点，试几个邻近可达点兜底。
+  const snapOffsets = [
+    { lng: 0.0003, lat: 0 },
+    { lng: -0.0003, lat: 0 },
+    { lng: 0, lat: 0.0003 },
+    { lng: 0, lat: -0.0003 },
+    { lng: 0.0005, lat: 0.0005 },
+    { lng: -0.0005, lat: -0.0005 },
+  ];
+  async function walkFlexible(
+    from: { lng: number; lat: number },
+    to: { lng: number; lat: number },
+    flexible: boolean,
+  ) {
+    const direct = await walk(from, to);
+    if (direct) return { leg: direct, snapped: false };
+    if (!flexible) return { leg: null, snapped: false };
+    for (const offset of snapOffsets) {
+      const retry = await walk(from, {
+        lng: to.lng + offset.lng,
+        lat: to.lat + offset.lat,
+      });
+      if (retry) return { leg: retry, snapped: true };
+    }
+    return { leg: null, snapped: false };
+  }
   for (const place of ordered) {
-    const leg = await walk(cursor, place.location);
+    const isMust = mustIds.has(place.id);
+    const forward = await walkFlexible(cursor, place.location, isMust);
+    const leg = forward.leg;
     if (!leg) {
-      mustRecord(place);
+      mustRecord(place, "从上一站到这里的步行路段暂未查到");
       continue;
     }
+    if (forward.snapped)
+      mustVisitNotes.push({
+        name: place.name,
+        reason: "步行只能到该点附近最近的可达位置，终点与点位约有几十米偏差",
+      });
     if (gentle && hasSteps(leg)) {
-      mustRecord(place);
+      mustRecord(place, "该段步行有台阶");
       continue;
     }
     const back =
@@ -428,14 +479,14 @@ export async function recommendTrip(
         ? await walk(place.location, exit.location)
         : null;
     if (!back || (gentle && hasSteps(back))) {
-      mustRecord(place);
+      mustRecord(place, "返回入园门的步行路段暂未查到或含台阶");
       continue;
     }
     const dwell = input.minutes <= 60 ? (gentle ? 12 : 8) : gentle ? 20 : 15;
     const paced = Math.ceil(leg.minutes * (gentle ? 1.5 : 1));
     const reserve = Math.ceil(back.minutes * pace) + 15;
     if (elapsed + paced + dwell + reserve > input.minutes) {
-      mustRecord(place);
+      mustRecord(place, "按当前时间安排放不下，需要缩短其他停留");
       continue;
     }
     const nearestServices = ["休息", "卫生间"]
@@ -560,10 +611,10 @@ export async function recommendTrip(
         segments.some((segment) => segment.place.id === place.id),
       )
       .map((place) => place.name),
-    mustVisitExcluded: [
-      ...excludedMustVisit.map((place) => place.name),
-      ...droppedMustVisit,
-    ],
+    mustVisitExcluded: [...mustVisitNotes, ...droppedMustVisit].map(
+      (item) => item.name,
+    ),
+    mustVisitNotes: [...mustVisitNotes, ...droppedMustVisit],
     segments,
     candidates: segments.length ? [] : ranked.slice(0, 3).map(describe),
     services,

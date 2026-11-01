@@ -27,6 +27,7 @@ import {
   recommendTrip,
   tripRequestSchema,
   fetchWalkingLeg,
+  namedPlacesIn,
 } from "../../../lib/trip-recommendation";
 import { formatTripAnswer } from "../../../lib/trip-answer";
 import { finalAnswerStream } from "../../../lib/final-answer-stream";
@@ -87,6 +88,16 @@ export async function POST(req: Request) {
     tools?: Record<string, { description?: string; parameters: JSONSchema7 }>;
   } = await req.json();
 
+  const lastUserText = (() => {
+    const last = [...messages].reverse().find((item) => item.role === "user");
+    return (
+      last?.parts
+        .filter((part) => part.type === "text")
+        .map((part) => part.text)
+        .join(" ") ?? ""
+    );
+  })();
+
   const trip = readTripContext(tripContext);
   const amap = await openAmapTools(req.signal);
   let verifiedTripAnswer: string | undefined;
@@ -98,8 +109,14 @@ export async function POST(req: Request) {
         "根据本次定位、目标路线、孩子年龄、推车、体力、兴趣、时间推荐分段游览或查厕所休息餐饮返程。推荐路线前必须调用；游客已给的需求不要反复询问，未知的关键限制先简短问清。",
       inputSchema: zodSchema(tripRequestSchema),
       execute: async (input) => {
-        const plan = await recommendTrip(input, tripContext, (from, to) =>
-          fetchWalkingLeg(from, to, req.signal),
+        // 模型偶尔漏填 mustVisit：从游客原话再抓一遍点名的景点，避免静默换点。
+        const plan = await recommendTrip(
+          {
+            ...input,
+            mustVisit: namedPlacesIn(lastUserText, input.mustVisit),
+          },
+          tripContext,
+          (from, to) => fetchWalkingLeg(from, to, req.signal),
         );
         if (
           input.need !== "tour" ||

@@ -1,6 +1,7 @@
 import { afterEach, expect, it, vi } from "vitest";
 import {
   fetchWalkingLeg,
+  namedPlacesIn,
   recommendTrip,
   tripRequestSchema,
 } from "./trip-recommendation";
@@ -428,4 +429,62 @@ it("轻松游因台阶排不进去的必去点要如实标出，不能静默替�
   );
   expect(result.mustVisitExcluded).toContain("桃花湖");
   expect(result.mustVisit).not.toContain("桃花湖");
+});
+
+it("模型漏填 mustVisit 时，从游客原话里认出点名的景点", () => {
+  expect(namedPlacesIn("我们在景区西门，想去桃花湖看看")).toEqual(["桃花湖"]);
+  expect(namedPlacesIn("想去桃花湖", ["千佛岩"])).toContain("千佛岩");
+  expect(namedPlacesIn("想吃点东西")).toEqual([]);
+  // 入园门是起点，不该被当成必去景点
+  expect(namedPlacesIn("从西门进去看看")).not.toContain("西门售票处");
+});
+
+it("带老人孩子点名登高点时给风险提示，不直接排除", async () => {
+  const result = await recommendTrip(
+    tripRequestSchema.parse({
+      startName: "西门",
+      mustVisit: ["凤翔峰"],
+      stamina: "low",
+      minutes: 240,
+    }),
+    {},
+    walk,
+  );
+  const included = result.mustVisit ?? [];
+  const excluded = result.mustVisitExcluded ?? [];
+  const notes = result.mustVisitNotes ?? [];
+  expect([...included, ...excluded]).toContain("凤翔峰");
+  const note = notes.find((item) => item.name === "凤翔峰");
+  if (note) expect(note.reason).toMatch(/登高|台阶|时间/);
+});
+
+it("湖心点位查不到步行路段时，用邻近可达点兜底并说明偏差", async () => {
+  const lake = { lng: 118.962395, lat: 32.15523 };
+  const snapAware = async (
+    _from: { lng: number; lat: number },
+    to: { lng: number; lat: number },
+  ) => {
+    if (
+      Math.abs(to.lng - lake.lng) < 1e-6 &&
+      Math.abs(to.lat - lake.lat) < 1e-6
+    )
+      return null;
+    return { distanceMeters: 300, minutes: 5, instructions: ["沿园路步行"] };
+  };
+  const result = await recommendTrip(
+    tripRequestSchema.parse({
+      startName: "西门",
+      mustVisit: ["桃花湖"],
+      stamina: "low",
+      minutes: 240,
+    }),
+    {},
+    snapAware,
+  );
+  expect(result.mustVisit).toContain("桃花湖");
+  expect(
+    (result.mustVisitNotes ?? []).some(
+      (note) => note.name === "桃花湖" && /可达位置/.test(note.reason),
+    ),
+  ).toBe(true);
 });

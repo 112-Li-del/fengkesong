@@ -11,6 +11,16 @@ export function formatTripAnswer(
   if (!plan.answerDraft) return undefined;
   const paragraphs = [plan.answerDraft];
   if (plan.status === "service") return paragraphs.join("\n\n");
+  if ("mustVisit" in plan && plan.preferences?.mustVisit?.length) {
+    const included = plan.mustVisit ?? [];
+    const notes = plan.mustVisitNotes ?? [];
+    const lines = plan.preferences.mustVisit.map((name) => {
+      if (included.includes(name)) return name + "：已排进路线";
+      const note = notes.find((item) => item.name === name);
+      return name + "：" + (note?.reason ?? "本次没有排进路线");
+    });
+    paragraphs.push("你点名要去的地方：" + lines.join("；") + "。");
+  }
   const segments = plan.segments ?? [];
   const rest = [
     ...new Set(
