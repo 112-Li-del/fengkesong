@@ -19,30 +19,58 @@
   border: 1px solid #f0d2bf;
   box-shadow: 0 6px 18px rgba(123, 52, 38, 0.12), inset 0 0 0 1px #fff6;
 }
-/* —— 重点前置：仅用 CSS order 重排，不改 JSX —— */
+/* —— 重点前置：仅用 CSS order 重排，不改 JSX ——
+   游客视角优先级：当前天气 → 降水 → 穿衣/出游建议 → 短时趋势 → 风 → 其余观测量 → 日出日落 */
 .weather-bento-card:nth-child(1) { order: 1; }  /* 当前天气 */
 .weather-bento-card:nth-child(4) { order: 2; }  /* 降水（时段） */
-.weather-bento-card:nth-child(6) { order: 3; }  /* 未来两小时降水 */
-.weather-bento-card:nth-child(5) { order: 4; }  /* 逐小时 */
-.weather-bento-card:nth-child(3) { order: 5; }  /* 风速 */
-.weather-bento-card:nth-child(2) { order: 6; }  /* 湿度 */
-.weather-bento-card:nth-child(7) { order: 7; }  /* 阵风 */
-.weather-bento-card:nth-child(8) { order: 8; }  /* 能见度 */
-.weather-bento-card:nth-child(9) { order: 9; }  /* 气压 */
-.weather-bento-card:nth-child(10) { order: 10; } /* 露点 */
-.weather-bento-card:nth-child(11) { order: 11; } /* 云量 */
-.weather-bento-card:nth-child(12) { order: 12; } /* 紫外线 */
-.weather-bento-card:nth-child(13) { order: 13; } /* 穿衣指数 */
-.weather-bento-card:nth-child(14) { order: 14; } /* 旅游指数 */
+.weather-bento-card:nth-child(13) { order: 3; } /* 穿衣建议 */
+.weather-bento-card:nth-child(14) { order: 4; } /* 旅游指数 */
+.weather-bento-card:nth-child(6) { order: 5; }  /* 未来两小时降水 */
+.weather-bento-card:nth-child(5) { order: 6; }  /* 逐小时 */
+.weather-bento-card:nth-child(3) { order: 7; }  /* 风速 */
+.weather-bento-card:nth-child(7) { order: 8; }  /* 阵风 */
+.weather-bento-card:nth-child(12) { order: 9; } /* 紫外线 */
+.weather-bento-card:nth-child(2) { order: 10; } /* 湿度 */
+.weather-bento-card:nth-child(8) { order: 11; } /* 能见度 */
+.weather-bento-card:nth-child(9) { order: 12; } /* 气压 */
+.weather-bento-card:nth-child(10) { order: 13; } /* 露点 */
+.weather-bento-card:nth-child(11) { order: 14; } /* 云量 */
 .weather-bento-card:nth-child(15) { order: 15; } /* 日出日落 */
 /* 当前天气主卡：由 2×2 收敛为 2×1（CSS 覆盖 TSX 的 rowSpan，不动内核） */
 .weather-bento-card:nth-child(1) {
   grid-row: span 1;
 }
+/* 末张（日出日落）跨两列收尾，配合偶数张单列卡，末行始终填满 */
+.weather-bento-card:last-child {
+  grid-column: span 2;
+}
+/* 宽屏 4 列下两张趋势卡改为半宽，避免重排后行中出现空缺 */
+@media (min-width: 851px) {
+  .weather-hourly-card,
+  .weather-wide-card {
+    grid-column: span 2;
+  }
+}
+/* 建议类卡片轻微提亮，排在前列时更容易被看到 */
+.weather-bento-card:nth-child(13),
+.weather-bento-card:nth-child(14) {
+  background: #fdf0e2;
+  border-color: #e9b795;
+}
+/* 移除次要角标：当前天气「融合实况」、两小时降水「5分钟一格」 */
+.weather-estimate-badge {
+  display: none;
+}
+/* 移除两小时降水卡底部「和风天气 · 更新 xx」来源说明 */
+.weather-bento-card:nth-child(6) .weather-detail-note {
+  display: none;
+}
 
 .weather-bento-content {
   padding: 9px 11px;
   height: 100%;
+  /* 收紧行高：小字放大后卡片总高保持基本不变 */
+  line-height: 1.3;
 }
 .weather-ticker {
   position: relative;
@@ -140,8 +168,9 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 9px;
-  letter-spacing: 2px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
   color: #b13c3c;
 }
 .qixia-kicker span {
@@ -159,7 +188,8 @@
   letter-spacing: 1px;
 }
 .qixia-section-heading p {
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 600;
   color: #9c8576;
   margin: 0;
 }
@@ -168,7 +198,8 @@
   align-items: center;
   gap: 7px;
   padding: 8px 13px;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
   color: #8a4a3a;
   border: 1px solid #f0d2bf;
   background: #fff7ee;
@@ -188,7 +219,9 @@
   justify-content: space-between;
   gap: 10px;
   color: #8a5a48;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
 }
 .weather-tile-heading > span:first-child {
   display: flex;
@@ -264,12 +297,13 @@
   margin-top: 6px;
 }
 .weather-current-description strong {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   color: #fbeede;
 }
 .weather-current-description > span {
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
   color: #e8c9b8;
 }
 .weather-time {
@@ -277,15 +311,19 @@
   align-items: center;
   gap: 6px;
   color: #f0d4c4;
-  font-size: 10px;
-  margin-top: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 6px;
 }
 .weather-current-foot {
   display: flex;
   justify-content: space-between;
   gap: 12px;
   color: #f0d4c4;
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.25;
   border-top: 1px solid #ffffff22;
   padding-top: 10px;
   margin-top: auto;
@@ -299,13 +337,16 @@
   font-variant-numeric: tabular-nums;
 }
 .weather-metric small {
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
   color: #9c8576;
   margin-left: 5px;
 }
 .weather-metric-note {
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: 600;
   color: #9c8576;
+  line-height: 1.3;
 }
 .weather-humidity-track {
   height: 3px;
@@ -326,9 +367,11 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 600;
   color: #8a5a48;
-  margin-top: 14px;
+  line-height: 1.25;
+  margin-top: 12px;
 }
 .weather-rain-reading {
   display: flex;
@@ -337,9 +380,10 @@
   gap: 20px;
 }
 .weather-rain-reading > span {
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 600;
   color: #7a5a4a;
-  line-height: 1.8;
+  line-height: 1.35;
   text-align: right;
   padding-bottom: 7px;
 }
@@ -355,26 +399,28 @@
   padding-bottom: 15px;
 }
 .weather-hourly-label {
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: 600;
   color: #9c8576;
 }
 .weather-hourly-list {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  margin: 10px 0 9px;
+  margin: 8px 0 8px;
 }
 .weather-hour {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   border-right: 1px solid #f0d2bf;
 }
 .weather-hour:last-child {
   border-right: none;
 }
 .weather-hour-range {
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 600;
   color: #9c8576;
   font-variant-numeric: tabular-nums;
 }
@@ -383,20 +429,21 @@
   margin: 4px 0;
 }
 .weather-hour strong {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: #3a2a22;
 }
 .weather-hour-condition {
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: 600;
   color: #9c8576;
 }
 .weather-hour-rain {
   display: flex;
   align-items: center;
   gap: 3px;
-  font-size: 10px;
+  font-size: 11px;
   color: #c75d4f;
   font-weight: 600;
 }
@@ -404,21 +451,25 @@
   grid-column: 1/-1;
   text-align: center;
   color: #a87a64;
-  font-size: 12px;
-  padding: 28px 0;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 26px 0;
 }
 .weather-forecast-note {
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: 600;
   color: #9c8576;
   border-top: 1px solid #f0d2bf;
-  padding-top: 11px;
+  padding-top: 9px;
+  line-height: 1.35;
 }
 .weather-data-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 600;
   color: #8a7058;
   margin: 16px 4px 0;
 }
@@ -433,10 +484,11 @@
   color: #b13c3c;
 }
 .weather-truth-note {
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 600;
   color: #9c8576;
   margin: 10px 4px 0;
-  line-height: 1.8;
+  line-height: 1.5;
 }
 .weather-update-notice {
   display: flex;
@@ -447,9 +499,10 @@
   color: #8a5a2f;
   border: 1px solid #eec9a8;
   border-radius: 8px;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
   margin-bottom: 13px;
-  line-height: 1.7;
+  line-height: 1.45;
 }
 .is-spinning {
   animation: weather-spin 1s linear infinite;
@@ -476,7 +529,7 @@
     font-size: 30px;
   }
   .weather-hour-range {
-    font-size: 9px;
+    font-size: 10px;
   }
 }
 @media (max-width: 850px) {
@@ -522,16 +575,20 @@
     font-size: 17px;
   }
   .qixia-section-heading p {
-    font-size: 10px;
+    font-size: 11px;
+    font-weight: 600;
   }
   .qixia-kicker {
-    font-size: 8px;
+    font-size: 9px;
+    font-weight: 600;
   }
   .weather-data-footer {
-    font-size: 9px;
+    font-size: 10px;
+    font-weight: 600;
   }
   .weather-truth-note {
-    font-size: 9px;
+    font-size: 10px;
+    font-weight: 600;
   }
   .weather-bento {
     gap: 8px;
@@ -556,10 +613,11 @@
 }
 
 .weather-detail-note {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   color: #8a7058;
-  font-size: 11px;
-  line-height: 1.8;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
   overflow-wrap: anywhere;
 }
 .weather-minute-summary {
@@ -600,19 +658,21 @@
   justify-content: space-between;
   gap: 8px;
   color: #9c8576;
-  font-size: 10px;
-  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 6px;
 }
 .weather-index-category {
-  margin-top: 11px;
-  font-size: 15px;
+  margin-top: 10px;
+  font-size: 16px;
   color: #9c3a2a;
   font-weight: 600;
 }
 .weather-index-date {
   display: block;
-  margin-top: 12px;
-  font-size: 10px;
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 600;
   color: #9c8576;
 }
 .weather-sun-times {
@@ -631,7 +691,8 @@
   color: #d98a3d;
 }
 .weather-sun-times span {
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
   color: #9c8576;
 }
 .weather-sun-times strong {
@@ -644,7 +705,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px 16px;
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 600;
   color: #8a7058;
   overflow-wrap: anywhere;
 }

@@ -239,7 +239,7 @@ export function WeatherDashboard() {
             <Clock3 size={12} />
             <span>
               {snapshot?.timeBasis === "retrieved"
-                ? "获取时间（接口未提供实况时间）"
+                ? "获取时间"
                 : "数据对应时间"}{" "}
               · {dateTime}
             </span>

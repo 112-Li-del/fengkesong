@@ -360,18 +360,26 @@
   position: static;
   border-bottom: none;
 }
+/* 下拉外框尺寸：这里是唯一真正生效的位置（优先级高于 map.css 的 .map-weather-panel[open]） */
 .history-header .weather-panel-body {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
   z-index: 20;
-  width: min(680px, calc(100vw - 54px));
-  max-height: calc(100vh - 150px);
+  width: min(366px, calc(100vw - 36px));
+  max-height: min(430px, calc(100vh - 110px));
   overflow: auto;
   background: var(--map-paper);
   border: 1px solid #dce2d5;
   border-radius: 14px;
   box-shadow: 0 14px 34px #1d2c1924;
+}
+/* 窄屏进一步收窄外框，避免下拉几乎铺满屏幕 */
+@media (max-width: 720px) {
+  .history-header .weather-panel-body {
+    width: min(330px, calc(100vw - 24px));
+    max-height: min(410px, calc(100vh - 96px));
+  }
 }
 /* 顶栏内的定位胶囊：折叠时只留一个动作按钮 + 展开箭头 */
 .history-header .map-location-dock {
