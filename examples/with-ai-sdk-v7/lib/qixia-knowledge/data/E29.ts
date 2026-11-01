@@ -7,7 +7,7 @@ export const placeE29: QixiaPlaceKnowledge = {
   name: "财神殿",
   kbCardId: null,
   kbTitle: null,
-  aliases: ["一念堂"],
+  aliases: ["福康堂"],
   summary:
     "栖霞古寺内的一处殿宇（一念堂、财神殿），福康堂（原财神殿）旁为景区交通车上车点。",
   history:

@@ -1,0 +1,82 @@
+/* 知识卡片底部的「资料原文」：各来源原始记载，默认收起，层级低于正文。 */
+.knowledge-archive > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 700;
+  color: #a0382c;
+  list-style-position: inside;
+}
+.knowledge-archive > summary svg {
+  align-self: center;
+}
+.knowledge-archive > summary small {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8a5a48;
+}
+.knowledge-archive > summary:focus-visible {
+  outline: 2px solid #a0382c;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.knowledge-archive-note,
+.knowledge-archive-text {
+  margin: 12px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.75;
+  color: #4a3029;
+}
+.knowledge-archive-note {
+  color: #7d5547;
+}
+.knowledge-archive-facts {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 0;
+}
+.knowledge-archive-facts > div {
+  padding: 10px 12px;
+  border: 1px solid #f3ddd4;
+  border-radius: 9px;
+}
+.knowledge-archive-facts dt {
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #6f1f16;
+}
+.knowledge-archive-facts dd,
+.knowledge-archive-timeline li {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.7;
+  color: #4a3029;
+}
+.knowledge-archive-timeline {
+  display: grid;
+  gap: 4px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.knowledge-archive-date {
+  margin-right: 6px;
+  color: #a0382c;
+}
+.knowledge-archive-source {
+  margin-left: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #8a5a48;
+  white-space: nowrap;
+}
+a.knowledge-archive-source {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

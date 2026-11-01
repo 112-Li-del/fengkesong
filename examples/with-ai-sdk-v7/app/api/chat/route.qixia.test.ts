@@ -30,7 +30,7 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 
-it("把地图选点转成隐藏上下文，并用定稿口径回答，不再并列冲突数字", async () => {
+it("把地图选点转成隐藏上下文，工具只返回审核后的口径", async () => {
   vi.stubEnv("OPENAI_API_KEY", "test-placeholder");
   vi.stubEnv("OPENAI_BASE_URL", "https://test-model.invalid");
   vi.stubEnv("OPENAI_MODEL", "test-qixia");
@@ -113,13 +113,19 @@ it("把地图选点转成隐藏上下文，并用定稿口径回答，不再并�
   expect(userText).toContain("[地图选中]");
   expect(userText).toContain("118.956292,32.150991");
   expect(userText).toContain("介绍一下舍利塔");
+  expect(userText).toContain("query 填「B6」");
 
-  expect(toolResult).toMatchObject({ matched: true, coverage: "full" });
-  expect(JSON.stringify(toolResult)).not.toContain("18.74");
-  expect(JSON.stringify(toolResult)).not.toContain("http");
   expect(toolResult).toMatchObject({
-    facts: expect.arrayContaining([{ label: "高度", value: "约 15 米" }]),
+    matched: true,
+    coverage: "full",
+    name: "舍利塔",
+    unsettled: [],
   });
+  const serialized = JSON.stringify(toolResult);
+  expect(serialized).toContain("18.04");
+  expect(serialized).toContain("五丈余");
+  for (const hidden of ["18.74", "http", "basis", "detail", "B6"])
+    expect(serialized).not.toContain(hidden);
 });
 
 it("人物查询保留 main 的资料并明确其尚未交叉核实", async () => {
@@ -157,7 +163,7 @@ it("人物查询保留 main 的资料并明确其尚未交叉核实", async () =
     return stream(
       {
         role: "assistant",
-        content: "据参赛阅读资料记载，有李白与栖霞山的相关故事。",
+        content: "相传李白曾寓居栖霞，品茶赋诗。",
       },
       "stop",
     );
@@ -187,4 +193,72 @@ it("人物查询保留 main 的资料并明确其尚未交叉核实", async () =
     ]),
   });
   expect(result?.guidance).toContain("尚未交叉核实");
+  expect(JSON.stringify(result)).not.toContain("参赛阅读");
+});
+
+it("餐饮推荐正文使用已核验数据，模型不能把直线距离编成步行路线", async () => {
+  vi.stubEnv("OPENAI_API_KEY", "test-placeholder");
+  vi.stubEnv("OPENAI_BASE_URL", "https://test-model.invalid");
+  vi.stubEnv("OPENAI_MODEL", "test-qixia");
+  vi.stubEnv("AMAP_WEB_SERVICE_KEY", "");
+  let calls = 0;
+  vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+    if (!String(input).startsWith("https://test-model.invalid/"))
+      throw new Error("Unexpected request");
+    if (++calls === 1)
+      return stream(
+        {
+          role: "assistant",
+          tool_calls: [
+            {
+              index: 0,
+              id: "food-call",
+              type: "function",
+              function: {
+                name: "recommend_qixia_trip",
+                arguments: JSON.stringify({
+                  need: "food",
+                  startName: "栖霞古寺",
+                  returnName: "西门",
+                }),
+              },
+            },
+          ],
+        },
+        "tool_calls",
+      );
+    return stream(
+      { role: "assistant", content: "沿平路步行22分钟，餐馆一定有座位。" },
+      "stop",
+    );
+  });
+  const response = await POST(
+    new Request("http://localhost/api/chat", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        messages: [
+          {
+            id: "food",
+            role: "user",
+            parts: [{ type: "text", text: "在栖霞古寺附近吃点东西再回西门" }],
+          },
+        ],
+      }),
+    }),
+  );
+  const events = (await response.text())
+    .split("\n")
+    .filter((line) => line.startsWith("data: {"))
+    .map((line) => JSON.parse(line.slice(6)));
+  const text = events
+    .filter((e) => e.type === "text-delta")
+    .map((e) => e.delta)
+    .join("");
+  expect(text).toContain("千佛斋素菜馆");
+  expect(text).toContain("直线约");
+  expect(text).toContain("暂未取得可靠步行路线");
+  expect(text).not.toContain("22分钟");
+  expect(text).not.toContain("一定有座位");
+  expect(events.some((e) => e.type === "tool-output-available")).toBe(true);
 });

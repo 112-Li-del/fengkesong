@@ -1,5 +1,6 @@
-import { landmarkIcon } from "@/lib/landmark-icons";
-import { scenicPlaces } from "@/lib/qixia-map";
+import { landmarkIcon } from "../../lib/landmark-icons";
+import { layoutScenicPoints } from "../../lib/scenic-display";
+import { scenicPlaces } from "../../lib/qixia-map";
 import type { MapAPI, MapInstance, Place } from "./amap-types";
 
 export function scenicMarkers(
@@ -7,17 +8,12 @@ export function scenicMarkers(
   map: MapInstance,
   onSelect: (place: Place) => void,
 ) {
-  // 导览图配准得来的细部点位（id 以 QXS 开头）：远景只留圆点，放大后才展开插画与名称，
-  // 否则 100 多个标签会在山门一带糊成一片。
-  const minorRoots: HTMLElement[] = [];
+  let selectedId: string | null = null;
+  let visibleIds: ReadonlySet<string> = new Set(scenicPlaces.map((p) => p.id));
+  let routeIds: ReadonlyMap<string, number> = new Map();
   const entries = scenicPlaces.map((place) => {
     const root = document.createElement("div");
     root.className = "scenic-coordinate";
-    const minor = place.id.startsWith("QXS");
-    if (minor) {
-      root.classList.add("is-minor");
-      minorRoots.push(root);
-    }
     const icon = landmarkIcon(place.name);
     let art: HTMLElement;
     if (icon) {
@@ -37,13 +33,16 @@ export function scenicMarkers(
     const dot = document.createElement("button");
     dot.type = "button";
     dot.className = "scenic-site-dot";
-    dot.setAttribute("aria-label", "查看" + place.name + "的真实位置");
+    dot.setAttribute("aria-label", "查看" + place.name + "的位置");
     dot.title = place.name;
     const label = document.createElement("button");
     label.type = "button";
     label.className = "scenic-site-label";
     label.textContent = place.name;
     label.setAttribute("aria-label", "查看" + place.name);
+    const number = document.createElement("span");
+    number.className = "scenic-route-number";
+    dot.append(number);
     root.append(art, dot, label);
     const marker = new api.Marker({
       map,
@@ -79,32 +78,93 @@ export function scenicMarkers(
     });
     for (const name of ["pointerdown", "mousedown", "touchstart", "dblclick"])
       label.addEventListener(name, (event) => event.stopPropagation());
-    return { place, root, dot, marker, label };
+    return { place, root, dot, marker, label, art, number, attached: true };
   });
-  const MINOR_REVEAL_ZOOM = 16.6;
-  const revealMinor = () => {
-    const reveal = map.getZoom() >= MINOR_REVEAL_ZOOM;
-    for (const root of minorRoots) root.classList.toggle("is-revealed", reveal);
+  const update = () => {
+    const { clientWidth: width, clientHeight: height } = map.getContainer();
+    const points = entries
+      .filter((e) => visibleIds.has(e.place.id))
+      .map((e) => ({
+        id: e.place.id,
+        name: e.place.name,
+        ...map.lngLatToContainer([e.place.location.lng, e.place.location.lat]),
+        width: e.place.name.length * 13 + 18,
+      }));
+    const layout = layoutScenicPoints(
+      points,
+      map.getZoom(),
+      width,
+      height,
+      selectedId,
+      routeIds,
+    );
+    for (const e of entries) {
+      const state = layout.get(e.place.id);
+      const attached = !!state;
+      if (attached !== e.attached) {
+        e.marker.setMap(attached ? map : null);
+        e.attached = attached;
+      }
+      e.root.classList.toggle("has-lod-label", !!state?.label);
+      e.root.classList.toggle("has-lod-art", !!state?.art);
+      if (state?.label) {
+        e.label.style.left = state.label.x + "px";
+        e.label.style.top = state.label.y + "px";
+      }
+      const order = routeIds.get(e.place.id);
+      e.root.classList.toggle("is-route-stop", order !== undefined);
+      e.number.textContent = order === undefined ? "" : String(order);
+      e.dot.setAttribute(
+        "aria-label",
+        (order === undefined ? "" : "路线第" + order + "站，") +
+          "查看" +
+          e.place.name +
+          "的位置",
+      );
+    }
   };
-  revealMinor();
-  map.on("zoomend", revealMinor);
+  update();
+  for (const event of ["zoomend", "moveend", "resize"]) map.on(event, update);
   return {
     setVisibleIds(ids: ReadonlySet<string>) {
-      for (const entry of entries)
-        entry.marker.setMap(ids.has(entry.place.id) ? map : null);
+      visibleIds = ids;
+      update();
     },
-    setSelected(id: string | null) {
+    setRoute(ids: ReadonlyMap<string, number>) {
+      routeIds = ids;
+      update();
+    },
+    setSelected(id: string | null, bounce = false) {
+      selectedId = id;
       for (const entry of entries) {
         const selected = entry.place.id === id;
         entry.root.classList.toggle("is-selected", selected);
+        if (
+          selected &&
+          bounce &&
+          !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          for (const animation of entry.root.getAnimations())
+            animation.cancel();
+          entry.root.animate(
+            [
+              { transform: "translateY(0)" },
+              { transform: "translateY(-6px)" },
+              { transform: "translateY(0)" },
+            ],
+            { duration: 420, easing: "ease-out" },
+          );
+        }
         entry.label.classList.toggle("is-selected", selected);
         entry.label.setAttribute("aria-pressed", String(selected));
         entry.dot.setAttribute("aria-pressed", String(selected));
         entry.marker.setzIndex(selected ? 180 : 120);
       }
+      update();
     },
     remove() {
-      map.off("zoomend", revealMinor);
+      for (const event of ["zoomend", "moveend", "resize"])
+        map.off(event, update);
       entries.forEach((entry) => entry.marker.setMap(null));
     },
   };

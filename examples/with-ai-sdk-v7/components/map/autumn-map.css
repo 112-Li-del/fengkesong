@@ -104,38 +104,65 @@
   align-items: flex-end;
   gap: 12px;
 }
-.autumn-view-switch,
-.autumn-display-tools,
-.autumn-zoom-tools {
+.autumn-route-actions {
   display: flex;
-  padding: 4px;
-  background: #fff9edee;
+  align-items: center;
+  gap: 8px;
+}
+.autumn-route-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 0 15px;
   border: 1px solid #dac7a6;
   border-radius: 10px;
+  background: #fff9ed;
+  color: #75452f;
   box-shadow: 0 3px 12px #72542b15;
-}
-.autumn-map-tools button {
-  border-radius: 6px;
-  padding: 9px 11px;
-  font-size: 11px;
+  font-size: 13px;
   cursor: pointer;
 }
-.autumn-map-tools button:disabled {
+.autumn-route-actions button:hover {
+  background: #f7ead4;
+}
+.autumn-route-actions button:focus-visible {
+  outline: 2px solid #a74732;
+  outline-offset: 3px;
+}
+.autumn-route-actions button:disabled {
   opacity: 0.5;
   cursor: default;
 }
-.autumn-map-tools button[aria-pressed="true"] {
-  background: #a74732;
-  color: #fff7e8;
+.autumn-route-actions .autumn-locate-button {
+  width: 44px;
+  padding: 0;
 }
-.autumn-zoom-tools button {
-  min-width: 36px;
-  font-size: 15px;
+.autumn-route-summary {
+  width: 200px;
+  padding: 12px;
+  border: 1px solid #dac7a6;
+  border-radius: 10px;
+  background: #fff9ed;
+  color: #75452f;
+  font-size: 12px;
+  box-shadow: 0 3px 12px #72542b15;
 }
-.autumn-zoom-tools button:last-child {
+.autumn-route-summary strong,
+.autumn-route-summary > span {
+  display: block;
+}
+.autumn-route-summary > span {
+  margin-top: 5px;
+  color: #8b7963;
   font-size: 11px;
-  border-left: 1px solid #e5d8c0;
-  border-radius: 0;
+}
+.autumn-route-summary .scenic-route-note {
+  padding: 0;
+  margin: 8px 0 0;
+  background: transparent;
+  line-height: 1.6;
 }
 .autumn-map-caption {
   position: absolute;
@@ -175,9 +202,8 @@
     bottom: 122px;
     gap: 7px;
   }
-  .autumn-map-tools button {
-    padding: 8px;
-    font-size: 10px;
+  .autumn-route-summary {
+    width: 190px;
   }
   .autumn-map-caption {
     left: 12px;

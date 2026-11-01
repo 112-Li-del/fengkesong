@@ -18,16 +18,22 @@
 .scenic-site-dot::after {
   content: "";
   position: absolute;
-  inset: 3px;
-  background: #a94d31;
-  border: 2px solid #fffaf0;
+  inset: 4px;
+  box-sizing: border-box;
+  background: transparent;
+  border: 1.5px solid #92734a;
   border-radius: 50%;
-  box-shadow: 0 0 0 1px #8d482477;
+  box-shadow: none;
+}
+.scenic-coordinate.has-lod-label .scenic-site-dot::after {
+  inset: 3px;
+  border-color: #785934;
 }
 .scenic-coordinate.is-selected .scenic-site-dot::after {
-  inset: 0;
+  inset: 2px;
+  border: 2px solid #fff8e9;
   background: #aa2e21;
-  box-shadow: 0 0 0 5px #b54f3333;
+  box-shadow: 0 0 0 1px #aa2e21;
 }
 .scenic-site-art {
   display: block;
@@ -133,7 +139,7 @@
   display: none;
 }
 .is-dots-only .scenic-site-dot::after {
-  inset: 2px;
+  inset: 4px;
 }
 @media (max-width: 720px) {
   .scenic-site-label {
@@ -367,18 +373,53 @@
   cursor: not-allowed;
 }
 
-/* 细部点位：远景只留圆点，放大后才放出插画与名称 */
-.scenic-coordinate.is-minor:not(.is-revealed) .scenic-site-art,
-.scenic-coordinate.is-minor:not(.is-revealed) .scenic-site-label {
+/* 分级布局只移动名称，不移动地理锚点。 */
+.scenic-coordinate:not(.has-lod-label) .scenic-site-label,
+.scenic-coordinate:not(.has-lod-art) .scenic-site-art {
   display: none;
 }
-.scenic-coordinate.is-minor .scenic-site-dot::after {
-  background: #b06a48;
+.scenic-route-number {
+  display: none;
 }
-.scenic-coordinate.is-minor.is-revealed .scenic-site-label {
+.scenic-coordinate.is-route-stop .scenic-route-number {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: #80543f;
+  color: #fff8e9;
+  border: 2px solid #fff8e9;
+  font: 600 11px/1 sans-serif;
+  z-index: 1;
+}
+.scenic-coordinate.is-route-stop.is-selected .scenic-route-number {
+  background: #aa2e21;
+}
+.autumn-display-tools select {
+  max-width: 175px;
+  background: #fff8e9;
+  color: #6e402b;
+  border: 1px solid #cbac7d;
+  border-radius: 8px;
+  padding: 8px;
+}
+.scenic-route-note {
+  max-width: 175px;
+  padding: 6px;
+  color: #6e402b;
+  background: #fff8e9;
   font-size: 11px;
 }
-.scenic-coordinate.is-selected .scenic-site-label,
-.scenic-coordinate.is-selected .scenic-site-art {
-  display: block;
+
+.scenic-coordinate.has-lod-art .scenic-site-art {
+  top: -78px;
+}
+
+.scenic-coordinate:not(.has-lod-label):not(.is-selected):not(.is-route-stop)
+  .scenic-site-dot::after {
+  inset: 4px;
+  background: transparent;
+  border: 1.5px solid #92734a;
+  box-shadow: none;
 }
