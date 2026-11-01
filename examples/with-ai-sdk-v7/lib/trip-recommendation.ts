@@ -203,7 +203,14 @@ export async function recommendTrip(
       message: "请确认返程地点名称，例如西门或南门；暂不替你更换目的地。",
     };
   const namedStart = resolve(input.startName);
-  const origin = context.position?.point ?? namedStart?.location;
+  // 用户明确说了入园门、而人还在园外时，从该门起算；否则会把通勤距离当成分段路线。
+  const position = context.position?.point;
+  const startFromGate =
+    namedStart !== undefined &&
+    (position === undefined || distance(position, namedStart.location) > 1500);
+  const origin = startFromGate
+    ? namedStart.location
+    : (position ?? namedStart?.location);
   if (!origin)
     return {
       status: "needs_location",
@@ -215,7 +222,7 @@ export async function recommendTrip(
     input.stamina === "low" ||
     input.stroller ||
     (input.childAge !== undefined && input.childAge <= 6);
-  const originName = context.position ? "当前位置" : namedStart!.name;
+  const originName = !startFromGate && position ? "当前位置" : namedStart!.name;
   const describe = (p: Place) => ({
     id: p.id,
     name: p.name,
@@ -508,7 +515,7 @@ export async function recommendTrip(
     plannedStayMinutes: stayMinutes,
     plannedOutboundWalkMinutes: walkingMinutes,
     status: segments.length ? "planned" : "candidates_only",
-    originSource: context.position ? "当前定位" : "用户指定起点",
+    originSource: startFromGate ? "用户指定起点" : "当前定位",
     route: route?.name,
     preferences: input,
     segments,

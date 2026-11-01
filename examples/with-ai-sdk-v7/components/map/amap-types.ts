@@ -44,6 +44,7 @@ export type MapInstance = {
     immediately?: boolean,
   ): void;
   setLimitBounds(bounds: unknown): void;
+  setBounds(bounds: unknown, immediately?: boolean): void;
   clearLimitBounds(): void;
   setZooms(zooms: number[]): void;
   setStatus(status: { dragEnable: boolean }): void;

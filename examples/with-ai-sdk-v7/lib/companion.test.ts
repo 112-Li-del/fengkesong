@@ -6,6 +6,7 @@ import {
   careSuggestion,
   dismissSuggestion,
   expiredSuggestions,
+  facilitySuggestion,
   nearestSuggestionTarget,
   type Suggestion,
 } from "./companion";
@@ -35,6 +36,16 @@ describe("suggestion copy", () => {
     expect(approachSuggestion(place, 180, 1).body).toContain("180");
     expect(careSuggestion(place, 640, 2).id).toBe("care:QXS001");
     expect(careSuggestion(place, 640, 2).body).toContain("640");
+  });
+
+  it("facility suggestions locate on the map instead of opening knowledge", () => {
+    const toilet = { ...place, id: "QXF020", name: "卫生间" };
+    const item = facilitySuggestion(toilet, "卫生间", 45, 3);
+    expect(item?.id).toBe("facility:QXF020");
+    expect(item?.title).toBe("附近有卫生间");
+    expect(item?.action).toBe("locate");
+    expect(item?.body).toContain("以现场为准");
+    expect(facilitySuggestion(toilet, "门票入口", 45, 3)).toBeNull();
   });
 });
 

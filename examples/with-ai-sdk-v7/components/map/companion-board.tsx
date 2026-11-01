@@ -7,6 +7,7 @@ const KIND_LABEL: Record<Suggestion["kind"], string> = {
   arrive: "到达",
   approach: "接近",
   care: "顺路",
+  facility: "设施",
 };
 
 type Props = {
@@ -70,7 +71,7 @@ export function CompanionBoard({
                 className="companion-card-open"
                 onClick={() => onOpen(item)}
               >
-                听听讲解
+                {item.action === "locate" ? "在地图上看" : "听听讲解"}
               </button>
             </li>
           ))}

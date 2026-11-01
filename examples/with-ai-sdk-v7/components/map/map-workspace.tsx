@@ -65,6 +65,7 @@ import {
   careSuggestion,
   dismissSuggestion,
   expiredSuggestions,
+  facilitySuggestion,
   nearestSuggestionTarget,
   type Suggestion,
 } from "@/lib/companion";
@@ -149,6 +150,26 @@ export function MapWorkspace() {
     if (state !== "ready" || !api || !view || !activeRoute) {
       setScenicRouteNote("");
       return;
+    }
+    // 路线规划完成后把地图对准整条路线，避免线路画在视野之外。
+    const points = activeRoute.legs.flatMap((leg) => [leg.from, leg.to]);
+    if (points.length) {
+      const lngs = points.map((point) => point.lng);
+      const lats = points.map((point) => point.lat);
+      const minLng = Math.min(...lngs);
+      const maxLng = Math.max(...lngs);
+      const minLat = Math.min(...lats);
+      const maxLat = Math.max(...lats);
+      if (Math.max(maxLng - minLng, maxLat - minLat) > 0.002)
+        view.setBounds(
+          new api.Bounds([minLng, minLat], [maxLng, maxLat]),
+          true,
+        );
+      else
+        view.setZoomAndCenter(17, [
+          (minLng + maxLng) / 2,
+          (minLat + maxLat) / 2,
+        ]);
     }
     const layer = flowingRoute(view);
     setScenicRouteNote("正在载入从起点出发的步行道路…");
@@ -258,14 +279,31 @@ export function MapWorkspace() {
     const timer = window.setInterval(() => {
       const fix = latestPosition.current;
       if (!fix || document.hidden) return;
+      const facility = nearestSuggestionTarget(
+        facilityPlaces.filter((place) => place.category !== "门票入口"),
+        fix.point,
+        40,
+        300,
+      );
+      if (facility) {
+        const item = facilitySuggestion(
+          facility.place,
+          facility.place.category,
+          facility.distance,
+          Date.now(),
+        );
+        if (item) pushSuggestion(item);
+      }
       const target = nearestSuggestionTarget(
         targets.current,
         fix.point,
         60,
         CARE_MAX_DISTANCE,
       );
-      if (!target) return;
-      pushSuggestion(careSuggestion(target.place, target.distance, Date.now()));
+      if (target)
+        pushSuggestion(
+          careSuggestion(target.place, target.distance, Date.now()),
+        );
       setCompanionSuggestions((items) => expiredSuggestions(items, Date.now()));
     }, CARE_INTERVAL_MS);
     return () => window.clearInterval(timer);
@@ -535,6 +573,10 @@ export function MapWorkspace() {
   function openCompanion(place: Place) {
     if (selectedRef.current?.id !== place.id) select(place, false);
     setKnowledgeOpen(true);
+    navigation.current?.reveal(place.location);
+  }
+  function locateCompanion(place: Place) {
+    if (selectedRef.current?.id !== place.id) setSelected(place);
     navigation.current?.reveal(place.location);
   }
   // 演示保底：手动选点后走与 GPS 到达同一条链路，不依赖现场定位。
@@ -1194,8 +1236,11 @@ export function MapWorkspace() {
           onOpen={(suggestion) => {
             const place =
               scenicPlaces.find((item) => item.id === suggestion.placeId) ??
+              facilityPlaces.find((item) => item.id === suggestion.placeId) ??
               mapSearchCatalog.find((item) => item.id === suggestion.placeId);
-            if (place) openCompanion(place);
+            if (!place) return;
+            if (suggestion.action === "locate") locateCompanion(place);
+            else openCompanion(place);
           }}
           onDismiss={(id) =>
             setCompanionSuggestions((items) => dismissSuggestion(items, id))
