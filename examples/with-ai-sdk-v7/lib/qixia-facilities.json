@@ -70,8 +70,8 @@
     "en": "Inquiry",
     "group": "info",
     "location": {
-      "lng": 118.965389,
-      "lat": 32.146238
+      "lng": 118.96507,
+      "lat": 32.145805
     },
     "category": "门票入口",
     "coordinateSource": "guide-map-estimate",
@@ -109,8 +109,8 @@
     "en": "Ticket Check",
     "group": "check",
     "location": {
-      "lng": 118.965573,
-      "lat": 32.14655
+      "lng": 118.964799,
+      "lat": 32.145866
     },
     "category": "门票入口",
     "coordinateSource": "guide-map-estimate",
@@ -165,8 +165,8 @@
     "en": "Clinic",
     "group": "medical",
     "location": {
-      "lng": 118.96522,
-      "lat": 32.14644
+      "lng": 118.965022,
+      "lat": 32.145779
     },
     "category": "安全医疗",
     "coordinateSource": "guide-map-estimate",
@@ -424,8 +424,8 @@
     "en": "Sightseeing Bus Stop",
     "group": "bus",
     "location": {
-      "lng": 118.966002,
-      "lat": 32.146586
+      "lng": 118.964789,
+      "lat": 32.145709
     },
     "category": "停车交通",
     "coordinateSource": "guide-map-estimate",
@@ -528,8 +528,8 @@
     "en": "Fire Equipment Room",
     "group": "fire",
     "location": {
-      "lng": 118.965144,
-      "lat": 32.146384
+      "lng": 118.965156,
+      "lat": 32.145854
     },
     "category": "安全医疗",
     "coordinateSource": "guide-map-estimate",
@@ -541,8 +541,8 @@
     "en": "Forest Fire Squad",
     "group": "squad",
     "location": {
-      "lng": 118.9651,
-      "lat": 32.146851
+      "lng": 118.964751,
+      "lat": 32.145895
     },
     "category": "安全医疗",
     "coordinateSource": "guide-map-estimate",
