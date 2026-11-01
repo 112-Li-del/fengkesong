@@ -16,6 +16,8 @@ it("dump answer views to JSON", () => {
     // 知识库重构后 openIssues 改名为 unsettled；这里仍以 openIssues 键导出，
     // 保持 scripts/zion-sync-knowledge.mjs 与 Zion 表 open_issues 列的契约不变。
     openIssues: v.unsettled ?? [],
+    // sourceNote 已从发布口径移除（改为聊天侧固定署名），不再按行导出。
+    visitorInfo: v.visitorInfo ?? null,
     coverage: v.coverage,
   }));
   writeFileSync(

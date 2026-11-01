@@ -55,7 +55,7 @@ function toRow(r) {
     facts: r.facts ?? [],
     timeline: r.timeline ?? [],
     open_issues: r.openIssues ?? [],
-    source_note: r.sourceNote ?? "",
+    visitor_info: r.visitorInfo ?? null,
     coverage: r.coverage ?? "none",
   };
 }
@@ -94,7 +94,7 @@ console.log(`本地 ${local.length} 条。`);
 
 console.log("== 2/4 读取 Zion 现状 ==");
 const remote = await gql(
-  `{ ${TABLE}(limit: 1000) { id code name aliases overview facts timeline open_issues source_note coverage } }`,
+  `{ ${TABLE}(limit: 1000) { id code name aliases overview facts timeline open_issues visitor_info coverage } }`,
 );
 const remoteRows = remote[TABLE] ?? [];
 console.log(`线上 ${remoteRows.length} 条。`);
@@ -112,15 +112,17 @@ for (const r of local) {
     toInsert.push(want);
     continue;
   }
+  // 注意：source_note 已从发布口径移除（改为聊天侧固定署名），不参与对比也不再写入，
+  // 否则线上残留的旧值会让每一行都被误判成「已变更」。
   const same = [
     "name",
     "overview",
-    "source_note",
     "coverage",
     "aliases",
     "facts",
     "timeline",
     "open_issues",
+    "visitor_info",
   ].every((k) => stable(want[k]) === stable(have[k] ?? null));
   if (!same) toUpdate.push({ id: have.id, ...want });
 }
