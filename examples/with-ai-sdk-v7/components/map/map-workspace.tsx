@@ -23,6 +23,11 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { placeCategories, type PlaceFilter } from "@/lib/place-catalog";
+import {
+  AMAP_JS_KEY,
+  AMAP_JS_SECURITY_CODE,
+  FKS_STATIC,
+} from "@/lib/zion-config";
 import { referenceScenicPlaces } from "@/lib/scenic-places";
 import { mapSearchCatalog, searchMapPlaces } from "@/lib/map-search";
 import { locationQuality } from "@/lib/location-quality";
@@ -207,23 +212,38 @@ export function MapWorkspace() {
     const abort = new AbortController();
     async function initialize() {
       try {
-        const response = await fetch("/api/amap/config", {
-          cache: "no-store",
-          signal: abort.signal,
-        });
-        if (!response.ok) throw new Error("Configuration unavailable");
         const config: {
           configured: boolean;
           key: string | null;
           mcpConfigured: boolean;
-        } = await response.json();
+        } = FKS_STATIC
+          ? {
+              configured: Boolean(AMAP_JS_KEY),
+              key: AMAP_JS_KEY || null,
+              mcpConfigured: false,
+            }
+          : await (async () => {
+              const response = await fetch("/api/amap/config", {
+                cache: "no-store",
+                signal: abort.signal,
+              });
+              if (!response.ok) throw new Error("Configuration unavailable");
+              return (await response.json()) as {
+                configured: boolean;
+                key: string | null;
+                mcpConfigured: boolean;
+              };
+            })();
         if (cancelled) return;
         setMcp(config.mcpConfigured);
         if (!config.configured || !config.key) {
           setState("missing");
           return;
         }
-        const api = await loadAmap(config.key);
+        const api = await loadAmap(
+          config.key,
+          FKS_STATIC ? AMAP_JS_SECURITY_CODE || undefined : undefined,
+        );
         const origin = scenicCenter;
         if (cancelled || !container.current) return;
         sdk.current = api;
