@@ -60,6 +60,7 @@ const culture = new Set([
   "明征君碑",
   "忆君禅画展览",
   "云谷艺术馆",
+  "陆羽茶庄",
 ]);
 const autumn = new Set(["红叶谷", "桃花湖", "枫林湖", "读枫阁", "天开岩"]);
 const hills = new Set([
@@ -89,6 +90,34 @@ const PLACE_ALIASES: Record<string, string> = {
   栖霞山南门: "南门售票处",
 };
 
+/** 游客用人物/主题指路时的落点，例如「陆羽」→ 陆羽茶庄。 */
+const TOPIC_PLACES: Record<string, string[]> = {
+  陆羽: ["陆羽茶庄"],
+  茶圣: ["陆羽茶庄"],
+  陆羽茶事: ["陆羽茶庄"],
+  试茶: ["陆羽茶庄"],
+  明征君: ["明征君碑"],
+  始皇: ["始皇临江处"],
+};
+const INTEREST_WORDS: Record<string, string[]> = {
+  autumn: ["红叶", "枫叶", "赏秋", "秋色", "层林"],
+  culture: ["文化", "历史", "古寺", "寺庙", "碑刻", "讲解", "陆羽", "茶"],
+  family: ["孩子", "小孩", "亲子", "宝宝", "小朋友"],
+  rest: ["休息", "歇脚", "慢慢走", "不累"],
+};
+
+/** 模型漏填 interests 时的兜底：从原话里认兴趣。 */
+export function inferInterests(
+  text: string,
+  existing: TripRequest["interests"] = [],
+): TripRequest["interests"] {
+  const interests = new Set<TripRequest["interests"][number]>(existing);
+  for (const [interest, words] of Object.entries(INTEREST_WORDS))
+    if (words.some((word) => text.includes(word)))
+      interests.add(interest as TripRequest["interests"][number]);
+  return [...interests];
+}
+
 /** 从游客原话里认出点名的景点，模型没填 mustVisit 时兜底。 */
 export function namedPlacesIn(text: string, existing: string[] = []) {
   const names = new Set(existing);
@@ -99,6 +128,10 @@ export function namedPlacesIn(text: string, existing: string[] = []) {
   // 别名只认落到景点上的那些；「西门」「南门」是入口，不是要去的景点。
   for (const [alias, name] of Object.entries(PLACE_ALIASES))
     if (text.includes(alias) && scenicNames.has(name)) names.add(name);
+  // 「陆羽相关景点」这类按人物/主题说的，落到对应景点。
+  for (const [topic, places] of Object.entries(TOPIC_PLACES))
+    if (text.includes(topic))
+      for (const name of places) if (scenicNames.has(name)) names.add(name);
   return [...names].slice(0, 4);
 }
 const walkingCache = new Map<string, { expires: number; value: WalkingLeg }>();

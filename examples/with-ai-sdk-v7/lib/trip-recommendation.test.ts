@@ -1,6 +1,7 @@
 import { afterEach, expect, it, vi } from "vitest";
 import {
   fetchWalkingLeg,
+  inferInterests,
   namedPlacesIn,
   recommendTrip,
   tripRequestSchema,
@@ -437,6 +438,33 @@ it("模型漏填 mustVisit 时，从游客原话里认出点名的景点", () =>
   expect(namedPlacesIn("想吃点东西")).toEqual([]);
   // 入园门是起点，不该被当成必去景点
   expect(namedPlacesIn("从西门进去看看")).not.toContain("西门售票处");
+});
+
+it("按人物说「陆羽相关景点」也能落到陆羽茶庄", () => {
+  expect(
+    namedPlacesIn("带爸妈来，腿脚不太好，想看红叶和陆羽相关景点"),
+  ).toContain("陆羽茶庄");
+});
+
+it("模型漏填 interests 时，从原话里认出红叶与文化", () => {
+  expect(
+    inferInterests("带爸妈来，腿脚不太好，想看红叶和陆羽相关景点"),
+  ).toEqual(expect.arrayContaining(["autumn", "culture"]));
+  expect(inferInterests("就随便走走", ["family"])).toEqual(["family"]);
+});
+
+it("点名陆羽茶庄的轻松路线里必须包含它", async () => {
+  const result = await recommendTrip(
+    tripRequestSchema.parse({
+      startName: "西门",
+      mustVisit: ["陆羽茶庄"],
+      stamina: "low",
+      minutes: 240,
+    }),
+    {},
+    walk,
+  );
+  expect(result.mustVisit).toContain("陆羽茶庄");
 });
 
 it("带老人孩子点名登高点时给风险提示，不直接排除", async () => {

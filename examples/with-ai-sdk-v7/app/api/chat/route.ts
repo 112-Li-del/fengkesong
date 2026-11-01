@@ -28,6 +28,7 @@ import {
   tripRequestSchema,
   fetchWalkingLeg,
   namedPlacesIn,
+  inferInterests,
 } from "../../../lib/trip-recommendation";
 import { formatTripAnswer } from "../../../lib/trip-answer";
 import { finalAnswerStream } from "../../../lib/final-answer-stream";
@@ -109,11 +110,12 @@ export async function POST(req: Request) {
         "根据本次定位、目标路线、孩子年龄、推车、体力、兴趣、时间推荐分段游览或查厕所休息餐饮返程。推荐路线前必须调用；游客已给的需求不要反复询问，未知的关键限制先简短问清。",
       inputSchema: zodSchema(tripRequestSchema),
       execute: async (input) => {
-        // 模型偶尔漏填 mustVisit：从游客原话再抓一遍点名的景点，避免静默换点。
+        // 模型偶尔漏填 mustVisit / interests：从游客原话再抓一遍，避免静默换点或漏掉红叶。
         const plan = await recommendTrip(
           {
             ...input,
             mustVisit: namedPlacesIn(lastUserText, input.mustVisit),
+            interests: inferInterests(lastUserText, input.interests),
           },
           tripContext,
           (from, to) => fetchWalkingLeg(from, to, req.signal),
