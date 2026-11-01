@@ -44,6 +44,11 @@ function amapFromEnvLocal() {
     if (key === "AMAP_JS_API_KEY") found.NEXT_PUBLIC_AMAP_JS_API_KEY = clean;
     if (key === "AMAP_JS_SECURITY_CODE")
       found.NEXT_PUBLIC_AMAP_JS_SECURITY_CODE = clean;
+    // 和风生活指数走浏览器直连（接口开放 CORS）。注意：这两项会被公开在前端产物里，
+    // 只用于 indices 这类每天一变的公共指数，其余和风能力仍由服务端密钥承担。
+    if (key === "QWEATHER_API_HOST")
+      found.NEXT_PUBLIC_QWEATHER_API_HOST = clean;
+    if (key === "QWEATHER_API_KEY") found.NEXT_PUBLIC_QWEATHER_API_KEY = clean;
   }
   return found;
 }
@@ -58,6 +63,10 @@ const env = {
 
 if (!env.NEXT_PUBLIC_AMAP_JS_API_KEY)
   console.warn("[build:zion] 未取到 AMAP_JS_API_KEY，地图将显示为未配置。");
+if (!env.NEXT_PUBLIC_QWEATHER_API_KEY || !env.NEXT_PUBLIC_QWEATHER_API_HOST)
+  console.warn(
+    "[build:zion] 未取到 QWEATHER_API_HOST / QWEATHER_API_KEY，生活指数将显示为暂不可用。",
+  );
 
 // 清掉上一次产物，避免 Turbopack 清理旧文件时被误判为批量删除。
 spawnSync(
