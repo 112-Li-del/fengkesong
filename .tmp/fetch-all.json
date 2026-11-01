@@ -1,3 +1,0 @@
-{
-  "query": "{ qixia_knowledge(limit:1000){ code name aliases overview facts timeline open_issues source_note coverage } }"
-}
