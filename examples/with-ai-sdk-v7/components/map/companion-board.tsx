@@ -1,7 +1,15 @@
 "use client";
 
-import { BellRing, ChevronDown, Volume2, VolumeX, X } from "lucide-react";
+import {
+  BellRing,
+  ChevronDown,
+  CloudRain,
+  Volume2,
+  VolumeX,
+  X,
+} from "lucide-react";
 import { useState } from "react";
+import type { WeatherBrief } from "@/lib/companion-weather";
 import type { Suggestion } from "@/lib/companion";
 
 const KIND_LABEL: Record<Suggestion["kind"], string> = {
@@ -13,6 +21,7 @@ const KIND_LABEL: Record<Suggestion["kind"], string> = {
 
 type Props = {
   suggestions: Suggestion[];
+  weather?: WeatherBrief | null;
   onOpen: (suggestion: Suggestion) => void;
   onDismiss: (id: string) => void;
   onClear: () => void;
@@ -22,6 +31,7 @@ type Props = {
 
 export function CompanionBoard({
   suggestions,
+  weather,
   onOpen,
   onDismiss,
   onClear,
@@ -70,6 +80,30 @@ export function CompanionBoard({
           <ChevronDown size={14} />
         </button>
       </header>
+      {!collapsed && weather && (
+        <section className="companion-weather" aria-label="霞宝天气建议">
+          <div className="companion-weather-head">
+            <CloudRain size={14} />
+            <span>天气 · {weather.source}</span>
+          </div>
+          <strong>{weather.headline}</strong>
+          <ul>
+            {weather.items.slice(0, 2).map((item) => (
+              <li key={item.id}>
+                <b>{item.title}</b>
+                <span>{item.body}</span>
+              </li>
+            ))}
+          </ul>
+          <small>
+            山顶代表点 · 数据{" "}
+            {new Date(weather.at).toLocaleTimeString("zh-CN", {
+              hour12: false,
+            })}{" "}
+            · 非景区实测
+          </small>
+        </section>
+      )}
       {collapsed ? null : suggestions.length === 0 ? (
         <p className="companion-board-empty">
           靠近景点时，这里会不断刷新新的建议。
