@@ -218,4 +218,14 @@ describe("lookupQixiaKnowledge", () => {
     for (const place of linked)
       expect(lookedUpCode(place.name), place.name).toBe(place.referenceCode);
   });
+
+  it("只说了景点名的一截也能落到对应条目，而不是退回整体介绍", () => {
+    expect(lookedUpCode("陆羽茶事")).toBe("C13");
+    expect(lookedUpCode("栖霞山陆羽茶事或遗迹")).toBe("C13");
+  });
+
+  it("整座山的问法仍回到总条目", () => {
+    expect(lookedUpCode("栖霞山有哪些景点")).toBe("S0");
+    expect(lookedUpCode("栖霞山")).toBe("S0");
+  });
 });

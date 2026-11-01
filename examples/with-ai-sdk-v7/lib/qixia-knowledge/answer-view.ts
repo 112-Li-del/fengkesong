@@ -165,6 +165,73 @@ function mentionedPeople(text: string): QixiaPerson[] {
   );
 }
 
+const SEARCH_STOPWORDS = new Set([
+  "相关",
+  "景点",
+  "景区",
+  "介绍",
+  "资料",
+  "内容",
+  "有哪些",
+  "有什么",
+  "什么",
+  "怎么",
+  "哪里",
+  "附近",
+  "关于",
+  "一下",
+  "请问",
+  "可以",
+  "想看",
+  "想知道",
+  "地方",
+  "哪儿",
+  "哪个",
+  "多少",
+  "历史",
+  "故事",
+  "情况",
+  "栖霞山",
+  "栖霞",
+  "霞山",
+  "公园",
+]);
+
+function queryWindows(text: string): string[] {
+  const clean = text.replace(
+    /[\s,，。、；;：:！!？?"'“”‘’（）()《》【】·\-—…]/g,
+    "",
+  );
+  const out = new Set<string>();
+  for (let length = 4; length >= 2; length--)
+    for (let index = 0; index + length <= clean.length; index++) {
+      const window = clean.slice(index, index + length);
+      if (!SEARCH_STOPWORDS.has(window)) out.add(window);
+    }
+  return [...out];
+}
+
+/**
+ * 问句里没有现成景点名、但提到条目正文里的关键词时（如「陆羽」之于陆羽茶庄），
+ * 用滑动窗口在正文里找最贴近的一处，避免只剩整体介绍。
+ */
+function topicalPlace(text: string): QixiaPlaceKnowledge | null {
+  const windows = queryWindows(text);
+  if (!windows.length) return null;
+  let best: { place: QixiaPlaceKnowledge; score: number } | null = null;
+  for (const place of qixiaKnowledge) {
+    if (place.referenceCode === UMBRELLA_CODE) continue;
+    const names = namesOf(place);
+    for (const window of windows) {
+      // 只认名字里的片段：「陆羽」之于「陆羽茶庄」，避免正文关键词带来噪声。
+      if (!names.some((name) => name.includes(window))) continue;
+      if (!best || window.length > best.score)
+        best = { place, score: window.length };
+    }
+  }
+  return best ? best.place : null;
+}
+
 export type QixiaLookup =
   | { kind: "place"; view: QixiaAnswerView }
   | { kind: "people"; people: QixiaPerson[] }
@@ -178,6 +245,8 @@ export function lookupQixiaKnowledge(query: string): QixiaLookup {
   if (place) return { kind: "place", view: buildAnswerView(place) };
   const people = mentionedPeople(text);
   if (people.length) return { kind: "people", people };
+  const topical = topicalPlace(text);
+  if (topical) return { kind: "place", view: buildAnswerView(topical) };
   const fallback =
     partialPlace(text) ??
     umbrellaPlace(text) ??
