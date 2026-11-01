@@ -303,7 +303,8 @@ export function runSyncReviewPolicy(
   if (selected[0] === "--apply") {
     const backup = path.join(
       cwd,
-      `review-policy-rulesets-backup-${new Date().toISOString()}.json`,
+      // ISO 时间戳里的冒号在 Windows 上不是合法文件名字符，统一换成短横线。
+      `review-policy-rulesets-backup-${new Date().toISOString().replaceAll(":", "-")}.json`,
     );
     writeFileSync(backup, `${JSON.stringify(liveRulesets, null, 2)}\n`);
     log(`Saved the live rulesets to ${backup}.`);
