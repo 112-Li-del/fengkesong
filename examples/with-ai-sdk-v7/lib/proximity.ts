@@ -39,10 +39,10 @@ export function updateProximity(
   now = Date.now(),
 ) {
   const quality = locationQuality(fix.accuracy, fix.timestamp, now);
-  if (quality !== "usable" || fix.accuracy > 30) {
+  if (quality === "stale") {
     resetProximityPending(state);
     return {
-      reason: quality === "stale" ? "stale" : "accuracy",
+      reason: "stale",
       placeId: null,
     };
   }
@@ -62,7 +62,7 @@ export function updateProximity(
       state.leaving.delete(id);
       continue;
     }
-    if (match.distance - fix.accuracy <= 110) {
+    if (match.distance <= 110) {
       state.leaving.delete(id);
       continue;
     }
@@ -84,15 +84,12 @@ export function updateProximity(
     }
   }
   const nearest = ranked[0];
-  if (!nearest || nearest.distance + fix.accuracy > 60) {
+  if (!nearest || nearest.distance > 60) {
     state.candidate = null;
     return { reason: "none", placeId: null };
   }
   const second = ranked[1];
-  if (
-    second &&
-    nearest.distance + fix.accuracy >= second.distance - fix.accuracy
-  ) {
+  if (second && second.distance - nearest.distance < 1) {
     state.candidate = null;
     return { reason: "ambiguous", placeId: null };
   }

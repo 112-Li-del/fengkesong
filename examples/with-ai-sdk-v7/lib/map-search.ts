@@ -1,4 +1,8 @@
 import { scenicPlaces, facilityPlaces, facilityCategories } from "./qixia-map";
+import {
+  getQixiaKnowledgeByCode,
+  qixiaKnowledge,
+} from "./qixia-knowledge/catalog";
 import pinyinIndex from "./qixia-pinyin.json";
 import type { Place } from "../components/map/amap-types";
 
@@ -175,4 +179,20 @@ export function suggestMapPlaces(
   return matchByText(raw, scope)
     .slice(0, limit)
     .map((place) => ({ place, score: 0, form: null }));
+}
+
+export function getMapPlaceKnowledge(place: Place) {
+  const entry = mapSearchCatalog.find((candidate) => candidate.id === place.id);
+  if (!entry || entry.category !== "景点") return null;
+  const name = entry.referenceName ?? entry.name;
+  return (
+    getQixiaKnowledgeByCode(entry.referenceCode) ??
+    qixiaKnowledge.find(
+      (knowledge) =>
+        knowledge.name === name ||
+        knowledge.referenceName === name ||
+        knowledge.aliases?.includes(name),
+    ) ??
+    null
+  );
 }

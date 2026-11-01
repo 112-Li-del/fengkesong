@@ -1168,5 +1168,20 @@
     "providerId": "B0FFLM3OSD",
     "coordinateSource": "amap-verified",
     "coordinateCheckedAt": "2026-10-31"
+  },
+  {
+    "id": "B0FFHLOUBF",
+    "name": "栖霞山风景名胜区-凉亭",
+    "providerId": "B0FFHLOUBF",
+    "location": {
+      "lng": 118.965351,
+      "lat": 32.153623
+    },
+    "address": "近郊栖霞街88号(近栖霞大道)栖霞山风景名胜区内",
+    "coordinateSource": "amap-verified",
+    "coordinateCheckedAt": "2026-10-31",
+    "providerName": "栖霞山风景名胜区-凉亭",
+    "art": "pavilion",
+    "tier": 3
   }
 ]

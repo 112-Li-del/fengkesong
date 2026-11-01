@@ -1,4 +1,5 @@
-import boundary from "@/lib/qixia-paper-boundary.json";
+import boundary from "../../lib/qixia-paper-boundary.json";
+import roads from "../../lib/qixia-roads.json";
 import type { MapAPI, MapInstance } from "./amap-types";
 
 export function nativePaperLayer(api: MapAPI, map: MapInstance) {
@@ -10,7 +11,7 @@ export function nativePaperLayer(api: MapAPI, map: MapInstance) {
   const center = map.getCenter();
   const background = new api.Map(host, {
     center: [center.lng, center.lat],
-    zoom: map.getZoom(),
+    zoom: map.getZoom(10),
     zooms: [2, 20],
     features: ["bg", "road", "building"],
     viewMode: "2D",
@@ -25,40 +26,83 @@ export function nativePaperLayer(api: MapAPI, map: MapInstance) {
   });
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.classList.add("scenic-native-paper");
+  const geometry = document.createElementNS(svg.namespaceURI, "g");
   const path = document.createElementNS(svg.namespaceURI, "path");
   path.setAttribute("fill", "#f4f2af");
   path.setAttribute("fill-rule", "evenodd");
-  svg.append(path);
+  const baseZoom = map.getZoom(10);
+  const anchor = boundary.path[0]!;
+  const baseAnchor = map.lngLatToContainer(anchor);
+  const project = (rings: number[][][], close = false) =>
+    rings
+      .map(
+        (ring) =>
+          ring
+            .map((point, index) => {
+              const pixel = map.lngLatToContainer(point);
+              return `${index ? "L" : "M"}${pixel.x},${pixel.y}`;
+            })
+            .join(" ") + (close ? "Z" : ""),
+      )
+      .join(" ");
+  path.setAttribute("d", project([boundary.path, ...boundary.holes], true));
+  geometry.append(path);
+  const overview = document.createElementNS(svg.namespaceURI, "g");
+  overview.classList.add("scenic-overview-roads");
+  const roadPath = project(roads.paths);
+  for (const [stroke, width] of [
+    ["#b6a77b", "4"],
+    ["#fff9e7", "2.5"],
+  ]) {
+    const line = document.createElementNS(svg.namespaceURI, "path");
+    line.setAttribute("d", roadPath);
+    line.setAttribute("fill", "none");
+    line.setAttribute("stroke", stroke!);
+    line.setAttribute("stroke-width", width!);
+    line.setAttribute("stroke-linecap", "round");
+    line.setAttribute("stroke-linejoin", "round");
+    line.setAttribute("vector-effect", "non-scaling-stroke");
+    overview.append(line);
+  }
+  geometry.append(overview);
+  svg.append(geometry);
   host.append(svg);
   let visible = true;
   let frame = 0;
   let removed = false;
+  let previous = { zoom: baseZoom, lng: center.lng, lat: center.lat };
   const sync = () => {
-    if (removed) return;
+    frame = 0;
+    if (removed || !visible) return;
     const center = map.getCenter();
-    background.setZoomAndCenter(map.getZoom(), [center.lng, center.lat], true);
-    path.setAttribute(
-      "d",
-      [boundary.path, ...boundary.holes]
-        .map(
-          (ring) =>
-            ring
-              .map((point, index) => {
-                const pixel = map.lngLatToContainer(point);
-                return `${index ? "L" : "M"}${pixel.x},${pixel.y}`;
-              })
-              .join(" ") + "Z",
-        )
-        .join(" "),
+    const zoom = map.getZoom(10);
+    if (
+      zoom !== previous.zoom ||
+      center.lng !== previous.lng ||
+      center.lat !== previous.lat
+    ) {
+      background.setZoomAndCenter(zoom, [center.lng, center.lat], true);
+      previous = { zoom, lng: center.lng, lat: center.lat };
+    }
+    const scale = 2 ** (zoom - baseZoom);
+    const pixel = map.lngLatToContainer(anchor);
+    geometry.setAttribute(
+      "transform",
+      `matrix(${scale} 0 0 ${scale} ${pixel.x - baseAnchor.x * scale} ${pixel.y - baseAnchor.y * scale})`,
+    );
+    overview.setAttribute(
+      "display",
+      zoom >= 13 && zoom < 16 ? "inline" : "none",
     );
   };
   const schedule = () => {
-    cancelAnimationFrame(frame);
+    if (!visible || removed || frame) return;
     frame = requestAnimationFrame(sync);
   };
   const events = ["mapmove", "zoomchange", "resize", "complete"];
   events.forEach((event) => map.on(event, schedule));
   const resize = new ResizeObserver(() => {
+    if (!visible) return;
     background.resize();
     schedule();
   });
@@ -70,7 +114,10 @@ export function nativePaperLayer(api: MapAPI, map: MapInstance) {
     map.setFeatures(
       visible ? ["road", "building"] : ["bg", "road", "building"],
     );
-    if (visible) schedule();
+    if (visible) {
+      background.resize();
+      schedule();
+    }
   };
   setVisible(true);
   sync();

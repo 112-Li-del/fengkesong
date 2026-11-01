@@ -18,16 +18,22 @@
 .scenic-site-dot::after {
   content: "";
   position: absolute;
-  inset: 3px;
-  background: #a94d31;
-  border: 2px solid #fffaf0;
+  inset: 4px;
+  box-sizing: border-box;
+  background: transparent;
+  border: 1.5px solid #92734a;
   border-radius: 50%;
-  box-shadow: 0 0 0 1px #8d482477;
+  box-shadow: none;
+}
+.scenic-coordinate.has-lod-label .scenic-site-dot::after {
+  inset: 3px;
+  border-color: #785934;
 }
 .scenic-coordinate.is-selected .scenic-site-dot::after {
-  inset: 0;
+  inset: 2px;
+  border: 2px solid #fff8e9;
   background: #aa2e21;
-  box-shadow: 0 0 0 5px #b54f3333;
+  box-shadow: 0 0 0 1px #aa2e21;
 }
 .scenic-site-art {
   display: block;
@@ -105,7 +111,7 @@
   display: none;
 }
 .is-dots-only .scenic-site-dot::after {
-  inset: 2px;
+  inset: 4px;
 }
 @media (max-width: 720px) {
   .scenic-site-label {
@@ -329,8 +335,8 @@
 
 .scenic-coordinate:not(.has-lod-label):not(.is-selected):not(.is-route-stop)
   .scenic-site-dot::after {
-  inset: 5px;
-  background: #b4433266;
-  border: 1px solid #fffaf099;
+  inset: 4px;
+  background: transparent;
+  border: 1.5px solid #92734a;
   box-shadow: none;
 }

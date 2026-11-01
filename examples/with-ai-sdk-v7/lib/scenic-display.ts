@@ -1,64 +1,72 @@
 export const scenicRoutes = [
   {
     id: "A",
-    name: "红叶景观线",
+    name: "湖山赏秋线",
     stops: [
+      "西门售票处",
       "牌坊",
-      "哼哈殿",
       "彩虹明镜",
-      "桃花涧",
-      "桃花坞",
       "桃花湖",
-      "卧云亭",
+      "红叶谷",
+      "枫林湖",
+      "天开岩",
+      "乾隆行宫遗址",
+      "陆羽茶庄",
+      "南门售票处",
     ],
   },
   {
     id: "B",
     name: "古寺人文线",
     stops: [
+      "西门售票处",
+      "牌坊",
       "彩虹明镜",
-      "钟楼",
-      "鼓楼",
-      "明征君碑",
       "栖霞古寺",
       "舍利塔",
       "千佛岩",
-      "纱帽峰",
       "乾隆行宫遗址",
+      "陆羽茶庄",
+      "南门售票处",
     ],
   },
   {
     id: "C",
-    name: "登高远眺线",
+    name: "山林远眺线",
     stops: [
-      "话山亭",
-      "天开岩",
-      "乾隆御花园",
-      "红叶谷",
-      "枫林湖",
-      "印心湖",
-      "始皇临江处",
-      "太虚亭",
-      "萌宠乐园",
-      "半馆",
+      "南门售票处",
+      "陆羽茶庄",
       "百草园",
       "饮马池",
-      "陆羽茶庄",
+      "太虚亭",
+      "始皇临江处",
+      "枫林湖",
+      "红叶谷",
+      "读枫阁",
+      "桃花湖",
+      "彩虹明镜",
+      "牌坊",
+      "西门售票处",
     ],
   },
 ] as const;
-const core = [
-  "彩虹明镜",
+const overviewLandmarks = [
   "栖霞古寺",
   "红叶谷",
+  "始皇临江处",
+  "桃花湖",
+  "皇家鹿苑",
+  "乾隆行宫遗址",
+];
+const core = [
+  ...overviewLandmarks,
+  "彩虹明镜",
   "千佛岩",
   "舍利塔",
-  "始皇临江处",
   "凤翔峰",
   "牌坊",
 ];
 const popular = [
-  "桃花湖",
   "枫林湖",
   "虎山",
   "碧云亭",
@@ -70,6 +78,13 @@ const popular = [
   "桃花涧",
 ];
 const culture = [
+  "乾隆御花园",
+  "话山亭",
+  "桃花坞",
+  "萌宠乐园",
+  "半馆",
+  "百草园",
+  "饮马池",
   "李香君墓",
   "千佛斋",
   "哼哈殿",
@@ -86,7 +101,6 @@ const culture = [
   "环翠亭",
   "卧云亭",
   "明征君碑",
-  "乾隆行宫遗址",
   "定照庵碑刻",
 ];
 export function scenicLevel(name: string) {
@@ -114,10 +128,10 @@ export function layoutScenicPoints(
   selected: string | null,
   route: ReadonlyMap<string, number> = new Map(),
 ) {
-  const level = zoom < 16 ? 1 : zoom < 17 ? 2 : zoom < 18 ? 3 : 4;
+  const level = zoom < 15 ? 1 : zoom < 16.5 ? 2 : zoom < 17.5 ? 3 : 4;
   const budget = Math.min(
-    zoom < 16 ? 8 : zoom < 17 ? 12 : zoom < 18 ? 16 : 20,
-    width < 720 ? 10 : 20,
+    zoom < 15 ? 8 : zoom < 16.5 ? 14 : zoom < 17.5 ? 20 : 26,
+    width < 720 ? 12 : 26,
   );
   const occupied: Rect[] = [];
   const result = new Map<
@@ -127,7 +141,8 @@ export function layoutScenicPoints(
   const score = (p: Point) =>
     (p.id === selected ? 10000 : 0) +
     (route.has(p.id) ? 1000 : 0) +
-    (5 - scenicLevel(p.name)) * 100 -
+    (5 - scenicLevel(p.name)) * 100 +
+    (overviewLandmarks.includes(p.name) ? 25 : 0) -
     Math.hypot(p.x - width / 2, p.y - height / 2) / 10000;
   let labels = 0;
   for (const p of [...points].sort(

@@ -279,3 +279,88 @@ it("未成功的查询不缓存，HTTP限流即使没有JSON也会重试", async
   });
   expect(fetcher).toHaveBeenCalledTimes(3);
 });
+
+it("景区外的粗略定位也能查询步行服务，起点保持真实坐标", async () => {
+  const outside = context();
+  outside.position = {
+    ...outside.position,
+    point: { lng: 118.9, lat: 32.1 },
+    accuracy: 1000,
+  };
+  const service = vi.fn<typeof fetchWalkingLeg>(walk);
+  const result = await recommendTrip(
+    tripRequestSchema.parse({ need: "food" }),
+    outside,
+    service,
+  );
+  expect(result.status).toBe("service");
+  expect(service.mock.calls[0]?.[0]).toEqual(outside.position.point);
+});
+
+it("指定西门入园后，即使当前位置更靠南门也回到西门", async () => {
+  const south = context();
+  south.position.point = { lng: 118.965153, lat: 32.145722 };
+  const result = await recommendTrip(
+    tripRequestSchema.parse({ startName: "西门" }),
+    south,
+    walk,
+  );
+  expect(result.segments![0]!.from.location).toEqual(south.position.point);
+  expect(result.returnTo?.id).toBe("QXF010");
+});
+
+it("调整游线时沿用本次入园门，明确指定返程地点时允许改门", async () => {
+  const south = context();
+  south.position.point = { lng: 118.965153, lat: 32.145722 };
+  const trip = { ...south, entryGate: "QXF010" };
+  const result = await recommendTrip(tripRequestSchema.parse({}), trip, walk);
+  expect(result.returnTo?.id).toBe("QXF010");
+  const changed = await recommendTrip(
+    tripRequestSchema.parse({ returnName: "南门" }),
+    trip,
+    walk,
+  );
+  expect(changed.returnTo?.id).toBe("QXF011");
+});
+
+it.each([
+  [{ lng: 118.954566, lat: 32.150215 }, "QXF010"],
+  [{ lng: 118.965153, lat: 32.145722 }, "QXF011"],
+] as const)("首次推荐按起始位置 %o 选取同门返程", async (point, gate) => {
+  const trip = context();
+  trip.position.point = point;
+  const result = await recommendTrip(tripRequestSchema.parse({}), trip, walk);
+  expect(result.returnTo?.id).toBe(gate);
+});
+
+it("回入园的门沿用明确说过的西门，不重复确认返程点", async () => {
+  const south = context();
+  south.position.point = { lng: 118.965153, lat: 32.145722 };
+  const result = await recommendTrip(
+    tripRequestSchema.parse({ startName: "西门", returnName: "入园的门" }),
+    south,
+    walk,
+  );
+  expect(result.status).toBe("planned");
+  expect(result.returnTo?.id).toBe("QXF010");
+  expect(result.segments![0]!.from.location).toEqual(south.position.point);
+});
+
+it("回原入口沿用已记住的南门，不按园内的新位置换门", async () => {
+  const result = await recommendTrip(
+    tripRequestSchema.parse({ returnName: "原入口" }),
+    { ...context(), entryGate: "QXF011" },
+    walk,
+  );
+  expect(result.status).toBe("planned");
+  expect(result.returnTo?.id).toBe("QXF011");
+});
+
+it("指定未知的具体返程地点仍需确认，不擅自换成入园门", async () => {
+  const result = await recommendTrip(
+    tripRequestSchema.parse({ returnName: "北门" }),
+    { ...context(), entryGate: "QXF010" },
+    walk,
+  );
+  expect(result.status).toBe("needs_return_point");
+});
