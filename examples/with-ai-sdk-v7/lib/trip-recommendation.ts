@@ -1,5 +1,6 @@
+import { selectTripGate } from "./trip-route";
 import { z } from "zod";
-import { scenicPlaces, facilityPlaces, withinScenicView } from "./qixia-map";
+import { scenicPlaces, facilityPlaces } from "./qixia-map";
 import { scenicRoutes, scenicLevel } from "./scenic-display";
 import { lookupQixiaKnowledge } from "./qixia-knowledge";
 import { readTripContext } from "./trip-context";
@@ -21,8 +22,20 @@ export const tripRequestSchema = z.object({
     .array(z.enum(["culture", "autumn", "family", "rest"]))
     .max(4)
     .default([]),
-  startName: z.string().max(60).optional(),
-  returnName: z.string().max(60).optional(),
+  startName: z
+    .string()
+    .max(60)
+    .optional()
+    .describe(
+      "游客明确提到的入园门或起点，例如西门；即使已有定位也保留入园门，实际行走仍从当前位置开始",
+    ),
+  returnName: z
+    .string()
+    .max(60)
+    .optional()
+    .describe(
+      "仅填写游客明确指定的具体返程地点；回入园门、原入口时省略，由工具沿用本次入园门",
+    ),
   visited: z.array(z.string().max(60)).max(120).default([]),
   need: z
     .enum(["tour", "toilet", "rest", "food", "supply", "return"])
@@ -179,7 +192,12 @@ export async function recommendTrip(
   };
   const resolve = (name?: string) =>
     all.find((p) => p.name === (name ? (aliases[name] ?? name) : undefined));
-  if (input.returnName && !resolve(input.returnName))
+  const returnToEntry =
+    /^(?:(?:本次)?入园(?:的)?(?:门|入口)|原(?:来(?:的)?)?(?:门|入口)|进来(?:时)?的门|出发的门)$/.test(
+      input.returnName?.trim() ?? "",
+    );
+  const namedReturn = resolve(input.returnName);
+  if (input.returnName && !returnToEntry && !namedReturn)
     return {
       status: "needs_return_point",
       message: "请确认返程地点名称，例如西门或南门；暂不替你更换目的地。",
@@ -192,12 +210,6 @@ export async function recommendTrip(
       locationStatus: context.locationStatus,
       message: "请开启定位，或告诉我现在所在的景点/入口。",
       questions: ["预计还有多久游览？", "同行孩子年龄、体力和是否带推车？"],
-    };
-  if (!withinScenicView(origin))
-    return {
-      status: "outside",
-      message:
-        "当前位置在景区浏览范围外，请先确定入园入口；不按景区内位置规划。",
     };
   const gentle =
     input.stamina === "low" ||
@@ -236,13 +248,12 @@ export async function recommendTrip(
     food: nearby("food"),
     supplies: nearby("supply"),
   };
-  const exit =
-    resolve(input.returnName) ??
-    facilityPlaces
-      .filter((p) => p.name === "西门售票处" || p.name === "南门售票处")
-      .sort(
-        (a, b) => distance(origin, a.location) - distance(origin, b.location),
-      )[0];
+  const namedGate =
+    namedStart?.id === "QXF010" || namedStart?.id === "QXF011"
+      ? namedStart.id
+      : undefined;
+  const entryGate = selectTripGate(origin, namedGate ?? context.entryGate);
+  const exit = namedReturn ?? entryGate;
   const route = scenicRoutes.find((r) => r.id === context.route);
   const pool = scenicPlaces.filter(
     (p) =>
@@ -493,6 +504,7 @@ export async function recommendTrip(
     : undefined;
   return {
     answerDraft,
+    entryGate: entryGate.id,
     plannedStayMinutes: stayMinutes,
     plannedOutboundWalkMinutes: walkingMinutes,
     status: segments.length ? "planned" : "candidates_only",

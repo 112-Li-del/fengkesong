@@ -58,44 +58,49 @@ describe("nearby attraction trigger", () => {
     update(620000);
     expect(update(630000).placeId).toBe("temple");
   });
-  it("clears pending entry on inaccurate, stale, or paused positioning", () => {
+  it("accepts coarse fixes but clears pending entry on stale or paused positioning", () => {
     const state = createProximityState();
     updateProximity(state, [place], fix(10000), 10000);
     expect(
       updateProximity(state, [place], fix(20000, 118, 100), 20000).reason,
-    ).toBe("accuracy");
-    expect(
-      updateProximity(state, [place], fix(30000), 30000).placeId,
-    ).toBeNull();
-    expect(updateProximity(state, [place], fix(30000), 70000).reason).toBe(
+    ).toBe("entered");
+    const pending = createProximityState();
+    updateProximity(pending, [place], fix(30000), 30000);
+    expect(updateProximity(pending, [place], fix(30000), 70000).reason).toBe(
       "stale",
     );
     expect(
-      updateProximity(state, [place], fix(80000), 80000).placeId,
+      updateProximity(pending, [place], fix(80000), 80000).placeId,
     ).toBeNull();
-    resetProximityPending(state);
+    resetProximityPending(pending);
     expect(
-      updateProximity(state, [place], fix(90000), 90000).placeId,
+      updateProximity(pending, [place], fix(90000), 90000).placeId,
     ).toBeNull();
+    expect(updateProximity(pending, [place], fix(100000), 100000).placeId).toBe(
+      "temple",
+    );
   });
-  it("asks for selection when nearby attractions cannot be distinguished within the accuracy radius", () => {
+  it("asks for selection only when attractions are at the same measured distance", () => {
     const state = createProximityState();
     const targets = [
       place,
       { id: "pavilion", location: { lng: 118.0001, lat: 32 } },
     ];
     expect(
-      updateProximity(state, targets, fix(10000, 118, 15), 10000).reason,
+      updateProximity(state, targets, fix(10000, 118.00005, 1000), 10000)
+        .reason,
     ).toBe("ambiguous");
     expect(
-      updateProximity(state, targets, fix(20000, 118, 15), 20000).placeId,
+      updateProximity(state, targets, fix(20000, 118.00005, 1000), 20000)
+        .placeId,
     ).toBeNull();
   });
-  it("uses the entire error radius and never assumes a single jump confirms an exit", () => {
+  it("uses measured distance regardless of accuracy and requires a confirmed exit", () => {
     const state = createProximityState();
     expect(
-      updateProximity(state, [place], fix(10000, 118.0005, 25), 10000).placeId,
-    ).toBeNull();
+      updateProximity(state, [place], fix(10000, 118.0005, 10000), 10000)
+        .reason,
+    ).toBe("waiting");
     updateProximity(state, [place], fix(20000), 20000);
     updateProximity(state, [place], fix(30000), 30000);
     updateProximity(state, [place], fix(40000, 118.003), 40000);

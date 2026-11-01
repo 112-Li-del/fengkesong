@@ -1,6 +1,6 @@
-import { landmarkIcon } from "@/lib/landmark-icons";
-import { layoutScenicPoints } from "@/lib/scenic-display";
-import { scenicPlaces } from "@/lib/qixia-map";
+import { landmarkIcon } from "../../lib/landmark-icons";
+import { layoutScenicPoints } from "../../lib/scenic-display";
+import { scenicPlaces } from "../../lib/qixia-map";
 import type { MapAPI, MapInstance, Place } from "./amap-types";
 
 export function scenicMarkers(
@@ -78,7 +78,7 @@ export function scenicMarkers(
     });
     for (const name of ["pointerdown", "mousedown", "touchstart", "dblclick"])
       label.addEventListener(name, (event) => event.stopPropagation());
-    return { place, root, dot, marker, label, art, number };
+    return { place, root, dot, marker, label, art, number, attached: true };
   });
   const update = () => {
     const { clientWidth: width, clientHeight: height } = map.getContainer();
@@ -88,10 +88,7 @@ export function scenicMarkers(
         id: e.place.id,
         name: e.place.name,
         ...map.lngLatToContainer([e.place.location.lng, e.place.location.lat]),
-        width: Math.max(
-          e.label.scrollWidth,
-          e.label.textContent!.length * 13 + 18,
-        ),
+        width: e.place.name.length * 13 + 18,
       }));
     const layout = layoutScenicPoints(
       points,
@@ -103,7 +100,11 @@ export function scenicMarkers(
     );
     for (const e of entries) {
       const state = layout.get(e.place.id);
-      e.marker.setMap(state ? map : null);
+      const attached = !!state;
+      if (attached !== e.attached) {
+        e.marker.setMap(attached ? map : null);
+        e.attached = attached;
+      }
       e.root.classList.toggle("has-lod-label", !!state?.label);
       e.root.classList.toggle("has-lod-art", !!state?.art);
       if (state?.label) {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  getMapPlaceKnowledge,
   isPinyinQuery,
   mapSearchCatalog,
   normalizeLatinQuery,
@@ -176,4 +177,44 @@ describe("拼音检索（输入法组字阶段）", () => {
     expect(suggestMapPlaces("q", "全部", 8)).toHaveLength(8);
     expect(suggestMapPlaces("q", "全部", 3)).toHaveLength(3);
   });
+});
+
+it("凉亭只归入景点，保留已复核的高德坐标", () => {
+  const id = "B0FFHLOUBF";
+  expect(
+    searchMapPlaces("", "景点").find((p) => p.id === id)?.location,
+  ).toEqual({ lng: 118.965351, lat: 32.153623 });
+  expect(searchMapPlaces("", "休息").some((p) => p.id === id)).toBe(false);
+  expect(mapSearchCatalog.filter((p) => p.id === id)).toHaveLength(1);
+});
+
+it.each([
+  "摄山栖霞寺售票处",
+  "邮局咖啡(栖霞山店)",
+  "栖霞古寺素菜馆",
+  "枫雅小馆(五松阁休闲驿站)",
+  "千佛斋素菜馆",
+  "如意甜品(栖霞山店)",
+  "星巴克(南京栖霞古镇店)",
+  "J CAFE(栖霞古镇店)",
+  "肯德基(栖霞古镇店)",
+])("地图服务点不展示景区知识卡片：%s", (name) => {
+  const place = mapSearchCatalog.find((p) => p.name === name)!;
+  expect(place).toBeDefined();
+  expect(getMapPlaceKnowledge(place)?.name ?? null).toBeNull();
+});
+
+it("服务点即使有古迹引用也不借用知识，景点本体仍能打开自己的卡片", () => {
+  const ticket = facilityPlaces.find((p) => p.name === "西门售票处")!;
+  expect(
+    getMapPlaceKnowledge({
+      ...ticket,
+      referenceCode: "S0",
+      referenceName: "栖霞山",
+    })?.name ?? null,
+  ).toBeNull();
+  for (const name of ["栖霞古寺", "彩虹明镜", "千佛岩"]) {
+    const place = scenicPlaces.find((p) => p.name === name)!;
+    expect(getMapPlaceKnowledge(place)?.name).toBe(name);
+  }
 });

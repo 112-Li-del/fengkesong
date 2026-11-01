@@ -7,7 +7,7 @@ import {
   useRemoteThreadListRuntime,
 } from "@assistant-ui/react";
 import { useState } from "react";
-import { getTripContext } from "@/lib/trip-context";
+import { getTripContext, tripContextForMessage } from "@/lib/trip-context";
 import { HistoryWorkspace } from "./workspace";
 import "./history.css";
 
@@ -15,7 +15,30 @@ function useTripChatRuntime() {
   const [transport] = useState(
     () =>
       new AssistantChatTransport({
-        body: () => ({ tripContext: getTripContext() }),
+        prepareSendMessagesRequest: async (options) => {
+          const last = options.messages.at(-1);
+          const text =
+            last?.role === "user"
+              ? last.parts
+                  .filter((part) => part.type === "text")
+                  .map((part) => part.text)
+                  .join(" ")
+              : "";
+          const tripContext = text
+            ? await tripContextForMessage(text)
+            : getTripContext();
+          return {
+            body: {
+              ...options.body,
+              id: options.id,
+              messages: options.messages,
+              trigger: options.trigger,
+              messageId: options.messageId,
+              metadata: options.requestMetadata,
+              tripContext,
+            },
+          };
+        },
       }),
   );
   return useChatRuntime({ transport });

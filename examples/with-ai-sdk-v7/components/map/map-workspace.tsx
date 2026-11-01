@@ -9,7 +9,7 @@ import {
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
-import { useAui } from "@assistant-ui/react";
+import { useAui, useAuiState } from "@assistant-ui/react";
 import { createPortal } from "react-dom";
 import {
   ArrowUpRight,
@@ -23,10 +23,20 @@ import {
   BellRing,
   ChevronDown,
 } from "lucide-react";
-import { setTripContext } from "@/lib/trip-context";
-import { scenicRoutes } from "@/lib/scenic-display";
-import { referenceScenicPlaces } from "@/lib/scenic-places";
 import {
+  getTripContext,
+  setTripContext,
+  registerTripLocator,
+} from "@/lib/trip-context";
+import {
+  recommendationRoute,
+  presetRoute,
+  selectTripGate,
+  type TripGateId,
+} from "@/lib/trip-route";
+import { scenicRoutes } from "@/lib/scenic-display";
+import {
+  getMapPlaceKnowledge,
   mapSearchCatalog,
   searchMapPlaces,
   suggestMapPlaces,
@@ -35,26 +45,17 @@ import {
   mapSearchCategories,
   type MapSearchFilter,
 } from "@/lib/map-search";
-import { locationQuality } from "@/lib/location-quality";
 import {
   createProximityState,
   resetProximityPending,
   updateProximity,
 } from "@/lib/proximity";
-import { loadAmap } from "./load-amap";
+import { loadAmap, watchAmapLocation } from "./load-amap";
+import { flowingRoute, traceWalkingRoute } from "./flowing-route";
 import { KnowledgeModal, PlaceKnowledge } from "./place-knowledge";
-import {
-  getQixiaKnowledgeByCode,
-  getQixiaKnowledgeByName,
-} from "@/lib/qixia-knowledge";
 import { addAutumnLayer } from "./autumn-layer";
 import { scenicNavigation } from "./scenic-navigation";
-import {
-  scenicCenter,
-  scenicPlaces,
-  facilityPlaces,
-  withinScenicView,
-} from "@/lib/qixia-map";
+import { scenicCenter, scenicPlaces, facilityPlaces } from "@/lib/qixia-map";
 import type { MapAPI, MapInstance, LngLat, Overlay, Place } from "./amap-types";
 import "./map.css";
 import "./autumn-map.css";
@@ -77,36 +78,82 @@ export function MapWorkspace() {
   const autumnLayer = useRef<Awaited<ReturnType<typeof addAutumnLayer>> | null>(
     null,
   );
-  const [illustrated, setIllustrated] = useState(true);
-  const [dotsOnly, setDotsOnly] = useState(false);
+  const nextPreset = useRef(0);
   const [scenicRoute, setScenicRoute] = useState("");
+  const [entryGate, setEntryGate] = useState<TripGateId>();
+  const [presetOrigin, setPresetOrigin] = useState<LngLat>();
+  const [locatingPreset, setLocatingPreset] = useState(false);
+  const agentResult = useAuiState((s) => {
+    for (let i = s.thread.messages.length - 1; i >= 0; i--) {
+      const message = s.thread.messages[i]!;
+      for (let j = message.content.length - 1; j >= 0; j--) {
+        const part = message.content[j]!;
+        if (
+          part.type === "tool-call" &&
+          part.toolName === "recommend_qixia_trip" &&
+          part.result !== undefined
+        )
+          return part;
+      }
+    }
+    return null;
+  });
+  const [agentRoute, setAgentRoute] =
+    useState<ReturnType<typeof recommendationRoute>>(null);
+  const [appliedAgentResult, setAppliedAgentResult] =
+    useState<typeof agentResult>(null);
   const activeScenicRoute = scenicRoutes.find(
     (route) => route.id === scenicRoute,
   );
-  const missingRouteStops =
-    activeScenicRoute?.stops.filter(
-      (name) => !scenicPlaces.some((place) => place.name === name),
-    ) ?? [];
+  const activeRoute = useMemo(
+    () => agentRoute ?? presetRoute(scenicRoute, presetOrigin, entryGate),
+    [agentRoute, scenicRoute, presetOrigin, entryGate],
+  );
   const positionOverlays = useRef<Overlay[]>([]);
   const walking = useRef<InstanceType<MapAPI["Walking"]> | null>(null);
-  const watch = useRef<number | null>(null);
+  const watch = useRef<(() => void) | null>(null);
   const generation = useRef(0);
-  const latestFix = useRef(0);
   const placePanel = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<"loading" | "missing" | "ready" | "error">(
     "loading",
   );
   useEffect(() => {
-    autumnLayer.current?.setPaperVisible(illustrated);
-  }, [illustrated, state]);
-  useEffect(() => {
-    const ids = new Map<string, number>();
-    activeScenicRoute?.stops.forEach((name, index) => {
-      const place = scenicPlaces.find((p) => p.name === name);
-      if (place) ids.set(place.id, index + 1);
+    const numbers = new Map<string, number>();
+    activeRoute?.stops.forEach((place, index) => {
+      if (!numbers.has(place.id)) numbers.set(place.id, index + 1);
     });
-    autumnLayer.current?.setRoute(ids);
-  }, [activeScenicRoute, state]);
+    autumnLayer.current?.setRoute(numbers);
+  }, [activeRoute, state]);
+  useEffect(() => {
+    const api = sdk.current,
+      view = map.current;
+    if (state !== "ready" || !api || !view || !activeRoute) {
+      setScenicRouteNote("");
+      return;
+    }
+    const layer = flowingRoute(view);
+    setScenicRouteNote("正在载入从起点出发的步行道路…");
+    const cancel = traceWalkingRoute(
+      api,
+      activeRoute.legs,
+      (paths, progress) => {
+        layer.setPaths(paths);
+        setScenicRouteNote(
+          progress.failed
+            ? paths.length
+              ? "前方路段暂未查到，已保留从起点连续可走的部分，请按现场路牌通行。"
+              : "起点步行道路暂未查到，请重试或按现场路牌通行。"
+            : progress.completed < progress.total
+              ? `正在载入步行道路 ${progress.completed}/${progress.total}…`
+              : "沿赭红流光路线游览，浅金亮段指示方向。",
+        );
+      },
+    );
+    return () => {
+      cancel();
+      layer.remove();
+    };
+  }, [activeRoute, state]);
   const [retry, setRetry] = useState(0);
   const [mcp, setMcp] = useState(false);
   const [query, setQuery] = useState("");
@@ -142,16 +189,29 @@ export function MapWorkspace() {
   const [knowledgeOpen, setKnowledgeOpen] = useState(false);
   const [tracking, setTracking] = useState(false);
   const [position, setPosition] = useState<Position | null>(null);
+  const latestPosition = useRef<Position | null>(null);
+  const locationRequest = useRef<{
+    promise: Promise<Position | null>;
+    resolve: (position: Position | null) => void;
+    timer: ReturnType<typeof setTimeout>;
+  } | null>(null);
+  const settleLocation = useCallback((fix: Position | null) => {
+    const pending = locationRequest.current;
+    if (!pending) return;
+    clearTimeout(pending.timer);
+    locationRequest.current = null;
+    pending.resolve(fix);
+  }, []);
   useEffect(() => {
     setTripContext({
       ...(activeScenicRoute ? { route: activeScenicRoute.id } : {}),
+      ...(entryGate ? { entryGate } : {}),
       ...(tracking && position ? { position } : {}),
     });
     return () => setTripContext({});
-  }, [activeScenicRoute, tracking, position]);
+  }, [activeScenicRoute, entryGate, tracking, position]);
   const [locationNote, setLocationNote] = useState("");
   const [locationFailure, setLocationFailure] = useState<number | null>(null);
-  const [clock, setClock] = useState(() => Date.now());
   const [routeNote, setRouteNote] = useState("");
   const routeVersion = useRef(0);
   const proximity = useRef(createProximityState());
@@ -159,13 +219,14 @@ export function MapWorkspace() {
   const autoRef = useRef(true);
   const resumeAfter = useRef(0);
   const [autoEnabled, setAutoEnabled] = useState(true);
-  const autoCount = referenceScenicPlaces.length;
+  const autoCount = scenicPlaces.length;
   const [autoNote, setAutoNote] = useState("开启定位后自动检测附近景点");
   const [nearby, setNearby] = useState<{
     place: Place;
     distance: number;
   } | null>(null);
-  const routeOverlay = useRef<Overlay | null>(null);
+  const routeOverlay = useRef<ReturnType<typeof flowingRoute> | null>(null);
+  const [scenicRouteNote, setScenicRouteNote] = useState("");
   const [panelOpen, setPanelOpen] = useState(false);
   const [dockOpen, setDockOpen] = useState(false);
   const dockNode = useSyncExternalStore(
@@ -180,9 +241,29 @@ export function MapWorkspace() {
   );
   const clearWalk = useCallback(() => {
     walking.current?.clear();
-    routeOverlay.current?.setMap(null);
+    routeOverlay.current?.remove();
     routeOverlay.current = null;
   }, []);
+  useEffect(() => {
+    routeVersion.current++;
+    clearWalk();
+  }, [agentResult, clearWalk]);
+  if (appliedAgentResult !== agentResult) {
+    setAppliedAgentResult(agentResult);
+    setRouteNote("");
+    const next = recommendationRoute(agentResult?.result);
+    if (next) setScenicRoute("");
+    const result = agentResult?.result;
+    if (
+      result &&
+      typeof result === "object" &&
+      "entryGate" in result &&
+      (result.entryGate === "QXF010" || result.entryGate === "QXF011")
+    ) {
+      setEntryGate(result.entryGate);
+    }
+    setAgentRoute(next);
+  }
   const select = useCallback(
     (place: Place, reveal = false) => {
       place = mapSearchCatalog.find((item) => item.id === place.id) ?? place;
@@ -208,16 +289,15 @@ export function MapWorkspace() {
     const ids = new Set(mapPlaces.map((place) => place.id));
     // 全局搜索可能命中当前类别之外的点位，选中它的 marker 必须能显示
     if (selected) ids.add(selected.id);
+    activeRoute?.stops.forEach((place) => ids.add(place.id));
     filterWanted.current = ids;
     autumnLayer.current?.setFilter(ids);
-  }, [mapPlaces, selected]);
+  }, [mapPlaces, selected, activeRoute]);
   const closePlacePanel = useCallback(() => {
     setPanelOpen(false);
   }, []);
   useEffect(() => {
-    targets.current = referenceScenicPlaces.map(
-      (place) => scenicPlaces.find((item) => item.id === place.id) ?? place,
-    );
+    targets.current = scenicPlaces;
   }, []);
   const invalidatePending = useCallback(() => {
     routeVersion.current++;
@@ -308,7 +388,6 @@ export function MapWorkspace() {
     void initialize();
     const resize = new ResizeObserver(() => navigation.current?.resize());
     if (container.current) resize.observe(container.current);
-    const tick = window.setInterval(() => setClock(Date.now()), 10000);
     const visibility = () => {
       resetProximityPending(proximity.current);
       setNearby(null);
@@ -322,25 +401,26 @@ export function MapWorkspace() {
       cancelled = true;
       abort.abort();
       invalidatePending();
-      if (watch.current !== null)
-        navigator.geolocation.clearWatch(watch.current);
+      watch.current?.();
       watch.current = null;
+      settleLocation(null);
       resize.disconnect();
-      clearInterval(tick);
       cancelAnimationFrame(selectionFrame.current);
       document.removeEventListener("visibilitychange", visibility);
-      routeOverlay.current?.setMap(null);
+      routeOverlay.current?.remove();
       autumnLayer.current?.remove();
       autumnLayer.current = null;
       navigation.current = null;
       map.current?.destroy();
       map.current = null;
     };
-  }, [retry, select, invalidatePending]);
+  }, [retry, select, invalidatePending, settleLocation]);
   function stopLocation() {
+    settleLocation(null);
+    latestPosition.current = null;
     setLocationFailure(null);
     generation.current++;
-    if (watch.current !== null) navigator.geolocation.clearWatch(watch.current);
+    watch.current?.();
     watch.current = null;
     positionOverlays.current.forEach((item) => item.setMap(null));
     positionOverlays.current = [];
@@ -355,189 +435,185 @@ export function MapWorkspace() {
     setAutoNote("自动提示已暂停");
   }
   function startLocation() {
-    if (tracking) {
-      stopLocation();
-      return;
-    }
+    if (watch.current) return;
     if (!window.isSecureContext) {
       setLocationNote("定位需要 HTTPS，请通过安全链接访问。");
-      return;
-    }
-    if (!navigator.geolocation) {
-      setLocationNote("当前浏览器不支持定位，可点击地图地点浏览。");
+      settleLocation(null);
       return;
     }
     const api = sdk.current,
       view = map.current;
-    if (!api || !view) return;
+    if (!api || !view) {
+      settleLocation(null);
+      return;
+    }
     setLocationFailure(null);
     const session = ++generation.current;
     resumeAfter.current = Date.now();
     resetProximityPending(proximity.current);
     let first = true;
-    let centeredUsable = false;
     setTracking(true);
-    setLocationNote("正在获取位置，请允许浏览器定位…");
-    watch.current = navigator.geolocation.watchPosition(
+    setLocationNote("正在通过高德获取位置，请允许使用手机定位…");
+    watch.current = watchAmapLocation(
+      api,
       (fix) => {
         if (generation.current !== session) return;
-        const captured = fix.timestamp;
-        latestFix.current = captured;
-        api.convertFrom(
-          [fix.coords.longitude, fix.coords.latitude],
-          "gps",
-          (status, result) => {
-            if (
-              generation.current !== session ||
-              captured !== latestFix.current
-            )
-              return;
-            const point = result.locations?.[0];
-            if (status !== "complete" || !point) {
-              setLocationNote("位置坐标转换失败，请稍后重试。");
-              return;
-            }
-            const fixQuality = locationQuality(fix.coords.accuracy, captured);
-            const approximate = fixQuality !== "usable";
-            positionOverlays.current.forEach((item) => item.setMap(null));
-            positionOverlays.current = [
-              new api.Circle({
-                map: view,
-                center: point,
-                radius: fix.coords.accuracy,
-                strokeColor: approximate ? "#b0873d" : "#5279ac",
-                fillColor: approximate ? "#e2bc72" : "#80a9d5",
-                fillOpacity: 0.15,
-                strokeWeight: 1,
-              }),
-              new api.Marker({
-                map: view,
-                position: point,
-                anchor: "center",
-                content: approximate
-                  ? '<span class="visitor-location-dot is-approximate"><span class="visitor-location-label">位置估计中心</span></span>'
-                  : '<span class="visitor-location-dot"></span>',
-              }),
-            ];
-            const positionFix = {
-              point: { lng: point.lng, lat: point.lat },
-              accuracy: fix.coords.accuracy,
-              timestamp: captured,
-            };
-            setPosition(positionFix);
-            if (
-              autoRef.current &&
-              !document.hidden &&
-              captured >= resumeAfter.current
-            ) {
-              const result = updateProximity(
-                proximity.current,
-                targets.current,
-                positionFix,
-              );
-              const notes: Record<string, string> = {
-                accuracy: "定位误差较大，暂不自动判断景点",
-                stale: "位置已过时，等待新位置",
-                ambiguous: "附近景点距离接近，请点选确认",
-                waiting: "正在确认附近景点，请稍候…",
-                inside: "已提示该景点，停留期间不重复弹出",
-                cooldown: "该景点近期已提示，不重复打扰",
-                none: "持续检测附近景点中",
-                entered: "发现附近景点",
-              };
-              setAutoNote(
-                targets.current.length
-                  ? (notes[result.reason] ?? "持续检测附近景点中")
-                  : "景点数据尚未载入，请切换到景点分类重试",
-              );
-              const match = targets.current.find(
-                (place) => place.id === result.placeId,
-              );
-              if (match && result.distance !== undefined)
-                setNearby({ place: match, distance: result.distance });
-              else
-                setNearby((previous) =>
-                  previous &&
-                  proximity.current.inside.has(previous.place.id) &&
-                  !["accuracy", "stale"].includes(result.reason)
-                    ? previous
-                    : null,
-                );
-            }
-            setClock(Date.now());
-            setLocationNote("");
-            setLocationFailure(null);
-            if (!withinScenicView(point))
-              setLocationNote(
-                "你的位置在栖霞山浏览范围外，地图仍保持景区视角。",
-              );
-            if (
-              withinScenicView(point) &&
-              (first || (!centeredUsable && fixQuality === "usable"))
-            ) {
-              const span = Math.max(
-                120,
-                Math.min(
-                  container.current?.clientWidth ?? 320,
-                  container.current?.clientHeight ?? 320,
-                ) - 80,
-              );
-              const scale =
-                156543.03392 * Math.cos((point.lat * Math.PI) / 180);
-              const zoom = Math.max(
-                15,
-                Math.min(
-                  16,
-                  Math.floor(
-                    Math.log2((scale * span) / (2 * fix.coords.accuracy)),
-                  ),
-                ),
-              );
-              view.setZoomAndCenter(zoom, point);
-              first = false;
-              if (fixQuality === "usable") centeredUsable = true;
-            }
-          },
-        );
-      },
-      (error) => {
-        if (generation.current !== session) return;
-        if (error.code === 1 || first) {
-          stopLocation();
-          setLocationNote(
-            error.code === 1
-              ? "浏览器未获得定位权限，已停止本次定位。"
-              : error.code === 3
-                ? "浏览器定位超时：15秒内未获得位置，已停止本次定位。"
-                : "浏览器定位服务暂时不可用，已停止本次定位。",
+        const { point, timestamp: captured, accuracy } = fix;
+        positionOverlays.current.forEach((item) => item.setMap(null));
+        positionOverlays.current = [
+          new api.Circle({
+            map: view,
+            center: [point.lng, point.lat],
+            radius: accuracy,
+            strokeColor: "#5279ac",
+            fillColor: "#80a9d5",
+            fillOpacity: 0.15,
+            strokeWeight: 1,
+          }),
+          new api.Marker({
+            map: view,
+            position: [point.lng, point.lat],
+            anchor: "center",
+            content: '<span class="visitor-location-dot"></span>',
+          }),
+        ];
+        const positionFix = {
+          point: { lng: point.lng, lat: point.lat },
+          accuracy: accuracy,
+          timestamp: captured,
+        };
+        latestPosition.current = positionFix;
+        const gate =
+          getTripContext().entryGate ?? selectTripGate(positionFix.point).id;
+        setEntryGate(gate);
+        setTripContext({
+          ...getTripContext(),
+          entryGate: gate,
+          position: positionFix,
+        });
+        setPosition(positionFix);
+        settleLocation(positionFix);
+        if (
+          autoRef.current &&
+          !document.hidden &&
+          captured >= resumeAfter.current
+        ) {
+          const result = updateProximity(
+            proximity.current,
+            targets.current,
+            positionFix,
           );
+          const notes: Record<string, string> = {
+            stale: "位置已过时，等待新位置",
+            ambiguous: "附近景点距离接近，请点选确认",
+            waiting: "正在确认附近景点，请稍候…",
+            inside: "已提示该景点，停留期间不重复弹出",
+            cooldown: "该景点近期已提示，不重复打扰",
+            none: "持续检测附近景点中",
+            entered: "发现附近景点",
+          };
+          setAutoNote(
+            targets.current.length
+              ? (notes[result.reason] ?? "持续检测附近景点中")
+              : "景点数据尚未载入，请切换到景点分类重试",
+          );
+          const match = targets.current.find(
+            (place) => place.id === result.placeId,
+          );
+          if (match && result.distance !== undefined)
+            setNearby({ place: match, distance: result.distance });
+          else
+            setNearby((previous) =>
+              previous &&
+              proximity.current.inside.has(previous.place.id) &&
+              result.reason !== "stale"
+                ? previous
+                : null,
+            );
+        }
+        setLocationNote("");
+        setLocationFailure(null);
+        if (first) {
+          view.setZoomAndCenter(16, [point.lng, point.lat]);
+          first = false;
+        }
+      },
+      (code) => {
+        if (generation.current !== session) return;
+        if (code === 1) {
+          stopLocation();
+          setLocationNote("未获得定位权限，请允许网站使用位置后重试。");
         } else {
           resetProximityPending(proximity.current);
           setNearby(null);
-          setAutoNote("位置更新暂时中断，自动提示已暂停");
+          setAutoNote("等待新的位置后恢复附近提示");
           setLocationNote(
-            "位置更新暂时中断，正在重试；下次收到位置后自动恢复。",
+            code === 3
+              ? "高德定位暂未获取位置，正在重试；请确认手机已开启精确定位。"
+              : "高德定位服务暂时不可用，正在重试；请检查定位权限与网络。",
           );
         }
-        setLocationFailure(error.code);
+        setLocationFailure(code);
+        settleLocation(null);
       },
-      { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 },
     );
   }
-  const quality = position
-    ? locationQuality(position.accuracy, position.timestamp, clock)
-    : null;
+
+  function locateVisitor(): Promise<Position | null> {
+    const recent = latestPosition.current;
+    if (recent && Date.now() - recent.timestamp < 15000)
+      return Promise.resolve(recent);
+    if (locationRequest.current) return locationRequest.current.promise;
+    let resolve!: (fix: Position | null) => void;
+    const promise = new Promise<Position | null>((done) => {
+      resolve = done;
+    });
+    const timer = setTimeout(() => {
+      setLocationNote(
+        "暂未获取到位置，请检查定位权限后重试，或在聊天中告诉我起点。",
+      );
+      settleLocation(null);
+    }, 23000);
+    locationRequest.current = { promise, resolve, timer };
+    watch.current?.();
+    watch.current = null;
+    startLocation();
+    return promise;
+  }
+  useEffect(() => registerTripLocator(locateVisitor));
+  async function returnToVisitor() {
+    const fix = await locateVisitor();
+    if (fix) map.current?.setZoomAndCenter(17, [fix.point.lng, fix.point.lat]);
+    else setDockOpen(true);
+  }
+  async function recommendPreset() {
+    setLocatingPreset(true);
+    try {
+      const fix = await locateVisitor();
+      const gate = selectTripGate(
+        fix?.point,
+        getTripContext().entryGate ?? entryGate,
+      );
+      const route = scenicRoutes[nextPreset.current % scenicRoutes.length]!;
+      nextPreset.current++;
+      routeVersion.current++;
+      clearWalk();
+      setRouteNote("");
+      setPresetOrigin(fix?.point);
+      if (fix || entryGate) setEntryGate(gate.id);
+      setAgentRoute(null);
+      setScenicRoute(route.id);
+      setCategory("景点");
+      navigation.current?.fitOverview();
+    } finally {
+      setLocatingPreset(false);
+    }
+  }
+
   function planWalk() {
     const api = sdk.current,
       view = map.current;
-    if (
-      !api ||
-      !view ||
-      !selected ||
-      !position ||
-      locationQuality(position.accuracy, position.timestamp) !== "usable"
-    )
-      return;
+    if (!api || !view || !selected || !position) return;
     clearWalk();
     const version = ++routeVersion.current;
     const planner = new api.Walking({ hideMarkers: true });
@@ -551,20 +627,8 @@ export function MapWorkspace() {
         const route = result.routes?.[0];
         if (status === "complete" && route) {
           const path = route.steps?.flatMap((step) => step.path) ?? [];
-          routeOverlay.current = new api.Polyline({
-            map: view,
-            path,
-            strokeColor: "#075dcc",
-            strokeWeight: 7,
-            strokeOpacity: 1,
-            isOutline: true,
-            outlineColor: "#ffffff",
-            borderWeight: 3,
-            showDir: true,
-            zIndex: 80,
-            lineJoin: "round",
-            lineCap: "round",
-          });
+          routeOverlay.current = flowingRoute(view);
+          routeOverlay.current.setPaths([path]);
         }
         setRouteNote(
           status === "complete" && route
@@ -628,13 +692,8 @@ export function MapWorkspace() {
   // 选中离当前位置最近的点位（景点 + 设施合并）。
   function focusNearest() {
     const view = map.current;
-    if (
-      !view ||
-      !tracking ||
-      !position ||
-      locationQuality(position.accuracy, position.timestamp) !== "usable"
-    ) {
-      setLocationNote("请先开启定位并等待准确位置，再查找附近点位。");
+    if (!view || !tracking || !position) {
+      setLocationNote("请先开启定位，再查找附近点位。");
       return;
     }
     const all: Place[] = [...scenicPlaces, ...facilityPlaces];
@@ -703,93 +762,53 @@ export function MapWorkspace() {
     }
   }
   return (
-    <section
-      className={`scenic-map-stage ${illustrated ? "is-autumn" : "is-standard"}${dotsOnly ? " is-dots-only" : ""}`}
-      aria-label="栖霞山地图导览"
-    >
+    <section className="scenic-map-stage is-autumn" aria-label="栖霞山地图导览">
       <div
         className="scenic-map-canvas"
         ref={container}
         aria-label="高德地图"
       />
-      <div className="autumn-map-tools" aria-label="地图视图控制">
-        <div className="autumn-view-switch" role="group" aria-label="地图风格">
-          {[true, false].map((value) => (
-            <button
-              key={String(value)}
-              disabled={state !== "ready"}
-              aria-pressed={illustrated === value}
-              onClick={() => {
-                setIllustrated(value);
-              }}
-            >
-              {value ? "赏秋手绘" : "高德底图"}
-            </button>
-          ))}
-        </div>
-        <div className="autumn-display-tools">
-          <select
-            aria-label="推荐路线"
-            value={scenicRoute}
-            disabled={state !== "ready"}
-            onChange={(event) => {
-              setScenicRoute(event.target.value);
-              setCategory("景点");
-            }}
-          >
-            <option value="">自由游览</option>
-            {scenicRoutes.map((route) => (
-              <option key={route.id} value={route.id}>
-                {route.id} · {route.name}
-              </option>
-            ))}
-          </select>
-          {missingRouteStops.length > 0 && (
-            <p className="scenic-route-note" role="status">
-              {missingRouteStops.join("、")}暂缺坐标，编号保留，未标在地图上。
-            </p>
-          )}
+      <div className="autumn-map-tools" aria-label="地图导览控制">
+        <div className="autumn-route-actions">
           <button
-            disabled={state !== "ready"}
-            aria-pressed={dotsOnly}
-            aria-label="隐藏景点插画与名称，只保留节点"
-            title="隐藏景点插画与名称，只保留节点"
-            onClick={() => setDotsOnly((value) => !value)}
+            className="autumn-recommend-button"
+            disabled={state !== "ready" || locatingPreset}
+            onClick={() => void recommendPreset()}
+            title="根据起始位置推荐游线，并返回同一入园门"
           >
-            仅节点
+            <Route size={16} />
+            <span>{locatingPreset ? "正在定位…" : "推荐路线"}</span>
+          </button>
+          <button
+            className="autumn-locate-button"
+            disabled={state !== "ready"}
+            onClick={() => void returnToVisitor()}
+            aria-label="回到我的位置"
+            title="回到我的位置"
+          >
+            <LocateFixed size={18} />
           </button>
         </div>
-        <div className="autumn-zoom-tools">
-          <button
-            disabled={state !== "ready"}
-            aria-label="放大地图"
-            onClick={() => {
-              navigation.current?.zoomBy(1);
-            }}
-          >
-            ＋
-          </button>
-          <button
-            disabled={state !== "ready"}
-            aria-label="缩小地图"
-            onClick={() => {
-              navigation.current?.zoomBy(-1);
-            }}
-          >
-            −
-          </button>
-          <button
-            disabled={state !== "ready"}
-            onClick={() => navigation.current?.fitOverview()}
-          >
-            全景
-          </button>
-        </div>
+        {activeRoute && (
+          <div className="autumn-route-summary" aria-live="polite">
+            <strong>
+              {agentRoute ? "助手推荐路线" : activeScenicRoute?.name}
+            </strong>
+            {!agentRoute && (
+              <span>
+                {activeRoute.stops[0]?.name.replace("售票处", "出发")}
+                {!presetOrigin && "（无定位预览）"} →{" "}
+                {activeRoute.stops.at(-1)?.name.replace("售票处", "返回")}
+              </span>
+            )}
+            <p className="scenic-route-note">{scenicRouteNote}</p>
+          </div>
+        )}
       </div>
       <div className="autumn-map-caption">
         <span className="autumn-caption-dot" />
         <span>景点位置 · 高德原生路网</span>
-        <small>放大查看细路 · 蓝色：步行导航</small>
+        <small>放大查看细路 · 赭红流光：步行导航</small>
       </div>
       {state !== "ready" && (
         <div className="map-connection-state" role="status">
@@ -1031,7 +1050,7 @@ export function MapWorkspace() {
           <p>{typeof selected.address === "string" ? selected.address : ""}</p>
           <div className="map-detail-actions">
             <button onClick={ask}>询问助手</button>
-            <button onClick={planWalk} disabled={quality !== "usable"}>
+            <button onClick={planWalk} disabled={!position}>
               <Route size={13} />
               步行路线
             </button>
@@ -1054,8 +1073,8 @@ export function MapWorkspace() {
           </div>
           <p className="map-route-note" role="status">
             {routeNote ||
-              (quality !== "usable"
-                ? "获取较准确的新位置后，可查询步行路线。"
+              (!position
+                ? "开启定位后，可查询步行路线。"
                 : "路线依据高德道路数据，山中小路可能未覆盖。")}
           </p>
           <PlaceKnowledge
@@ -1065,7 +1084,7 @@ export function MapWorkspace() {
         </div>
       )}
 
-      {nearby && tracking && autoEnabled && quality === "usable" && (
+      {nearby && tracking && autoEnabled && (
         <aside
           className="map-nearby-card"
           aria-label="附近景点提示"
@@ -1085,8 +1104,7 @@ export function MapWorkspace() {
           </div>
           <h2>{nearby.place.name}</h2>
           <p className="map-nearby-distance">
-            直线约 {Math.round(nearby.distance)} 米 · 位置预估误差{" "}
-            {position ? Math.ceil(position.accuracy) : ""} 米
+            直线约 {Math.round(nearby.distance)} 米
           </p>
           <p>
             {typeof nearby.place.address === "string"
@@ -1112,12 +1130,12 @@ export function MapWorkspace() {
       {dockNode &&
         createPortal(
           <div
-            className={`map-location-panel map-location-dock ${dockOpen ? "is-open" : ""} ${quality === "approximate" ? "is-approximate" : ""}`}
+            className={`map-location-panel map-location-dock ${dockOpen ? "is-open" : ""}`}
             aria-label="栖霞山定位"
           >
             <div className="map-location-actions">
               <button
-                onClick={startLocation}
+                onClick={() => (tracking ? stopLocation() : startLocation())}
                 disabled={state !== "ready"}
                 className={tracking ? "is-tracking" : ""}
                 aria-label={
@@ -1161,43 +1179,27 @@ export function MapWorkspace() {
                 <p className="map-location-note" role="status">
                   {locationNote ||
                     (position
-                      ? quality === "stale"
-                        ? "位置已过时，请等待定位更新"
-                        : (quality === "approximate"
-                            ? "粗略定位：误差半径 "
-                            : "预估误差半径 ") +
-                          Math.ceil(position.accuracy) +
-                          " 米"
+                      ? "已定位，可查看附近景点和步行路线。"
                       : "点击开始后持续定位，靠近景点自动提示，可随时停止。")}
                 </p>
                 {position && (
                   <small className="map-location-source">
-                    浏览器位置估计 · 定位时间{" "}
+                    高德定位 · 定位时间{" "}
                     {new Date(position.timestamp).toLocaleTimeString("zh-CN", {
                       hour12: false,
                     })}
                   </small>
-                )}
-                {quality === "approximate" && (
-                  <p className="map-coarse-help">
-                    精度不足，暂停景点自动提示与步行路线。建议在手机开启精确定位后测试。
-                  </p>
                 )}
                 {locationFailure !== null && (
                   <details className="map-location-help" open>
                     <summary>定位失败排查</summary>
                     <ol>
                       <li>
-                        Windows 设置 → 隐私和安全性 →
-                        位置，检查定位服务与桌面应用访问权限。
+                        手机请开启系统定位，并允许当前浏览器或微信使用精确位置。
                       </li>
+                      <li>允许本站访问位置，通过 HTTPS 地址打开后重试。</li>
                       <li>
-                        在独立的 Edge
-                        浏览器打开本站，并允许网站使用位置，再点击重新定位。
-                      </li>
-                      <li>
-                        手机测试请开启系统定位，通过 HTTPS
-                        地址访问。电脑内置预览不能保证返回位置。
+                        电脑请检查系统定位服务与浏览器权限；内置预览可能无法获取位置。
                       </li>
                     </ol>
                     <a
@@ -1246,9 +1248,7 @@ export function MapWorkspace() {
       {selected &&
         knowledgeOpen &&
         (() => {
-          const knowledge =
-            getQixiaKnowledgeByCode(selected.referenceCode) ??
-            getQixiaKnowledgeByName(selected.referenceName ?? selected.name);
+          const knowledge = getMapPlaceKnowledge(selected);
           if (!knowledge) return null;
           return (
             <KnowledgeModal
