@@ -226,6 +226,7 @@ export function MapWorkspace() {
   const [autoEnabled, setAutoEnabled] = useState(true);
   const autoCount = scenicPlaces.length;
   const [autoNote, setAutoNote] = useState("开启定位后自动检测附近景点");
+  const [demoPlaceId, setDemoPlaceId] = useState("");
   const [nearby, setNearby] = useState<{
     place: Place;
     distance: number;
@@ -454,6 +455,70 @@ export function MapWorkspace() {
     setNearby(null);
     setAutoNote("自动提示已暂停");
   }
+  function drawFix(api: MapAPI, view: MapInstance, fix: Position) {
+    positionOverlays.current.forEach((item) => item.setMap(null));
+    positionOverlays.current = [
+      new api.Circle({
+        map: view,
+        center: [fix.point.lng, fix.point.lat],
+        radius: fix.accuracy,
+        strokeColor: "#5279ac",
+        fillColor: "#80a9d5",
+        fillOpacity: 0.15,
+        strokeWeight: 1,
+      }),
+      new api.Marker({
+        map: view,
+        position: [fix.point.lng, fix.point.lat],
+        anchor: "center",
+        content: '<span class="visitor-location-dot"></span>',
+      }),
+    ];
+  }
+  function applyFix(fix: Position) {
+    const api = sdk.current;
+    const view = map.current;
+    if (!api || !view) return null;
+    drawFix(api, view, fix);
+    latestPosition.current = fix;
+    const gate = getTripContext().entryGate ?? selectTripGate(fix.point).id;
+    setEntryGate(gate);
+    setTripContext({ ...getTripContext(), entryGate: gate, position: fix });
+    setPosition(fix);
+    setLocationFailure(null);
+    return view;
+  }
+  function announceArrival(place: Place, distance: number) {
+    setNearby({ place, distance });
+    setAutoNote(`已到达${place.name}，可以听听讲解`);
+    autumnLayer.current?.setSelected(place.id, true);
+  }
+  // 演示保底：手动选点后走与 GPS 到达同一条链路，不依赖现场定位。
+  function simulateArrival(place: Place) {
+    const point = { lng: place.location.lng, lat: place.location.lat };
+    const view = applyFix({ point, accuracy: 5, timestamp: Date.now() });
+    if (!view) return;
+    const state = createProximityState();
+    proximity.current = state;
+    const now = Date.now();
+    updateProximity(
+      state,
+      targets.current,
+      { point, accuracy: 5, timestamp: now - 11000 },
+      now - 11000,
+    );
+    updateProximity(
+      state,
+      targets.current,
+      { point, accuracy: 5, timestamp: now },
+      now,
+    );
+    autoRef.current = true;
+    setAutoEnabled(true);
+    announceArrival(place, 0);
+    setLocationNote(`演示：已模拟到达「${place.name}」`);
+    view.setZoomAndCenter(17, [point.lng, point.lat]);
+  }
   function startLocation() {
     if (watch.current) return;
     if (!window.isSecureContext) {
@@ -479,39 +544,12 @@ export function MapWorkspace() {
       (fix) => {
         if (generation.current !== session) return;
         const { point, timestamp: captured, accuracy } = fix;
-        positionOverlays.current.forEach((item) => item.setMap(null));
-        positionOverlays.current = [
-          new api.Circle({
-            map: view,
-            center: [point.lng, point.lat],
-            radius: accuracy,
-            strokeColor: "#5279ac",
-            fillColor: "#80a9d5",
-            fillOpacity: 0.15,
-            strokeWeight: 1,
-          }),
-          new api.Marker({
-            map: view,
-            position: [point.lng, point.lat],
-            anchor: "center",
-            content: '<span class="visitor-location-dot"></span>',
-          }),
-        ];
         const positionFix = {
           point: { lng: point.lng, lat: point.lat },
           accuracy: accuracy,
           timestamp: captured,
         };
-        latestPosition.current = positionFix;
-        const gate =
-          getTripContext().entryGate ?? selectTripGate(positionFix.point).id;
-        setEntryGate(gate);
-        setTripContext({
-          ...getTripContext(),
-          entryGate: gate,
-          position: positionFix,
-        });
-        setPosition(positionFix);
+        applyFix(positionFix);
         settleLocation(positionFix);
         if (
           autoRef.current &&
@@ -541,7 +579,7 @@ export function MapWorkspace() {
             (place) => place.id === result.placeId,
           );
           if (match && result.distance !== undefined)
-            setNearby({ place: match, distance: result.distance });
+            announceArrival(match, result.distance);
           else
             setNearby((previous) =>
               previous &&
@@ -1104,7 +1142,7 @@ export function MapWorkspace() {
         </div>
       )}
 
-      {nearby && tracking && autoEnabled && (
+      {nearby && autoEnabled && (
         <aside
           className="map-nearby-card"
           aria-label="附近景点提示"
@@ -1120,11 +1158,13 @@ export function MapWorkspace() {
           </button>
           <div className="map-nearby-label">
             <BellRing size={15} />
-            附近景点
+            霞宝 · 附近景点
           </div>
           <h2>{nearby.place.name}</h2>
           <p className="map-nearby-distance">
-            直线约 {Math.round(nearby.distance)} 米
+            {nearby.distance > 0
+              ? `直线约 ${Math.round(nearby.distance)} 米`
+              : "已到达 · 演示位置"}
           </p>
           <p>
             {typeof nearby.place.address === "string"
@@ -1132,16 +1172,19 @@ export function MapWorkspace() {
               : "高德地点资料"}
           </p>
           <p className="map-nearby-note">
-            你可能在该景点附近，请结合路牌确认。距离不代表步行路程。
+            {nearby.distance > 0
+              ? "你可能在该景点附近，需要我介绍一下吗？距离不代表步行路程。"
+              : "你已到达该景点，需要我介绍一下吗？"}
           </p>
           <button
             className="map-nearby-open"
             onClick={() => {
               select(nearby.place, true);
+              setKnowledgeOpen(true);
               setNearby(null);
             }}
           >
-            查看这个地点
+            听听讲解
             <ArrowUpRight size={14} />
           </button>
           <small>来源：高德地点信息</small>
@@ -1252,7 +1295,38 @@ export function MapWorkspace() {
                   <span>附近景点自动提示</span>
                   <small>已载入{autoCount}处</small>
                 </label>
-                {tracking && autoEnabled && (
+                <details className="map-demo">
+                  <summary>演示：模拟到达景点</summary>
+                  <div className="map-demo-body">
+                    <select
+                      value={demoPlaceId}
+                      onChange={(event) => setDemoPlaceId(event.target.value)}
+                      aria-label="选择要模拟到达的景点"
+                    >
+                      <option value="">选择景点…</option>
+                      {scenicPlaces.map((place) => (
+                        <option key={place.id} value={place.id}>
+                          {place.name}
+                        </option>
+                      ))}
+                    </select>
+                    <button
+                      disabled={!demoPlaceId}
+                      onClick={() => {
+                        const place = scenicPlaces.find(
+                          (item) => item.id === demoPlaceId,
+                        );
+                        if (place) simulateArrival(place);
+                      }}
+                    >
+                      模拟到达
+                    </button>
+                  </div>
+                  <small>
+                    与真实定位走同一条到达提示链路，仅移动演示蓝点，不改点位坐标。
+                  </small>
+                </details>
+                {autoEnabled && (
                   <p className="map-auto-status" role="status">
                     {autoNote}
                   </p>
