@@ -86,4 +86,48 @@ describe("weatherBrief", () => {
   it("数据缺失时不编造结论", () => {
     expect(weatherBrief(snapshot({ current: null as never }))).toBeNull();
   });
+
+  it("分钟级降水给出多久后雨停", () => {
+    const now = Date.parse("2026-11-01T03:00:00.000Z");
+    const at = (minutes: number) =>
+      new Date(now + minutes * 60_000).toISOString();
+    const brief = weatherBrief(
+      snapshot({
+        minutely: {
+          updatedAt: at(0),
+          summary: "小雨将在20分钟后停止",
+          points: [
+            { time: at(5), precipitation: 0.2, type: "rain" },
+            { time: at(10), precipitation: 0.1, type: "rain" },
+            { time: at(15), precipitation: 0, type: "rain" },
+          ],
+        } as never,
+      }),
+      now,
+    )!;
+    expect(brief.headline).toContain("15 分钟后雨停");
+    expect(brief.items[0]!.id).toBe("weather:minutely");
+    expect(brief.items[0]!.body).toContain("小雨将在20分钟后停止");
+  });
+
+  it("还没下雨时给出多久后开始下雨", () => {
+    const now = Date.parse("2026-11-01T03:00:00.000Z");
+    const at = (minutes: number) =>
+      new Date(now + minutes * 60_000).toISOString();
+    const brief = weatherBrief(
+      snapshot({
+        current: { ...snapshot().current, condition: "多云", precipitation: 0 },
+        minutely: {
+          updatedAt: at(0),
+          summary: "20分钟后开始下小雨",
+          points: [
+            { time: at(20), precipitation: 0.3, type: "rain" },
+            { time: at(25), precipitation: 0.3, type: "rain" },
+          ],
+        } as never,
+      }),
+      now,
+    )!;
+    expect(brief.headline).toContain("约 20 分钟后开始下雨");
+  });
 });

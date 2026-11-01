@@ -684,6 +684,22 @@
 .weather-chat-thread {
   height: 52px;
 }
+.weather-chat-brief {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 7px 16px;
+  border-bottom: 1px solid #eef1e8;
+  background: #f7faf1;
+  color: #55663f;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.weather-chat-brief em {
+  font-style: normal;
+  color: #7c8a67;
+}
 .weather-chat-heading {
   display: flex;
   align-items: center;

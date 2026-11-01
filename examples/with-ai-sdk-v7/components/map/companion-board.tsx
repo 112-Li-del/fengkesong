@@ -88,7 +88,7 @@ export function CompanionBoard({
           </div>
           <strong>{weather.headline}</strong>
           <ul>
-            {weather.items.slice(0, 2).map((item) => (
+            {weather.items.slice(0, 3).map((item) => (
               <li key={item.id}>
                 <b>{item.title}</b>
                 <span>{item.body}</span>

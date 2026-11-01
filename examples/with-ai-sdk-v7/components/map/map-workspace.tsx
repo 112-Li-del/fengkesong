@@ -70,8 +70,7 @@ import {
   type Suggestion,
 } from "@/lib/companion";
 import { CompanionBoard } from "./companion-board";
-import { weatherBrief, type WeatherBrief } from "@/lib/companion-weather";
-import type { WeatherSnapshot } from "@/lib/weather";
+import { useWeatherBrief } from "@/lib/use-weather-brief";
 import { loadAmap, watchAmapLocation } from "./load-amap";
 import { flowingRoute, traceWalkingRoute } from "./flowing-route";
 import { KnowledgeModal, PlaceKnowledge } from "./place-knowledge";
@@ -278,7 +277,7 @@ export function MapWorkspace() {
   >([]);
   const suggestedAt = useRef(new Map<string, number>());
   const [voiceEnabled, setVoiceEnabled] = useState(false);
-  const [weather, setWeather] = useState<WeatherBrief | null>(null);
+  const weather = useWeatherBrief();
   const voiceOn = useRef(false);
   const pushSuggestion = useCallback((next: Suggestion) => {
     const previous = suggestedAt.current.get(next.id);
@@ -287,31 +286,6 @@ export function MapWorkspace() {
     suggestedAt.current.set(next.id, next.at);
     setCompanionSuggestions((items) => addSuggestion(items, next));
     if (voiceOn.current) speakCompanion(next.title);
-  }, []);
-  // 天气结论：每 5 分钟刷新一次，只展示快照里有的字段。
-  useEffect(() => {
-    let cancelled = false;
-    async function loadWeather() {
-      if (document.hidden) return;
-      try {
-        const response = await fetch("/api/weather/qixia", {
-          cache: "no-store",
-        });
-        if (!response.ok) return;
-        const snapshot = (await response.json()) as WeatherSnapshot;
-        if (cancelled) return;
-        const brief = weatherBrief(snapshot);
-        if (brief) setWeather(brief);
-      } catch {
-        // 静态部署没有服务端接口时保持静默，不编造天气。
-      }
-    }
-    void loadWeather();
-    const timer = window.setInterval(loadWeather, 5 * 60 * 1000);
-    return () => {
-      cancelled = true;
-      window.clearInterval(timer);
-    };
   }, []);
   // 常规关怀：每 120 秒基于当前位置补一条“附近还有……”的建议。
   useEffect(() => {

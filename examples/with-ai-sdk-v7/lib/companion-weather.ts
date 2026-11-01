@@ -13,6 +13,26 @@ const round = (value: number | null | undefined, digits = 0) =>
     ? value.toFixed(digits)
     : null;
 
+/** 用分钟级降水点算出“多久后开始/停止”，算不出时退回服务商摘要。 */
+export function rainWindow(
+  minutely: WeatherSnapshot["minutely"],
+  raining: boolean,
+  now = Date.now(),
+) {
+  const points = (minutely?.points ?? []).filter(
+    (point) => (point.precipitation ?? 0) > 0.02,
+  );
+  if (!points.length) return null;
+  const first = Date.parse(points[0]!.time);
+  const last = Date.parse(points.at(-1)!.time) + 5 * 60_000;
+  if (!Number.isFinite(first) || !Number.isFinite(last)) return null;
+  const startIn = Math.round((first - now) / 60_000);
+  const stopIn = Math.round((last - now) / 60_000);
+  if (raining || startIn <= 0)
+    return stopIn <= 0 ? "降雨即将结束" : `约 ${stopIn} 分钟后雨停`;
+  return startIn <= 120 ? `约 ${startIn} 分钟后开始下雨` : null;
+}
+
 /**
  * 把天气快照变成一句结论 + 几条可执行建议。
  * 只用快照里已有的字段，海拔温差按经验公式标注为估算，不写成实测。
@@ -36,6 +56,15 @@ export function weatherBrief(
     snapshot.provider === "qweather" ? "和风天气" : "Open-Meteo 模型预报";
 
   const items: WeatherBrief["items"] = [];
+  const window_ = rainWindow(snapshot.minutely, raining, now);
+  if (window_)
+    items.push({
+      id: "weather:minutely",
+      title: window_,
+      body:
+        snapshot.minutely?.summary?.trim() ||
+        "分钟级降水来自和风天气临近预报，每 5 分钟更新，覆盖未来两小时。",
+    });
   if (raining)
     items.push({
       id: "weather:rain",
@@ -73,7 +102,11 @@ export function weatherBrief(
 
   const headline = [
     `${condition}${temperature ? ` ${temperature}℃` : ""}`,
-    raining ? "地面湿滑" : rainSoon ? "三小时内可能下雨" : "山顶低约 1.6℃",
+    raining
+      ? (window_ ?? "地面湿滑")
+      : rainSoon
+        ? (window_ ?? "三小时内可能下雨")
+        : "山顶低约 1.6℃",
   ].join(" · ");
 
   return {
