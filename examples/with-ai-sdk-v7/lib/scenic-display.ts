@@ -128,10 +128,10 @@ export function layoutScenicPoints(
   selected: string | null,
   route: ReadonlyMap<string, number> = new Map(),
 ) {
-  const level = zoom < 15 ? 1 : zoom < 16.5 ? 2 : zoom < 17.5 ? 3 : 4;
+  const level = zoom < 16 ? 1 : zoom < 17 ? 2 : zoom < 18 ? 3 : 4;
   const budget = Math.min(
-    zoom < 15 ? 8 : zoom < 16.5 ? 14 : zoom < 17.5 ? 20 : 26,
-    width < 720 ? 12 : 26,
+    zoom < 16 ? 8 : zoom < 17 ? 12 : zoom < 18 ? 16 : 20,
+    width < 720 ? 10 : 20,
   );
   const occupied: Rect[] = [];
   const result = new Map<
@@ -150,10 +150,8 @@ export function layoutScenicPoints(
   )) {
     const chosen = p.id === selected;
     if (p.x < 0 || p.y < 0 || p.x > width || p.y > height) continue;
-    if (!chosen && !route.has(p.id) && scenicLevel(p.name) > level) {
-      result.set(p.id, { label: null, art: false });
-      continue;
-    }
+    // 未达到展开层级的景点整点收起，连圆点一起不画：120 多个点全画成圆点会在山门一带叠成一团。
+    if (!chosen && !route.has(p.id) && scenicLevel(p.name) > level) continue;
     const candidates = [
       { x: 14, y: -14 },
       { x: -p.width - 14, y: -14 },
