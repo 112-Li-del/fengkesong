@@ -6,7 +6,9 @@ import {
   AssistantRuntimeProvider,
   useRemoteThreadListRuntime,
 } from "@assistant-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { createZionChatTransport } from "@/lib/zion-chat-transport";
+import { FKS_STATIC, zionChatConfigured } from "@/lib/zion-config";
 import { HistoryWorkspace } from "./workspace";
 import "./history.css";
 
@@ -54,8 +56,23 @@ export function HistoryChat() {
       },
     }),
   );
+  // 静态部署下没有 /api/chat，改用 Zion 的 AI 智能体做流式对话。
+  const zionTransport = useMemo(
+    () =>
+      FKS_STATIC && zionChatConfigured()
+        ? createZionChatTransport()
+        : undefined,
+    [],
+  );
+  // 关键：useRemoteThreadListRuntime 不会把额外字段（如 transport）透传给
+  // runtimeHook，它只会“无参”调用 runtimeHook。若写成 `runtimeHook: useChatRuntime`
+  // 再在外层塞 transport，transport 会被丢掉，useChatRuntime 退回默认的
+  // AssistantChatTransport（POST /api/chat）——静态站没有该路由，于是报
+  // “Failed to fetch the chat response.”。必须用闭包把 transport 传进 useChatRuntime。
   const runtime = useRemoteThreadListRuntime({
-    runtimeHook: useChatRuntime,
+    runtimeHook: function ZionChatRuntime() {
+      return useChatRuntime(zionTransport ? { transport: zionTransport } : {});
+    },
     adapter,
   });
   return (
