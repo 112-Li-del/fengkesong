@@ -77,6 +77,11 @@ function parseSurface(text) {
   const host = ts.createCompilerHost(options);
   host.getSourceFile = (name) => (name === fileName ? source : undefined);
   const checker = ts.createProgram([fileName], options, host).getTypeChecker();
+  // TypeScript 6.x does not eagerly bind a source file created with a
+  // restricted host (noLib/noResolve), so getSymbolAtLocation() returns
+  // `undefined` or crashes on `undefined.members`. Bind explicitly so the
+  // symbol table is available for reference resolution below.
+  ts.bindSourceFile(source, options);
   const symbols = new Map();
   function bind(identifier) {
     const symbol = checker.getSymbolAtLocation(identifier);

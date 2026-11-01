@@ -1015,16 +1015,21 @@
   gap: 8px;
   align-items: center;
   cursor: pointer;
-  padding: 13px 16px;
+  padding: 11px 14px;
   font-size: 12px;
   user-select: none;
+  background: #fdf4ea;
+  border: 1px solid #f0d2bf;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(123, 52, 38, 0.12);
+  color: #5a2e22;
 }
 .map-weather-panel > summary::-webkit-details-marker {
   display: none;
 }
 .map-weather-panel[open] {
-  width: min(680px, calc(100% - 370px));
-  max-height: calc(100% - 120px);
+  width: min(380px, calc(100% - 320px));
+  max-height: calc(100% - 76px);
   overflow: auto;
 }
 .map-weather-panel[open] > summary {
@@ -1038,11 +1043,24 @@
   display: flex;
   align-items: center;
   flex: none;
-  color: #5d6f55;
+  color: #b13c3c;
 }
 .weather-summary-title {
   flex: none;
   font-weight: 500;
+  position: relative;
+  padding-left: 16px;
+}
+.weather-summary-title::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 13px;
+  height: 13px;
+  background: var(--weather-leaf) no-repeat center / contain;
+  opacity: 0.9;
 }
 .weather-summary-chevron {
   flex: none;
@@ -1074,27 +1092,81 @@
 }
 .map-weather-panel .qixia-weather-stage {
   overflow: visible;
-  padding: 16px;
+  padding: 9px;
 }
 .map-weather-panel .qixia-section-heading {
-  margin-bottom: 15px;
+  margin-bottom: 9px;
 }
 .map-weather-panel .qixia-section-heading h1 {
-  font-size: 21px;
+  font-size: 18px;
 }
 .map-weather-panel .weather-bento {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: minmax(130px, auto);
+  gap: 7px;
+  grid-auto-rows: minmax(72px, auto);
 }
+/* 下拉内取消整宽独占：一律左右并排（覆盖 TSX 注入的 --span，不动内核） */
 .map-weather-panel .weather-bento-card {
-  grid-column: span min(var(--span), 2);
+  grid-column: span 1;
 }
+/* 末张（日出日落）占满两列收尾，避免最后一行左侧有卡、右侧空缺 */
 .map-weather-panel .weather-bento-card:last-child {
   grid-column: span 2;
 }
+/* 下拉内主卡随行高自适应，不被窄屏断点的 min-height 撑高 */
+.map-weather-panel .weather-current {
+  min-height: 0;
+}
+/* 第二行（未来两小时降水 / 逐小时）收至与第一行齐平 */
 .map-weather-panel .weather-hourly-list {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  row-gap: 15px;
+  row-gap: 4px;
+  margin: 8px 0 0;
+}
+.map-weather-panel .weather-hour {
+  gap: 2px;
+}
+/* 半宽下只留 天气图标 + 温度 + 降水概率，去掉时间与天气文字 */
+.map-weather-panel .weather-hour-range,
+.map-weather-panel .weather-hour-condition,
+.map-weather-panel .weather-forecast-note {
+  display: none;
+}
+.map-weather-panel .weather-hour > svg {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+}
+.map-weather-panel .weather-hour strong {
+  font-size: 12px;
+}
+.map-weather-panel .weather-hour-rain {
+  font-size: 9px;
+  gap: 2px;
+}
+.map-weather-panel .weather-hour-rain svg {
+  width: 8px;
+  height: 8px;
+}
+.map-weather-panel .weather-detail-note {
+  font-size: 10px;
+  line-height: 1.6;
+}
+.map-weather-panel .weather-rain-chart {
+  height: 28px;
+  gap: 2px;
+}
+.map-weather-panel .weather-minute-summary {
+  margin: 6px 0;
+  font-size: 13px;
+}
+.map-weather-panel .weather-chart-axis {
+  font-size: 9px;
+  margin-top: 5px;
+}
+.map-weather-panel .weather-sun-times {
+  flex-direction: row;
+  justify-content: space-around;
 }
 .map-location-panel {
   left: 22px;

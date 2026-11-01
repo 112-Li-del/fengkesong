@@ -76,32 +76,60 @@
 .scenic-site-label {
   position: absolute;
   left: 12px;
-  top: -14px;
+  top: -12px;
   z-index: 1;
   pointer-events: auto;
-  width: max-content;
-  height: 28px;
-  padding: 3px 7px;
-  border: 1px solid #cbac7d;
-  border-radius: 5px;
-  background: #fff8e9f5;
-  color: #6e402b;
-  white-space: nowrap;
-  font-family: "STKaiti", "KaiTi", serif;
-  font-size: 12px;
+  height: auto;
+  min-height: 22px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #58422e;
+  font-family: "KaiTi", "STKaiti", "楷体", "FangSong", serif;
+  font-size: 11px;
   font-weight: 600;
-  line-height: 20px;
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
   cursor: pointer;
-  box-shadow: 0 1px 4px #775a251a;
+  text-shadow:
+    -1px -1px 0 #f6f0cd,
+    0 -1px 0 #f6f0cd,
+    1px -1px 0 #f6f0cd,
+    -1px 0 0 #f6f0cd,
+    1px 0 0 #f6f0cd,
+    -1px 1px 0 #f6f0cd,
+    0 1px 0 #f6f0cd,
+    1px 1px 0 #f6f0cd,
+    0 0 2px #f6f0cd;
 }
 .scenic-site-label.is-selected {
-  border-color: #a54430;
-  background: #a54430;
-  color: #fff9ed;
+  color: #a54430;
+  text-shadow:
+    -1px -1px 0 #fdf7e2,
+    0 -1px 0 #fdf7e2,
+    1px -1px 0 #fdf7e2,
+    -1px 0 0 #fdf7e2,
+    1px 0 0 #fdf7e2,
+    -1px 1px 0 #fdf7e2,
+    0 1px 0 #fdf7e2,
+    1px 1px 0 #fdf7e2,
+    0 0 3px #fdf7e2;
   z-index: 2;
 }
 .scenic-site-label:hover,
-.scenic-site-label:focus-visible,
+.scenic-site-label:focus-visible {
+  color: #3f2e1e;
+  text-decoration: underline;
+  text-decoration-color: #9a7b4f;
+  text-underline-offset: 2px;
+}
+.scenic-site-label:focus-visible {
+  outline: 1px dashed #a54430;
+  outline-offset: 3px;
+}
 .scenic-site-dot:focus-visible {
   outline: 2px solid #a54430;
   outline-offset: 2px;
@@ -115,8 +143,11 @@
 }
 @media (max-width: 720px) {
   .scenic-site-label {
-    font-size: 11px;
-    padding: 3px 5px;
+    font-size: 10px;
+    padding: 3px 4px;
+  }
+  .scenic-coordinate.is-minor.is-revealed .scenic-site-label {
+    font-size: 10px;
   }
   .scenic-site-art {
     width: 40px;
@@ -146,6 +177,28 @@
   transition:
     transform 0.16s ease,
     background-color 0.16s ease;
+}
+.facility-pin.has-artwork {
+  width: 54px;
+  height: 54px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.facility-pin.has-artwork span {
+  display: none;
+}
+.facility-pin.has-artwork img {
+  display: block;
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.facility-pin.has-artwork:hover,
+.facility-pin.has-artwork:focus-visible {
+  background: transparent;
 }
 .facility-pin:hover,
 .facility-pin:focus-visible {
@@ -212,6 +265,17 @@
 .facility-pin.is-compact span {
   display: none;
 }
+.facility-pin.is-compact.has-artwork {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 1.5px #fff8e9;
+}
+.facility-pin.is-compact.has-artwork img {
+  display: none;
+}
 .facility-pin.is-compact:hover,
 .facility-pin.is-compact:focus-visible {
   transform: scale(1.5);
@@ -235,6 +299,25 @@
   cursor: pointer;
   box-shadow: 0 1px 4px #775a2540;
   transition: transform 0.16s ease;
+}
+.facility-cluster.has-artwork {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.facility-cluster.has-artwork img {
+  display: block;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.facility-cluster.has-artwork:hover,
+.facility-cluster.has-artwork:focus-visible {
+  background: transparent;
 }
 .facility-cluster.is-group {
   border-color: #7d2f22;
