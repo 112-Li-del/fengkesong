@@ -9,6 +9,8 @@
     "env:check": "node scripts/sync-env.mjs --check",
     "build": "next build",
     "build:zion": "node scripts/build-zion.mjs",
+    "sync:zion-knowledge": "node scripts/zion-sync-knowledge.mjs",
+    "deploy:zion": "node scripts/build-zion.mjs && node scripts/zion-sync-knowledge.mjs",
     "start": "next start"
   },
   "dependencies": {

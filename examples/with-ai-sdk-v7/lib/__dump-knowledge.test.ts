@@ -1,4 +1,5 @@
-// 临时：把本地栖霞知识库的「定稿口径」导出为 JSON，用于同步到 Zion 智能体。
+// 把本地栖霞知识库的「定稿口径」导出为 JSON，用于同步到 Zion 智能体的知识表。
+// 由 scripts/zion-sync-knowledge.mjs 调用；输出路径可用 FKS_KB_DUMP_PATH 覆盖。
 import { writeFileSync } from "node:fs";
 import { expect, it } from "vitest";
 import { listAnswerViews } from "./qixia-knowledge";
@@ -17,7 +18,7 @@ it("dump answer views to JSON", () => {
     coverage: v.coverage,
   }));
   writeFileSync(
-    "F:/fks-gihub/.tmp/qixia-answer-views.json",
+    process.env.FKS_KB_DUMP_PATH ?? "F:/fks-gihub/.tmp/qixia-answer-views.json",
     JSON.stringify(payload, null, 2),
     "utf8",
   );
