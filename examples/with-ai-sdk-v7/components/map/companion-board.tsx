@@ -1,6 +1,6 @@
 "use client";
 
-import { BellRing, ChevronDown, X } from "lucide-react";
+import { BellRing, ChevronDown, Volume2, VolumeX, X } from "lucide-react";
 import { useState } from "react";
 import type { Suggestion } from "@/lib/companion";
 
@@ -16,6 +16,8 @@ type Props = {
   onOpen: (suggestion: Suggestion) => void;
   onDismiss: (id: string) => void;
   onClear: () => void;
+  voiceEnabled: boolean;
+  onToggleVoice: () => void;
 };
 
 export function CompanionBoard({
@@ -23,6 +25,8 @@ export function CompanionBoard({
   onOpen,
   onDismiss,
   onClear,
+  voiceEnabled,
+  onToggleVoice,
 }: Props) {
   const [collapsed, setCollapsed] = useState(false);
   return (
@@ -47,6 +51,15 @@ export function CompanionBoard({
             清空
           </button>
         )}
+        <button
+          type="button"
+          className={`companion-board-voice${voiceEnabled ? " is-on" : ""}`}
+          aria-pressed={voiceEnabled}
+          aria-label={voiceEnabled ? "关闭语音播报" : "开启语音播报"}
+          onClick={onToggleVoice}
+        >
+          {voiceEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
+        </button>
         <button
           type="button"
           className="companion-board-toggle"

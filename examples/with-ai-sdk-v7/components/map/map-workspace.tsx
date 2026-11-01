@@ -82,6 +82,14 @@ import "./autumn-map.css";
 import "./scenic-labels.css";
 
 type Position = { point: LngLat; accuracy: number; timestamp: number };
+function speakCompanion(text: string) {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "zh-CN";
+  utterance.rate = 1.05;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utterance);
+}
 function subscribeDock() {
   return () => {};
 }
@@ -266,12 +274,15 @@ export function MapWorkspace() {
     Suggestion[]
   >([]);
   const suggestedAt = useRef(new Map<string, number>());
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const voiceOn = useRef(false);
   const pushSuggestion = useCallback((next: Suggestion) => {
     const previous = suggestedAt.current.get(next.id);
     if (previous !== undefined && next.at - previous < SUGGESTION_COOLDOWN_MS)
       return;
     suggestedAt.current.set(next.id, next.at);
     setCompanionSuggestions((items) => addSuggestion(items, next));
+    if (voiceOn.current) speakCompanion(next.title);
   }, []);
   // 常规关怀：每 120 秒基于当前位置补一条“附近还有……”的建议。
   useEffect(() => {
@@ -644,11 +655,22 @@ export function MapWorkspace() {
           !document.hidden &&
           captured >= resumeAfter.current
         ) {
+          const insideBefore = new Set(proximity.current.inside);
           const result = updateProximity(
             proximity.current,
             targets.current,
             positionFix,
           );
+          for (const id of insideBefore)
+            if (!proximity.current.inside.has(id)) {
+              // 确认离开后撤回到达卡，下次接近可再次邀请。
+              suggestedAt.current.delete(`arrive:${id}`);
+              setCompanionSuggestions((items) =>
+                items.filter(
+                  (item) => !(item.kind === "arrive" && item.placeId === id),
+                ),
+              );
+            }
           const notes: Record<string, string> = {
             stale: "位置已过时，等待新位置",
             ambiguous: "附近景点距离接近，请点选确认",
@@ -1246,6 +1268,14 @@ export function MapWorkspace() {
             setCompanionSuggestions((items) => dismissSuggestion(items, id))
           }
           onClear={() => setCompanionSuggestions([])}
+          voiceEnabled={voiceEnabled}
+          onToggleVoice={() => {
+            const next = !voiceEnabled;
+            setVoiceEnabled(next);
+            voiceOn.current = next;
+            if (next) speakCompanion("语音播报已开启");
+            else window.speechSynthesis?.cancel();
+          }}
         />
       )}
       {dockNode &&

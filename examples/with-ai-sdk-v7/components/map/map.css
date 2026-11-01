@@ -1545,6 +1545,18 @@
   font-size: 10px;
   cursor: pointer;
 }
+.companion-board-voice {
+  margin-left: auto;
+  display: inline-flex;
+  padding: 2px;
+  border: 0;
+  background: none;
+  color: #9aa88a;
+  cursor: pointer;
+}
+.companion-board-voice.is-on {
+  color: #4b6335;
+}
 .companion-board-toggle {
   margin-left: auto;
   display: inline-flex;
