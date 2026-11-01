@@ -128,6 +128,6 @@ export type MapAPI = {
 declare global {
   interface Window {
     AMap?: MapAPI;
-    _AMapSecurityConfig?: { serviceHost: string };
+    _AMapSecurityConfig?: { serviceHost?: string; securityJsCode?: string };
   }
 }

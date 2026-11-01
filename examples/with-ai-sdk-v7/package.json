@@ -8,6 +8,7 @@
     "env:sync": "node scripts/sync-env.mjs",
     "env:check": "node scripts/sync-env.mjs --check",
     "build": "next build",
+    "build:zion": "node scripts/build-zion.mjs",
     "start": "next start"
   },
   "dependencies": {
