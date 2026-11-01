@@ -409,19 +409,35 @@ export async function recommendTrip(
     leg.instructions.some((s) => /台阶|楼梯|登山/.test(s));
   cursor = origin;
   let elapsed = 0;
+  const droppedMustVisit: string[] = [];
+  const mustRecord = (place: Place) => {
+    if (mustIds.has(place.id)) droppedMustVisit.push(place.name);
+  };
   for (const place of ordered) {
     const leg = await walk(cursor, place.location);
-    if (!leg) continue;
-    if (gentle && hasSteps(leg)) continue;
+    if (!leg) {
+      mustRecord(place);
+      continue;
+    }
+    if (gentle && hasSteps(leg)) {
+      mustRecord(place);
+      continue;
+    }
     const back =
       exit?.coordinateSource === "amap-verified"
         ? await walk(place.location, exit.location)
         : null;
-    if (!back || (gentle && hasSteps(back))) continue;
+    if (!back || (gentle && hasSteps(back))) {
+      mustRecord(place);
+      continue;
+    }
     const dwell = input.minutes <= 60 ? (gentle ? 12 : 8) : gentle ? 20 : 15;
     const paced = Math.ceil(leg.minutes * (gentle ? 1.5 : 1));
     const reserve = Math.ceil(back.minutes * pace) + 15;
-    if (elapsed + paced + dwell + reserve > input.minutes) continue;
+    if (elapsed + paced + dwell + reserve > input.minutes) {
+      mustRecord(place);
+      continue;
+    }
     const nearestServices = ["休息", "卫生间"]
       .flatMap((category) =>
         facilityPlaces
@@ -539,8 +555,15 @@ export async function recommendTrip(
     originSource: startFromGate ? "用户指定起点" : "当前定位",
     route: route?.name,
     preferences: input,
-    mustVisit: wantedMustVisit.map((place) => place.name),
-    mustVisitExcluded: excludedMustVisit.map((place) => place.name),
+    mustVisit: mustVisit
+      .filter((place) =>
+        segments.some((segment) => segment.place.id === place.id),
+      )
+      .map((place) => place.name),
+    mustVisitExcluded: [
+      ...excludedMustVisit.map((place) => place.name),
+      ...droppedMustVisit,
+    ],
     segments,
     candidates: segments.length ? [] : ranked.slice(0, 3).map(describe),
     services,

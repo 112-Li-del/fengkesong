@@ -409,3 +409,23 @@ it("游客点名要去的景点必须排进路线，不能被兴趣权重挤掉"
   expect(result.mustVisit).toContain("桃花湖");
   expect(result.segments!.some((s) => s.place.name === "桃花湖")).toBe(true);
 });
+
+it("轻松游因台阶排不进去的必去点要如实标出，不能静默替换", async () => {
+  const stairs = async () => ({
+    distanceMeters: 100,
+    minutes: 2,
+    instructions: ["沿台阶向上"],
+  });
+  const result = await recommendTrip(
+    tripRequestSchema.parse({
+      startName: "西门",
+      mustVisit: ["桃花湖"],
+      stamina: "low",
+      minutes: 180,
+    }),
+    {},
+    stairs,
+  );
+  expect(result.mustVisitExcluded).toContain("桃花湖");
+  expect(result.mustVisit).not.toContain("桃花湖");
+});
