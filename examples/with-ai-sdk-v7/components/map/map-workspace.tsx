@@ -256,11 +256,15 @@ export function MapWorkspace() {
     setTripContext({
       ...(activeScenicRoute ? { route: activeScenicRoute.id } : {}),
       ...(entryGate ? { entryGate } : {}),
-      ...(tracking && position ? { position } : {}),
+      // 演示定位也按真实位置上报，否则聊天会以为没有定位。
+      ...(position ? { position } : {}),
     });
     return () => setTripContext({});
   }, [activeScenicRoute, entryGate, tracking, position]);
   const [locationNote, setLocationNote] = useState("");
+  const [positionSource, setPositionSource] = useState<"gps" | "demo" | null>(
+    null,
+  );
   const [locationFailure, setLocationFailure] = useState<number | null>(null);
   const [routeNote, setRouteNote] = useState("");
   const routeVersion = useRef(0);
@@ -322,6 +326,18 @@ export function MapWorkspace() {
     }, CARE_INTERVAL_MS);
     return () => window.clearInterval(timer);
   }, [autoEnabled, pushSuggestion]);
+  // 演示定位要像持续定位一样保持新鲜，否则 30 秒后会被当成过期位置。
+  useEffect(() => {
+    if (positionSource !== "demo") return;
+    const timer = window.setInterval(() => {
+      const current = latestPosition.current;
+      if (!current || document.hidden) return;
+      const refreshed = { ...current, timestamp: Date.now() };
+      latestPosition.current = refreshed;
+      setPosition(refreshed);
+    }, 10000);
+    return () => window.clearInterval(timer);
+  }, [positionSource]);
   const routeOverlay = useRef<ReturnType<typeof flowingRoute> | null>(null);
   const [scenicRouteNote, setScenicRouteNote] = useState("");
   const [panelOpen, setPanelOpen] = useState(false);
@@ -550,6 +566,7 @@ export function MapWorkspace() {
     setRouteNote("");
     setTracking(false);
     setPosition(null);
+    setPositionSource(null);
     setLocationNote("已停止定位");
     resetProximityPending(proximity.current);
     suggestedAt.current.clear();
@@ -576,7 +593,7 @@ export function MapWorkspace() {
       }),
     ];
   }
-  function applyFix(fix: Position) {
+  function applyFix(fix: Position, source: "gps" | "demo" = "gps") {
     const api = sdk.current;
     const view = map.current;
     if (!api || !view) return null;
@@ -586,6 +603,7 @@ export function MapWorkspace() {
     setEntryGate(gate);
     setTripContext({ ...getTripContext(), entryGate: gate, position: fix });
     setPosition(fix);
+    setPositionSource(source);
     setLocationFailure(null);
     return view;
   }
@@ -606,7 +624,10 @@ export function MapWorkspace() {
   // 演示保底：手动选点后走与 GPS 到达同一条链路，不依赖现场定位。
   function simulateArrival(place: Place) {
     const point = { lng: place.location.lng, lat: place.location.lat };
-    const view = applyFix({ point, accuracy: 5, timestamp: Date.now() });
+    const view = applyFix(
+      { point, accuracy: 5, timestamp: Date.now() },
+      "demo",
+    );
     if (!view) return;
     const state = createProximityState();
     proximity.current = state;
@@ -1321,11 +1342,17 @@ export function MapWorkspace() {
           >
             <div className="map-location-actions">
               <button
-                onClick={() => (tracking ? stopLocation() : startLocation())}
+                onClick={() =>
+                  tracking || positionSource === "demo"
+                    ? stopLocation()
+                    : startLocation()
+                }
                 disabled={state !== "ready"}
-                className={tracking ? "is-tracking" : ""}
+                className={
+                  tracking || positionSource === "demo" ? "is-tracking" : ""
+                }
                 aria-label={
-                  tracking
+                  tracking || positionSource === "demo"
                     ? "停止定位"
                     : locationFailure
                       ? "重新定位"
@@ -1334,7 +1361,7 @@ export function MapWorkspace() {
               >
                 <LocateFixed size={15} />
                 <span className="map-location-button-label">
-                  {tracking
+                  {tracking || positionSource === "demo"
                     ? "停止定位"
                     : locationFailure
                       ? "重新定位"
@@ -1370,7 +1397,10 @@ export function MapWorkspace() {
                 </p>
                 {position && (
                   <small className="map-location-source">
-                    高德定位 · 定位时间{" "}
+                    {positionSource === "demo"
+                      ? "演示定位（当作真实位置使用）"
+                      : "高德定位"}{" "}
+                    · 定位时间{" "}
                     {new Date(position.timestamp).toLocaleTimeString("zh-CN", {
                       hour12: false,
                     })}
