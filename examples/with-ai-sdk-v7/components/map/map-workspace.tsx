@@ -128,6 +128,7 @@ export function MapWorkspace() {
   });
   const [agentRoute, setAgentRoute] =
     useState<ReturnType<typeof recommendationRoute>>(null);
+  const tourRoute = useRef<ReturnType<typeof recommendationRoute>>(null);
   const [appliedAgentResult, setAppliedAgentResult] =
     useState<typeof agentResult>(null);
   const activeScenicRoute = scenicRoutes.find(
@@ -356,7 +357,17 @@ export function MapWorkspace() {
     ) {
       setEntryGate(result.entryGate);
     }
-    setAgentRoute(next);
+    if (next && next.stops.length > 1) tourRoute.current = next;
+    const tour = tourRoute.current;
+    // 找厕所/休息这类单段服务路线叠加在原游览路线之上，不整条替换掉行程。
+    setAgentRoute(
+      next && next.stops.length === 1 && tour && tour !== next
+        ? {
+            legs: [...tour.legs, ...next.legs],
+            stops: [...tour.stops, ...next.stops],
+          }
+        : next,
+    );
   }
   const select = useCallback(
     (place: Place, reveal = false) => {
