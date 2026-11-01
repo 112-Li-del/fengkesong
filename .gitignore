@@ -9,6 +9,9 @@ node_modules
 *.pem
 /.worktrees/
 
+# Zion 部署同步脚本的中间产物
+/.tmp/
+
 # debug
 .pnpm-debug.log*
 npm-debug.log*
