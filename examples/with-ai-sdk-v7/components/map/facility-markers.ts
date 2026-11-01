@@ -18,6 +18,36 @@ const GLYPH: Readonly<Record<string, string>> = {
   squad: "防",
 };
 
+const ART: Readonly<Record<string, string>> = {
+  center: "/maps/qixia-facility-center.png",
+  gate: "/maps/qixia-facility-gate.png",
+  out: "/maps/qixia-facility-out.png",
+  check: "/maps/qixia-facility-check.png",
+  info: "/maps/qixia-facility-info.png",
+  ticket: "/maps/qixia-facility-ticket.png",
+  parking: "/maps/qixia-facility-parking.png",
+  toilet: "/maps/qixia-facility-toilet.png",
+  bus: "/maps/qixia-facility-bus.png",
+  fire: "/maps/qixia-facility-fire.png",
+  medical: "/maps/qixia-facility-medical.png",
+  shop: "/maps/qixia-facility-shop.png",
+  supply: "/maps/qixia-facility-supply.png",
+  squad: "/maps/qixia-facility-squad.png",
+};
+
+function appendArtwork(root: HTMLElement, group: string) {
+  const artwork = ART[group];
+  if (!artwork) return false;
+  root.classList.add("has-artwork");
+  const image = document.createElement("img");
+  image.src = artwork;
+  image.alt = "";
+  image.draggable = false;
+  image.setAttribute("aria-hidden", "true");
+  root.append(image);
+  return true;
+}
+
 /** 低于这个缩放级别时，距离过近的设施会合并成一个簇，避免入口一带十几个点叠成一团。 */
 const CLUSTER_ZOOM = 16.2;
 const CLUSTER_RADIUS = 24;
@@ -68,9 +98,11 @@ export function facilityMarkers(
     root.className = "facility-pin group-" + facility.group;
     root.title = facility.name + " · " + facility.en;
     root.setAttribute("aria-label", facility.name + "（" + facility.en + "）");
-    const glyph = document.createElement("span");
-    glyph.textContent = GLYPH[facility.group] ?? "·";
-    root.append(glyph);
+    if (!appendArtwork(root, facility.group)) {
+      const glyph = document.createElement("span");
+      glyph.textContent = GLYPH[facility.group] ?? "·";
+      root.append(glyph);
+    }
     const marker = new api.Marker({
       map: null,
       position: [facility.location.lng, facility.location.lat],
@@ -164,7 +196,6 @@ export function facilityMarkers(
           break;
         }
       }
-      root.textContent = GLYPH[lead.group] ?? "·";
       const tone = TONE[lead.group];
       if (tone) {
         root.style.color = tone;
@@ -175,6 +206,8 @@ export function facilityMarkers(
         "aria-label",
         size > 1 ? size + " 个设施，点击放大" : first.name,
       );
+      if (!appendArtwork(root, lead.group))
+        root.textContent = GLYPH[lead.group] ?? "·";
       root.addEventListener("click", (event) => {
         event.stopPropagation();
         if (size === 1) {

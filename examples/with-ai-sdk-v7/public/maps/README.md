@@ -67,3 +67,21 @@
 东北侧山体上方的用户红框使用宽浅湖泊 `qixia-lake-ripple-13.png`，由内置 imagegen 从用户截图提取透明蓝色波纹，去除山体、岸线及背景。范围保存在 `lib/qixia-phoenix-lake-decoration.json`，按红框缩放并避开右侧道路，沿用其他湖泊的显示规则。
 
 南侧环路东侧新增红圈使用小型竖向湖泊 `qixia-lake-ripple-14.png`，由内置 imagegen 从用户截图提取为透明底，去除顶部设施图标及背景。范围保存在 `lib/qixia-south-small-lake-decoration.json`，按圈大小放置，避开左侧道路，景点标记保留在素材上方。
+
+栖霞古镇东侧、消防器材室（QXF040）下方的用户红圈使用 `qixia-lake-ripple-15.png`，从用户提供的 51×35 像素湖泊参考图分离出青蓝波纹并移除鹅黄底色及截图边角杂点。范围保存在 `lib/qixia-ancient-town-lake-decoration.json`，以古镇和消防设施标记配准，保持原素材长宽比并按红圈大小放置。该湖泊为装饰贴图，不新增地理 POI；随手绘图层显隐，随地图缩放保持地理位置。
+
+栖霞古镇东北侧、九龙坡点位上方的用户红框使用三湖组合 `qixia-lake-ripple-16.png`。从用户提供的 117×161 像素参考图按颜色分离蓝色波纹，移除鹅黄背景和灰绿色山体，保留三处湖泊的相对位置、形状及比例。范围保存在 `lib/qixia-ancient-town-lake-group-decoration.json`，依据古镇、消防器材室（QXF040）和九龙坡点位配准，组合按原红框范围放置，重叠处由景点插画显示在湖泊上层；作为装饰贴图随手绘图层显隐和地图缩放，不新增地理 POI。
+
+彩虹明镜上方的用户红圈使用明镜湖波纹 `qixia-lake-ripple-17.png`。依据用户提供的 125×102 像素素材提取可见蓝色线条，沿相邻波纹补齐被中英文文字及绿线遮住的部分，移除底色和道路线，输出透明位图。范围保存在 `lib/qixia-mingjing-lake-decoration.json`，通过彩虹明镜、虎爪岩和哼哈殿配准，按红圈范围放置；沿用湖泊装饰层级，景点插画及名称位于湖泊上层，随手绘图层显隐和地图缩放。
+
+栖霞古寺北侧、受降井东南侧道路内的用户红圈使用 `qixia-lake-ripple-18.png`，根据用户提供的 52×62 像素白莲池（月牙池）参考图提取蓝色波纹，并沿可见线条补齐文字遮挡处，去除背景、文字、道路线和左下建筑。范围保存在 `lib/qixia-bailian-lake-decoration.json`，以北侧游览车站（QXF053）、卫生间（QXF047）和附近景点配准，按红圈大小放置；作为装饰贴图保持景点插画及名称在上层，不改动景点坐标，随手绘图层显隐与地图缩放。
+
+品外泉北侧的用户红圈使用圆形湖泊 `qixia-lake-ripple-19.png`，从用户提供的 57×60 像素素材分离青蓝波纹并去除底色、上下文字，保留原图湖形和波纹。范围保存在 `lib/qixia-pinwai-lake-decoration.json`，以游览车站（QXF053）、停车场（QXF008）、卫生间（QXF017、QXF054）和品外泉配准，按红圈大小放在道路内；沿用湖泊装饰层级，景点插画与名称位于湖泊上层，随手绘图层显隐和地图缩放，不改变景点坐标。
+
+白鹿泉南侧道路外的用户红框使用横向湖泊 `qixia-lake-ripple-20.png`，从用户提供的 76×46 像素素材分离青蓝波纹，去除鹅黄背景、上方道路线和下方文字，保留原图可见湖形与横向波纹。范围保存在 `lib/qixia-bailu-south-lake-decoration.json`，以白鹿泉、品外泉、畅观亭和卫生间（QXF017）配准，按红框范围放置；沿用湖泊装饰层级与缩放规则，景点贴图和名称位于湖泊上层。
+
+青峰涧东南侧、两段道路之间的用户红圈使用湖泊 `qixia-lake-ripple-21.png`，从用户提供的 105×56 像素素材分离青蓝波纹，去除鹅黄背景、右上灰色道路线和左下文字残片，保留原湖形及可见波纹。范围保存在 `lib/qixia-qingfeng-lake-decoration.json`，以青峰涧、中峰涧、试茶亭和凌虚室遗址配准，按红圈范围放置；沿用湖泊装饰层级、地图缩放和手绘图层显隐规则，景点贴图及名称保持在上层。
+
+全部湖泊贴图根据 `lib/qixia-roads.json` 的实际道路轨迹应用透明遮罩，道路描边外各留 1 像素空隙；遮罩随缩放及窗口尺寸重新计算，避免全景或更小比例下波纹盖住固定像素宽度的道路。湖泊原始素材、地理范围、整体大小及景点贴图层级保持不变。
+
+设施点位使用按组命名的透明插画：游客中心 `qixia-facility-center.png`、入口 `qixia-facility-gate.png`、出口 `qixia-facility-out.png`、检票处 `qixia-facility-check.png`、问询处 `qixia-facility-info.png`、售票处 `qixia-facility-ticket.png`、停车场 `qixia-facility-parking.png`、卫生间 `qixia-facility-toilet.png`、游览车停靠站 `qixia-facility-bus.png`、消防 `qixia-facility-fire.png`、医疗 `qixia-facility-medical.png`、服务点 `qixia-facility-shop.png`、自助能量补给站 `qixia-facility-supply.png` 和森林消防半专业队 `qixia-facility-squad.png`。素材按设施分组应用到全部对应点位，低缩放级别的设施聚合徽标也使用对应插画的缩小版。
